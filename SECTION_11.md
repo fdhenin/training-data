@@ -1,7 +1,7 @@
 # Section 11 — AI Coach Protocol
 
 **Protocol Version:** 11.1  
-**Last Updated:** 2026-01-22  
+**Last Updated:** 2026-01-21  
 **License:** [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)
 
 ### Changelog
@@ -334,14 +334,19 @@ AI systems must only consider caloric-reduction or weight-optimization phases du
 
 ---
 
-### TSB Interpretation (Phase-Aware)
+### TSB Interpretation
 
-**During Build Phases (normal training blocks):**
-- TSB −10 to −30: **Normal and expected** — reflects productive overload, not a problem
+**General Guidance:**
+- TSB −10 to −30: **Often normal** — reflects training load exceeding recent fitness baseline
 - TSB < −30: Monitor closely; check for compounding fatigue signals
-- TSB > 0: Unusual during build — indicates under-training or unplanned recovery
+- TSB > 0: Indicates recovery surplus or reduced training load
 
-**Recovery recommendations based on TSB alone are NOT warranted** during build phases unless accompanied by:
+**Context matters.** Negative TSB is expected when:
+- Training consistently (base/build phases)
+- Returning from off-season, illness, or holiday
+- Intentionally increasing load
+
+**Recovery recommendations based on TSB alone are NOT warranted** unless accompanied by:
 - HRV ↓ > 20%
 - RHR ↑ ≥ 5 bpm
 - Feel ≥ 4/5
