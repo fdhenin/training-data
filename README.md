@@ -38,8 +38,8 @@ This protocol builds on concepts from the endurance coaching community:
 | File | Description |
 |------|-------------|
 | [SECTION_11.md](SECTION_11.md) | Complete protocol: AI Coach Guidance (11 A), Training Plan Protocol (11 B), Validation Protocol (11 C) |
-| [examples/](examples/) | Sync scripts and integration guides |
 | [DOSSIER_TEMPLATE.md](DOSSIER_TEMPLATE.md) | Blank athlete dossier template — fill in your own data |
+| [examples/](examples/) | JSON sync setup guides (auto and manual) |
 | [LICENSE](LICENSE) | CC BY-NC 4.0 — free for personal use, attribution required |
 
 ---
@@ -60,30 +60,14 @@ Copy `DOSSIER_TEMPLATE.md` and fill in your:
 For best results, create a JSON endpoint with your current Intervals.icu data:
 
 ```
-https://raw.githubusercontent.com/[you]/[repo]/main/latest.json
+https://raw.githubusercontent.com/[USERNAME]/[REPO]/main/latest.json
 ```
 
 This allows AI coaches to access your real-time metrics (CTL, ATL, TSB, HRV, recent activities) without manual input each session.
 
-#### 3. Use With Any AI
+See [examples/](examples/) for setup guides.
 
-#### Option A: Persistent Setup (Recommended)
-
-For ongoing coaching, create a dedicated space with persistent context:
-
-| Platform    | Feature     | How to Set Up                                                  |
-|-------------|-------------|----------------------------------------------------------------|
-| **Claude**  | Projects    | Create Project → Add Section 11 + Dossier to Project Knowledge |
-| **ChatGPT** | Projects    | Create Project → Add Section 11 + Dossier to Project Files     |
-| **ChatGPT** | CustomGPT   | Create GPT → Paste Section 11 in Instructions → Upload Dossier |
-| **Gemini**  | Gems        | Create Gem → Add Section 11 + Dossier to instructions          |
-| **Grok**    | Projects    | Create Project → Add Section 11 + Dossier to Project Sources   |
-| **Mistral** | New Project | Create New Project → Add Section 11 + Dossier to instructions  |
-| **Poe**     | Bot         | Create Bot → Add Section 11 as System Prompt → Upload Dossier  |
-
-**Required settings:**
-- ✅ Enable **web search / browsing** — Required for the AI to fetch your live JSON data
-- ✅ Add your JSON URL to the instructions
+### 3. Configure Your AI Platform
 
 **Copy-paste instructions for your Project/Space:**
 ```
@@ -156,36 +140,113 @@ Documents attached:
 - `DOSSIER.md` (or `.txt`) — Your filled-in athlete dossier
 ```
 
-#### Option B: Per-Chat Setup
+**Replace `[USERNAME]/[REPO]` with your actual GitHub data mirror path.**
 
-For quick one-off analysis without persistent setup:
+### 4. Upload Files
 
-1. Start a new chat
-2. Paste Section 11 + your Dossier
-3. Provide your JSON URL or paste current data manually
-4. Ask your question
+Upload these files to your AI platform's knowledge base:
 
-**Example prompt:**
-> "You are my endurance coach. Follow this protocol: [paste Section 11]. Here is my athlete dossier: [paste dossier]. My current data is at: [JSON URL]. Based on this, how am I recovering? Should I adjust today's session?"
+| File | Purpose |
+|------|---------|
+| `SECTION_11.md` | The coaching protocol (required) |
+| `DOSSIER.md` | Your athlete profile (required) |
 
-#### Platform Notes
+---
 
-| Platform | Web Access | Notes |
-|----------|------------|-------|
-| Claude | ✅ Projects + Chat | Enable "Web search" in settings |
-| ChatGPT | ✅ Plus/Team | Browsing enabled by default |
-| Gemini | ✅ | Web access built-in |
-| Grok | ✅ | Web access built-in |
-| Mistral | ✅ | Le Chat has web access |
-| Perplexity | ✅ | Always searches web |
-| Local LLMs | ❌ | Must paste JSON data manually |
+## Platform-Specific Setup
 
-#### Tips for Best Results
+### ChatGPT (Projects)
+1. Create a Project
+2. Add instructions to Project settings
+3. Upload SECTION_11.md and DOSSIER.md to "Project Files"
+4. Browsing is enabled by default on Plus/Team
 
-- **Update your dossier** when FTP, weight, or goals change
-- **Check JSON freshness** — If sync fails, the AI should flag stale data
-- **Start sessions with context** — "Review my latest.json and summarize my current status"
-- **Ask for validation** — "Show me your Section 11 B validation metadata for this response"
+### ChatGPT (CustomGPT)
+1. Create GPT → Configure
+2. Paste instructions in "Instructions" field
+3. Upload files under "Knowledge"
+4. Enable "Web Browsing" in Capabilities
+
+### Claude (Projects)
+1. Create a Project
+2. Add instructions to "Project Instructions"
+3. Upload SECTION_11.md and DOSSIER.md to "Project Knowledge"
+4. Enable "Web search" in settings (required for JSON fetch)
+
+### Grok
+1. Create Project
+2. Add instructions to Project configuration
+3. Upload files to "Sources"
+
+### Mistral (Le Chat)
+1. Create New Project
+2. Add instructions and upload files
+3. Web access is available
+
+### Gemini (Gems)
+1. Create Gem
+2. Paste instructions + Section 11 content in instructions field
+3. Upload dossier or paste contents
+
+### Poe
+1. Create Bot
+2. Paste Section 11 as System Prompt
+3. Upload dossier in Knowledge Base
+
+---
+
+## Testing Your Setup
+
+After configuration, test with:
+
+> "How was today's workout?"
+
+**Good response includes:**
+- ✅ Fetched data automatically (no asking for it)
+- ✅ Session summary with all fields (type, start time, duration, power, HR, TSS, cadence, decoupling, zones, carbs, energy)
+- ✅ Training load context (TSB, CTL, ATL, weekly totals)
+- ✅ Brief interpretation
+- ✅ No "(GitHub)" or URL citations
+- ✅ No emojis
+- ✅ No false recovery warnings for normal TSB (-10 to -30)
+
+**Bad response:**
+- ❌ "I don't have access to your data, please provide..."
+- ❌ Missing session fields
+- ❌ "(GitHub)" citations throughout
+- ❌ "Your TSB is -23, consider recovery" (when no other triggers present)
+
+---
+
+## Troubleshooting
+
+### AI asks for data instead of fetching
+- Check that web search/browsing is enabled for your platform
+- Verify your JSON URL is correct and publicly accessible
+- Try pasting the URL directly in chat to trigger fetch
+
+### Data appears stale (wrong date)
+- Some platforms cache web fetches (Claude, Grok especially)
+- The `?date=` parameter in the instructions helps bust cache
+- If still stale, manually provide URL with today's date: `...latest.json?date=2026-01-23`
+
+### AI adds "(GitHub)" citations
+- Ensure OUTPUT FORMAT line is in your instructions
+- If persists, add: "NEVER include (GitHub) or source markers"
+
+### Responses missing fields
+- Check that the session details MUST include line is present
+- Verify Section 11.md is uploaded and accessible
+
+### AI recommends unnecessary recovery
+- TSB -10 to -30 is normal during consistent training
+- Recovery only warranted when multiple triggers present (HRV ↓, RHR ↑, Feel ≥4)
+- If persists, emphasize in instructions: "TSB alone does not trigger recovery recommendations"
+
+### Data appears incorrect
+- Check your sync workflow is running
+- Verify `last_updated` timestamp in JSON
+- AI should flag stale data (>24h) per Step 6 of validation checklist
 
 ---
 
@@ -199,11 +260,17 @@ Defines behavioral rules for AI coaches:
 - **Explicit data requests** — If data is missing, AI asks rather than assumes
 - **Tolerance compliance** — Recommendations stay within ±3W / ±1bpm / ±1% variance
 - **Framework citations** — Every recommendation references specific science
-- **10-point validation checklist** — AI self-validates before responding
+- **11-point validation checklist** — AI self-validates before responding (Step 0–10)
 
 ### Section 11 B — AI Training Plan Protocol
 
-Defines structure for AI-generated training plans: phase alignment, load targets, polarization ratios, and audit metadata.
+Defines rules for AI systems generating or modifying training plans:
+
+- Phase alignment with macro-cycle
+- Volume ceiling validation (±10% of baseline)
+- Intensity distribution control (80/20 polarization)
+- Session composition rules
+- Audit metadata requirements
 
 ### Section 11 C — AI Validation Protocol
 
@@ -211,23 +278,17 @@ Standardized metadata schema for audit trails:
 
 ```json
 {
-{
   "validation_metadata": {
     "data_source_fetched": true,
     "json_fetch_status": "success",
     "protocol_version": "11.1",
     "checklist_passed": [0, 1, 2, 3, 4, 5, 6, "6b", 7, 8, 9, 10],
     "checklist_failed": [],
-    "data_timestamp": "2026-01-13T22:32:05Z",
+    "data_timestamp": "2026-01-23T10:02:07Z",
     "data_age_hours": 2.3,
-    "athlete_timezone": "UTC+1",
-    "utc_aligned": true,
-    "system_offset_minutes": 8,
-    "timestamp_valid": true,
     "confidence": "high",
     "missing_inputs": [],
-    "frameworks_cited": ["Seiler 80/20", "Gabbett ACWR"],
-    "recommendation_count": 3
+    "frameworks_cited": ["Seiler 80/20", "Gabbett ACWR"]
   }
 }
 ```
@@ -316,7 +377,7 @@ When sources conflict, trust order is:
 ## Example Use Cases
 
 ### Daily Check-In
-> "Based on my latest.json, how am I recovering? Should I adjust today's session?"
+> "How was today's workout?"
 
 ### Weekly Review
 > "Analyze my last 7 days against my targets. What's my compliance rate? Any red flags?"
@@ -384,9 +445,7 @@ This work is licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/
 - [x] Section 11 A/B/C Protocol
 - [x] Dossier Template
 - [x] JSON sync automation scripts
-- [x] Instructions Template
 - [ ] CustomGPT implementation
-- [ ] MCP Server integration
 - [ ] Intervals.icu OAuth integration guide
 - [ ] Forum guides and tutorials
 
