@@ -241,7 +241,21 @@ When uncertain, the AI must ask, not assume.
 
 **Response Structure (routine workout reviews):**
 1. Opening summary (1–3 sentences): What was completed, overall assessment
-2. Session details (bullet list): Each session with duration, TSS, key power/HR metrics
+2. Session details (!important: Bulleted list, one per activity):
+   - Activity type & name
+   - Start time
+   - Duration
+   - Power: Avg / NP
+   - HR: Avg / Max
+   - TSS
+   - Cadence (avg)
+   - Decoupling %
+   - Zone distribution (summary)
+   - Energy (kJ)
+   - Carbs (g)
+   - Execution note
+   - Recovery impact (if notable)
+   Omit fields only if data unavailable.
 3. Training load context: Weekly totals (hours, TSS), TSB, relevant trends
 4. Interpretation (1–2 sentences): Compliance confirmation, status
 5. Next-action prompt only if relevant
