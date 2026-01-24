@@ -100,13 +100,12 @@ Test it by opening that URL in your browser — you should see your training dat
 
 ## Usage with AI
 
-Once set up, use this URL with any AI system:
+Once set up, configure your AI platform using the instructions in the main [README](../../README.md#3-configure-your-ai-platform).
 
-**Direct prompt:**
-> "Analyze my training data from https://raw.githubusercontent.com/[you]/[repo]/main/latest.json"
-
-**With Section 11 protocol:**
-> "You are my endurance coach. Follow this protocol: [Section 11]. My data is at: [JSON URL]"
+Your JSON URL:
+```
+https://raw.githubusercontent.com/[your-username]/[repo-name]/main/latest.json
+```
 
 ---
 
