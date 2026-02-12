@@ -21,7 +21,7 @@ Quality (Z4+): [XX]%
 HR: [XXX] avg / [XXX] max
 HR zones: [XX.X]% Zone 1, [XX.X]% Zone 2
 Cadence: [XX] avg
-Decoupling: [X.XX]
+Decoupling: [X.XX]%
 Variability Index: [X.XX] ([assessment])
 Calories: [XXXX] kcal
 Carbs used: [XXX] g
