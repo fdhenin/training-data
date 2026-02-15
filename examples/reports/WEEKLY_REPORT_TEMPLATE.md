@@ -42,6 +42,7 @@ Polarization:
   Z1+Z2: [XX.X]%
   Z3 (Grey Zone): [X.X]% (target <5%)
   Z4+ (Quality): [X.X]% (target ~20% of intensity sessions)
+  Classification: [Classification] (PI: [X.XX])
 
 Fitness:
   CTL: [XX.X] → [XX.X] (Δ [+/-X.X])
