@@ -71,6 +71,7 @@ latest.json
 │   ├── thresholds       → FTP, eFTP, LTHR, W', P-max, VO2max
 │   └── current_metrics  → Weight, RHR, HRV, sleep score
 ├── derived_metrics      → Section 11 calculated values (see below)
+│   ├── capability       → Durability trend + TID drift (7d vs 28d)
 ├── recent_activities    → Detailed activity data with zones
 ├── wellness_data        → Daily HRV, RHR, sleep, fatigue
 ├── planned_workouts     → Upcoming scheduled sessions
@@ -101,6 +102,9 @@ Pre-calculated values for Section 11 compliance — AI should use these, not cal
 | `consistency_index` | Plan adherence (completed/planned) |
 | `phase_detected` | Auto-detected: Base, Build, Peak, Recovery, Taper |
 | `benchmark_indoor` / `benchmark_outdoor` | 8-week FTP progression |
+| `seiler_tid_7d` / `seiler_tid_28d` | Seiler TID classification (Polarized/Pyramidal/Threshold/HIT/Base) |
+| `capability.durability` | Aggregate decoupling 7d/28d mean + trend (improving/stable/declining) |
+| `capability.tid_comparison` | TID drift detection (consistent/shifting/acute_depolarization) |
 
 ---
 
