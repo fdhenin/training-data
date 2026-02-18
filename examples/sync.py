@@ -53,7 +53,7 @@ class IntervalsSync:
     HISTORY_FILE = "history.json"
     UPSTREAM_REPO = "CrankAddict/section-11"
     CHANGELOG_FILE = "changelog.json"
-    VERSION = "3.4.0"
+    VERSION = "3.4.1"
 
     # Sport family mapping for per-sport monotony calculation
     # Multi-sport athletes get inflated total monotony when cross-training
@@ -78,6 +78,10 @@ class IntervalsSync:
         "Yoga": "other",
         "Workout": "other",
     }
+    
+    # Activity types that may contain location data in their name
+    OUTDOOR_TYPES = {"Ride", "MountainBikeRide", "GravelRide", "EBikeRide",
+                     "Run", "TrailRun", "NordicSki", "Walk", "Hike"}
     
     def __init__(self, athlete_id: str, intervals_api_key: str, github_token: str = None, 
                  github_repo: str = None, debug: bool = False):
@@ -2761,15 +2765,13 @@ class IntervalsSync:
             
             activity_name = act.get("name", "")
             if anonymize:
-                if "VirtualRide" in act.get("type", "") or "Indoor" in activity_name:
-                    activity_name = activity_name
-                else:
+                if act.get("type", "") in self.OUTDOOR_TYPES:
                     activity_name = "Training Session"
             
             activity = {
-                "id": f"activity_{i+1}" if anonymize else act["id"],
-                "date": act["start_date_local"],
-                "type": act["type"],
+                "id": f"activity_{i+1}" if anonymize else act.get("id", f"unknown_{i+1}"),
+                "date": act.get("start_date_local", "unknown"),
+                "type": act.get("type", "Unknown"),
                 "name": activity_name,
                 "duration_hours": round((act.get("moving_time") or 0) / 3600, 2),
                 "distance_km": round((act.get("distance") or 0) / 1000, 2),
@@ -2808,7 +2810,7 @@ class IntervalsSync:
         formatted = []
         for w in wellness:
             entry = {
-                "date": w["id"],
+                "date": w.get("id", "unknown"),
                 "weight_kg": w.get("weight"),
                 "resting_hr": w.get("restingHR"),
                 "hrv_rmssd": w.get("hrv"),
@@ -2830,8 +2832,8 @@ class IntervalsSync:
     def _format_events(self, events: List[Dict], anonymize: bool = False) -> List[Dict]:
         """Format planned workouts"""
         return [{
-            "id": f"event_{i+1}" if anonymize else evt["id"],
-            "date": evt["start_date_local"],
+            "id": f"event_{i+1}" if anonymize else evt.get("id", f"unknown_{i+1}"),
+            "date": evt.get("start_date_local", "unknown"),
             "name": "Planned Workout" if anonymize else evt.get("name", ""),
             "type": evt.get("category", ""),
             "description": evt.get("description", ""),
