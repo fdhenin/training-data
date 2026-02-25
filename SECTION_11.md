@@ -1,11 +1,18 @@
 # Section 11 — AI Coach Protocol
 
-**Protocol Version:** 11.6  
-**Last Updated:** 2026-02-23
+**Protocol Version:** 11.7  
+**Last Updated:** 2026-02-25
 **License:** [MIT](https://opensource.org/licenses/MIT)
 
 
 ### Changelog
+
+**v11.7 — Workout Reference Library Integration:**
+- Formalised Section 11 B §8 interface to the Workout Reference Library (v0.5.0)
+- AI systems must now select structured sessions exclusively from the curated template catalog
+- Added selection rules, sequencing enforcement, WU/CD mandates, and audit traceability via `session_template` field
+- Library provides 26 session templates, progression logic, deload variants, and decision matrix
+- Path: `examples/workout-library/WORKOUT_REFERENCE.md`
 
 **v11.6 — Race-Week Protocol:**
 - Added Race-Week Protocol: day-by-day decision tree for D-7 through D-0 before goal events
@@ -1394,6 +1401,24 @@ Human-review override requires athlete confirmation and metadata flag "override"
 
 ---
 
+### 8 — Workout Reference Interface
+
+When a plan requires a structured session (per Section 4), the AI must select from the **Workout Reference Library** (`examples/workout-library/WORKOUT_REFERENCE.md`).
+
+**Selection rules:**
+- Match target adaptation (Sweet Spot, VO₂max, Endurance, etc.) to the session slot identified by the plan.
+- Use Section 11 A readiness outputs (TSB, RI, HRV trend, Feel score) to choose the appropriate format variant and intensity level within that adaptation category.
+- Apply the Reference Library's session sequencing rules when placing sessions within the microcycle.
+- Warm-up and cool-down structures must follow the Reference Library's WU/CD protocols unless the athlete has documented personal preferences.
+
+**Constraints:**
+- The AI must not invent session structures absent from the Reference Library.
+- If no suitable session template exists for the required adaptation, the AI must flag this as a gap rather than improvise.
+- All workout selections must be traceable in the audit metadata (Section 6) via a `"session_template"` field referencing the template's YAML `id` (e.g., `"session_template": "SS-5"`).
+- Each template includes machine-readable YAML metadata (`id`, `domain`, `is_hard_session`, `work_minutes`, `est_total_minutes`) for deterministic selection and scheduling.
+
+---
+
 End of Section 11 B. AI Training Plan Protocol
 
 ---
@@ -1475,7 +1500,7 @@ This subsection defines the formal self-validation and audit metadata structure 
 | `stress_tolerance`             | number   | Current load absorption capacity                                                    |
 | `grey_zone_percentage`         | number   | Grey zone time as percentage — to minimize                                          |
 | `quality_intensity_percentage` | number   | Quality intensity time as percentage                                                |
-| `hard_days_this_week`          | number   | Count of days with Z4+ work (for high-volume athletes)                              |
+| `hard_days_this_week`          | number   | Count of days meeting zone ladder thresholds: Z3+ ≥ 30min, Z4+ ≥ 10min, Z5+ ≥ 5min, Z6+ ≥ 2min, or Z7 ≥ 1min |
 | `polarisation_index`           | number   | Easy time (Z1+Z2) as ratio of total                                                 |
 | `specificity_volume_ratio`     | number   | Event-specific volume ratio (0–1)                                                   |
 | `load_recovery_ratio`          | number   | 7-day load divided by RI (secondary metric)                                         |
