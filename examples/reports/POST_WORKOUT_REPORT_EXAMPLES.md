@@ -24,6 +24,7 @@ HR: 118 avg / 131 max
 HR zones: 100.0% Zone 1
 Cadence: 88 avg
 Decoupling: 2.14% (good)
+EF: 1.32
 Variability Index: 1.01 (excellent)
 Calories: 1396 kcal
 Carbs used: 268 g
@@ -40,6 +41,7 @@ TSS: 10 (planned 10)
 Weekly totals:
 Polarization: Z1+Z2 96.5%, Z3 0.8%, Z4+ 2.7%
 Durability: 2.14% 7d / 2.50% 28d (stable)
+EF: 1.45 7d / 1.42 28d (stable)
 TID 28d: Polarized (PI: 3.18) — drift: consistent
 TSB: -4.85
 CTL: 71.20
@@ -75,6 +77,7 @@ HR: 138 avg / 162 max
 HR zones: 32.1% Zone 1, 28.5% Zone 2, 14.2% Zone 3, 25.2% Zone 4
 Cadence: 85 avg
 Decoupling: 3.82% (acceptable)
+EF: 1.49
 Variability Index: 1.15
 Calories: 962 kcal
 Carbs used: 196 g
@@ -83,6 +86,7 @@ TSS: 95 (planned 90)
 Weekly totals:
 Polarization: Z1+Z2 84.2%, Z3 2.4%, Z4+ 13.4%
 Durability: 2.95% 7d / 2.50% 28d (stable)
+EF: 1.46 7d / 1.43 28d (stable)
 TID 28d: Polarized (PI: 3.10) — drift: consistent
 TSB: -11.40
 CTL: 72.80
@@ -119,6 +123,7 @@ HR: 115 avg / 128 max
 HR zones: 100.0% Zone 1
 Cadence: 86 avg
 Decoupling: 1.92% (good)
+EF: 1.29
 Variability Index: 1.01 (excellent)
 Calories: 800 kcal
 Carbs used: 153 g
@@ -130,6 +135,7 @@ Reason: Precautionary — knee discomfort from ride
 Weekly totals:
 Polarization: Z1+Z2 98.1%, Z3 0.1%, Z4+ 1.8%
 Durability: 1.92% 7d / 2.40% 28d (improving)
+EF: 1.41 7d / 1.42 28d (stable)
 TID 28d: Polarized (PI: 3.15) — drift: consistent
 TSB: +2.35
 CTL: 70.50
@@ -167,6 +173,7 @@ TSS: 6
 Weekly totals:
 Polarization: Z1+Z2 97%, Z3 0%, Z4+ 3%
 Durability: 2.30% 7d / 2.55% 28d (stable)
+EF: 1.44 7d / 1.43 28d (stable)
 TID 28d: Polarized (PI: 3.22) — drift: consistent
 TSB: +0.85
 CTL: 73.10
