@@ -47,6 +47,10 @@ Durability (steady-state sessions, VI ≤ 1.05, ≥ 90min):
   7d mean: 2.10% (3 sessions) | 28d mean: 2.65% (11 sessions)
   Trend: improving | High drift (>5%): 0 sessions
 
+Efficiency Factor (steady-state cycling, VI ≤ 1.05, ≥ 20min):
+  7d mean: 1.47 (4 sessions) | 28d mean: 1.44 (14 sessions)
+  Trend: stable
+
 Fitness:
   CTL: 78.2 → 80.6 (Δ +2.4)
   ATL: 82.1 → 85.3
@@ -114,6 +118,10 @@ Polarization:
 Durability (steady-state sessions, VI ≤ 1.05, ≥ 90min):
   7d mean: 4.80% (2 sessions) | 28d mean: 2.90% (9 sessions)
   Trend: declining | High drift (>5%): 1 session
+
+Efficiency Factor (steady-state cycling, VI ≤ 1.05, ≥ 20min):
+  7d mean: 1.38 (3 sessions) | 28d mean: 1.44 (11 sessions)
+  Trend: declining
 
 Fitness:
   CTL: 72.4 → 71.1 (Δ -1.3)
