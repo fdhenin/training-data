@@ -48,6 +48,10 @@ Durability (steady-state sessions, VI ≤ 1.05, ≥ 90min):
   7d mean: [X.XX]% ([X] sessions) | 28d mean: [X.XX]% ([X] sessions)
   Trend: [improving/stable/declining] | High drift (>5%): [X] sessions
 
+Efficiency Factor (steady-state cycling, VI ≤ 1.05, ≥ 20min):
+  7d mean: [X.XX] ([X] sessions) | 28d mean: [X.XX] ([X] sessions)
+  Trend: [improving/stable/declining]
+
 Fitness:
   CTL: [XX.X] → [XX.X] (Δ [+/-X.X])
   ATL: [XX.X] → [XX.X]
@@ -87,6 +91,7 @@ focus areas. Reference load targets and phase progression.]
 | **Quality Intensity %** | Z4+ time / total time | The work that drives adaptation |
 | **TID 7d vs 28d** | Seiler classification comparison | Consistent = stable, shifting = classification changed, acute_depolarization = PI dropped |
 | **Durability** | Aggregate decoupling from steady-state sessions | VI ≤ 1.05, ≥ 90min, power data. Trend direction matters more than absolute values |
+| **Efficiency Factor** | Aggregate EF from steady-state cycling | VI ≤ 1.05, ≥ 20min, power+HR. Rising EF = improving aerobic fitness. Compare like-for-like only |
 | **ACWR breakdown** | 7d acute / 28d chronic | Show components so athlete understands the ratio |
 | **Wellness arrows** | Week-over-week comparison | ↑ improving, ↓ declining, → stable |
 | **Section 11 Flags** | Protocol flag triggers | Surface mid-week flags here, don't wait for block report |
@@ -102,6 +107,7 @@ focus areas. Reference load targets and phase progression.]
 | Decoupling | <5% (good) | 5–10% (moderate) | >10% (drift) |
 | Durability (7d mean) | <3% (good) | 3–5% (moderate) | >5% (declining) |
 | Durability trend | improving/stable | declining | declining >2% vs 28d |
+| EF trend | improving/stable | declining | declining >0.05 vs 28d |
 | TID drift | consistent | shifting | acute_depolarization |
 | HRV trend | ↑ or → (stable) | ↓ <5% (minor) | ↓ >10% (flag) |
 
