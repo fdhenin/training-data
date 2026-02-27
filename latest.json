@@ -12,7 +12,7 @@
   },
   "metadata": {
     "athlete_id": "REDACTED",
-    "last_updated": "2026-02-27T04:55:34.581486",
+    "last_updated": "2026-02-27T05:50:30.410878",
     "data_range_days": 7,
     "extended_range_days": 28,
     "version": "3.6.0"
@@ -223,7 +223,7 @@
     "p_max": 634,
     "power_model_source": "wellness.sportInfo",
     "vo2max": null,
-    "calculation_timestamp": "2026-02-27T04:55:34.580650",
+    "calculation_timestamp": "2026-02-27T05:50:30.409931",
     "data_quality": {
       "hrv_data_points": 6,
       "rhr_data_points": 7,
@@ -599,6 +599,15 @@
     },
     {
       "id": "event_6",
+      "date": "2026-03-07T09:00:00",
+      "name": "Planned Workout",
+      "type": "WORKOUT",
+      "description": "Warmup\n- 15m ramp 40-75%\n\nMain Set\n22x\n- Tempo 10m ramp 76-87%\n- Surge 30s 120%\n\nRecovery\n- Hard Finish 5m ramp 95-105%\n\nCooldown\n- 10m ramp 56-40%\n\n[Weekly Plan - Peak]",
+      "planned_tss": 300,
+      "duration_hours": 0.0
+    },
+    {
+      "id": "event_7",
       "date": "2026-04-05T00:00:00",
       "name": "Planned Workout",
       "type": "RACE_A",
