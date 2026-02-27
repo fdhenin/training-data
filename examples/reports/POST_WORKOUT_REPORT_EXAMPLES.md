@@ -20,12 +20,13 @@ Power: 155 W avg / 156 W NP
 Power zones: 12% Zone 1, 88% Zone 2
 Grey Zone (Z3): 0%
 Quality (Z4+): 0%
+Session profile: Endurance
 HR: 118 avg / 131 max
 HR zones: 100% Zone 1
 Cadence: 88 avg
 Decoupling: 2.14% (good)
 EF: 1.32
-Variability Index: 1.01 (excellent)
+Variability Index: 1.01 (good)
 Calories: 1396 kcal
 Carbs used: 268 g
 TSS: 82 (planned 78)
@@ -48,6 +49,7 @@ CTL: 71.20
 ATL: 76.05
 Ramp rate: 0.52
 ACWR: 1.07 (optimal)
+Recovery Index: 0.92
 Hours: 12.40
 TSS: 410
 
@@ -73,10 +75,11 @@ Power: 178 W avg / 205 W NP
 Power zones: 28% Zone 1, 31% Zone 2
 Grey Zone (Z3): 3%
 Quality (Z4+): 37%
+Session profile: Threshold
 HR: 138 avg / 162 max
 HR zones: 32% Zone 1, 29% Zone 2, 14% Zone 3, 25% Zone 4
 Cadence: 85 avg
-Decoupling: 3.82% (acceptable)
+Decoupling: 3.82% (good)
 EF: 1.49
 Variability Index: 1.15
 Calories: 962 kcal
@@ -93,6 +96,7 @@ CTL: 72.80
 ATL: 84.20
 Ramp rate: 0.78
 ACWR: 1.16 (optimal)
+Recovery Index: 0.88
 Hours: 14.75
 TSS: 485
 
@@ -119,12 +123,13 @@ Power: 148 W avg / 149 W NP
 Power zones: 19% Zone 1, 81% Zone 2
 Grey Zone (Z3): 0%
 Quality (Z4+): 0%
+Session profile: Endurance
 HR: 115 avg / 128 max
 HR zones: 100% Zone 1
 Cadence: 86 avg
 Decoupling: 1.92% (good)
 EF: 1.29
-Variability Index: 1.01 (excellent)
+Variability Index: 1.01 (good)
 Calories: 800 kcal
 Carbs used: 153 g
 TSS: 47 (planned 78)
@@ -142,6 +147,7 @@ CTL: 70.50
 ATL: 68.15
 Ramp rate: -0.30
 ACWR: 0.97 (optimal)
+Recovery Index: 0.95
 Hours: 4.25
 TSS: 132
 
@@ -180,6 +186,7 @@ CTL: 73.10
 ATL: 72.25
 Ramp rate: -1.20
 ACWR: 0.82 (optimal)
+Recovery Index: 0.91
 Hours: 15.50
 TSS: 498
 
