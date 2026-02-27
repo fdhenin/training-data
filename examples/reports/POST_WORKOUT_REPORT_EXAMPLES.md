@@ -1,7 +1,7 @@
 # Post-Workout Report Examples
 
 > Anonymized examples showing standard post-workout report format.  
-> See `POST_WORKOUT_TEMPLATE.md` for field reference.
+> See `POST_WORKOUT_REPORT_TEMPLATE.md` for field reference.
 
 ---
 
@@ -17,11 +17,11 @@ Start time: 09:30:15
 Duration: 2.50 hours (planned 2.5h)
 Distance: 76.4 km
 Power: 155 W avg / 156 W NP
-Power zones: 12.3% Zone 1, 87.5% Zone 2
-Grey Zone (Z3): 0.2%
+Power zones: 12% Zone 1, 88% Zone 2
+Grey Zone (Z3): 0%
 Quality (Z4+): 0%
 HR: 118 avg / 131 max
-HR zones: 100.0% Zone 1
+HR zones: 100% Zone 1
 Cadence: 88 avg
 Decoupling: 2.14% (good)
 EF: 1.32
@@ -34,12 +34,12 @@ Completed workout: VirtualRowing Recovery Session
 Start time: 12:45:00
 Duration: 0.25 hours (15 min)
 HR: 125 avg / 141 max
-HR zones: 68.2% Zone 1, 31.8% Zone 2
+HR zones: 68% Zone 1, 32% Zone 2
 Calories: 165 kcal
 TSS: 10 (planned 10)
 
 Weekly totals:
-Polarization: Z1+Z2 96.5%, Z3 0.8%, Z4+ 2.7%
+Polarization: Z1+Z2 97%, Z3 1%, Z4+ 3%
 Durability: 2.14% 7d mean(3) / 2.50% 28d mean(11) (stable)
 EF: 1.45 7d mean(4) / 1.42 28d mean(14) (stable)
 TID 28d: Polarized (PI: 3.18) — drift: consistent
@@ -70,11 +70,11 @@ Start time: 08:15:42
 Duration: 1.50 hours (planned 1.5h)
 Distance: 48.2 km
 Power: 178 W avg / 205 W NP
-Power zones: 28.4% Zone 1, 31.2% Zone 2
-Grey Zone (Z3): 3.1%
-Quality (Z4+): 37.3%
+Power zones: 28% Zone 1, 31% Zone 2
+Grey Zone (Z3): 3%
+Quality (Z4+): 37%
 HR: 138 avg / 162 max
-HR zones: 32.1% Zone 1, 28.5% Zone 2, 14.2% Zone 3, 25.2% Zone 4
+HR zones: 32% Zone 1, 29% Zone 2, 14% Zone 3, 25% Zone 4
 Cadence: 85 avg
 Decoupling: 3.82% (acceptable)
 EF: 1.49
@@ -84,7 +84,7 @@ Carbs used: 196 g
 TSS: 95 (planned 90)
 
 Weekly totals:
-Polarization: Z1+Z2 84.2%, Z3 2.4%, Z4+ 13.4%
+Polarization: Z1+Z2 84%, Z3 2%, Z4+ 13%
 Durability: 2.95% 7d mean(3) / 2.50% 28d mean(11) (stable)
 EF: 1.46 7d mean(4) / 1.43 28d mean(14) (stable)
 TID 28d: Polarized (PI: 3.10) — drift: consistent
@@ -97,7 +97,7 @@ Hours: 14.75
 TSS: 485
 
 Interpretation:
-Interval targets met — all three efforts within ±3W of prescribed power. Z3 at 3.1% is
+Interval targets met — all three efforts within ±3W of prescribed power. Z3 at 3% is
 from warm-up/cool-down transitions, not drift. Decoupling 3.82% across interval session is
 acceptable. TSB at -11.40 reflects build week loading. Recovery spin tomorrow. 🔄
 ```
@@ -116,11 +116,11 @@ Start time: 10:02:18
 Duration: 1.50 hours (planned 2.5h)
 Distance: 45.1 km
 Power: 148 W avg / 149 W NP
-Power zones: 18.6% Zone 1, 81.2% Zone 2
-Grey Zone (Z3): 0.2%
+Power zones: 19% Zone 1, 81% Zone 2
+Grey Zone (Z3): 0%
 Quality (Z4+): 0%
 HR: 115 avg / 128 max
-HR zones: 100.0% Zone 1
+HR zones: 100% Zone 1
 Cadence: 86 avg
 Decoupling: 1.92% (good)
 EF: 1.29
@@ -133,7 +133,7 @@ Skipped workout: VirtualSki Training Session
 Reason: Precautionary — knee discomfort from ride
 
 Weekly totals:
-Polarization: Z1+Z2 98.1%, Z3 0.1%, Z4+ 1.8%
+Polarization: Z1+Z2 98%, Z3 0%, Z4+ 2%
 Durability: 1.92% 7d mean(2) / 2.40% 28d mean(10) (improving)
 EF: 1.41 7d mean(3) / 1.42 28d mean(12) (stable)
 TID 28d: Polarized (PI: 3.15) — drift: consistent
