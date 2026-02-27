@@ -33,8 +33,8 @@ TSS: [XXX] (planned [XXX])
 
 Weekly totals:
 Polarization: Z1+Z2 [XX]%, Z3 [X]%, Z4+ [X]% — [Classification] (PI: [X.XX])
-Durability: [X.XX]% 7d / [X.XX]% 28d ([trend])
-EF: [X.XX] 7d / [X.XX] 28d ([trend])
+Durability: [X.XX]% 7d mean([X]) / [X.XX]% 28d mean([X]) ([trend])
+EF: [X.XX] 7d mean([X]) / [X.XX] 28d mean([X]) ([trend])
 TID 28d: [Classification] (PI: [X.XX]) — drift: [consistent/shifting/acute_depolarization]
 TSB: [X.XX]
 CTL: [XX.XX]
@@ -45,7 +45,7 @@ Recovery Index: [X.XX]
 Hours: [XX.XX]
 TSS: [XXX]
 
-Overall:
+Interpretation:
 [2-4 sentences: compliance check, key quality metrics, load context, recovery note if applicable.]
 ```
 
