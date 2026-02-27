@@ -42,7 +42,8 @@ Polarization:
   Z1+Z2: [XX.X]%
   Z3 (Grey Zone): [X.X]% (target <5%)
   Z4+ (Quality): [X.X]% (target ~20% of intensity sessions)
-  Classification 7d: [Classification] (PI: [X.XX]) | 28d: [Classification] (PI: [X.XX]) — [drift status]
+  TID 7d: [Classification] (PI: [X.XX])
+  TID 28d: [Classification] (PI: [X.XX]) — drift: [consistent/shifting/acute_depolarization]
 
 Durability (steady-state sessions, VI ≤ 1.05, ≥ 90min):
   7d mean([X]): [X.XX]% | 28d mean([X]): [X.XX]%
