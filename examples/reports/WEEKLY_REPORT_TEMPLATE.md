@@ -45,11 +45,11 @@ Polarization:
   Classification 7d: [Classification] (PI: [X.XX]) | 28d: [Classification] (PI: [X.XX]) — [drift status]
 
 Durability (steady-state sessions, VI ≤ 1.05, ≥ 90min):
-  7d mean: [X.XX]% ([X] sessions) | 28d mean: [X.XX]% ([X] sessions)
+  7d mean([X]): [X.XX]% | 28d mean([X]): [X.XX]%
   Trend: [improving/stable/declining] | High drift (>5%): [X] sessions
 
 Efficiency Factor (steady-state cycling, VI ≤ 1.05, ≥ 20min):
-  7d mean: [X.XX] ([X] sessions) | 28d mean: [X.XX] ([X] sessions)
+  7d mean([X]): [X.XX] | 28d mean([X]): [X.XX]
   Trend: [improving/stable/declining]
 
 Fitness:
@@ -70,7 +70,7 @@ Wellness Trends:
 
 Section 11 Flags: [list any triggered flags, or "None"]
 
-Overall:
+Interpretation:
 [2-4 sentences — week assessment, compliance, what went well, any flags,
 recovery status. Reference Section 11 flag triggers if any were hit.]
 
