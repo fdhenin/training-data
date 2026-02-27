@@ -40,17 +40,17 @@ Key Performance Markers:
   Best 5-min power: 318W (week 3)
 
 Polarization (block average):
-  Z1+Z2: 84.6%
-  Z3 (Grey Zone): 3.4% (target <5%)
-  Z4+ (Quality): 12.0% (target ~20% of intensity sessions)
+  Z1+Z2: 85%
+  Z3 (Grey Zone): 3% (target <5%)
+  Z4+ (Quality): 12% (target ~20% of intensity sessions)
   TID 28d (block-scale): Polarized (PI: 3.05)
   Hard days/week avg: 2.0
 
 Polarization by Week:
-  Wk 1: Z1+Z2 86%, Z3 2.8%, Z4+ 11.2%
-  Wk 2: Z1+Z2 83%, Z3 3.1%, Z4+ 13.5%
-  Wk 3: Z1+Z2 82%, Z3 4.2%, Z4+ 13.8%
-  Wk 4: Z1+Z2 92%, Z3 2.1%, Z4+ 5.9%
+  Wk 1: Z1+Z2 86%, Z3 3%, Z4+ 11%
+  Wk 2: Z1+Z2 83%, Z3 3%, Z4+ 14%
+  Wk 3: Z1+Z2 82%, Z3 4%, Z4+ 14%
+  Wk 4: Z1+Z2 92%, Z3 2%, Z4+ 6%
 
 Durability by Week:
   Wk 1: mean(3) dec 3.2%, 0 high-drift
@@ -71,6 +71,7 @@ Wellness (block avg vs previous block):
   RHR: 49 bpm (prev block: 50 bpm) → stable — no concern
   Sleep: 7.1h (prev block: 6.8h) ↑ improving
   Avg RI: 0.91 (prev block: 0.87)
+  Avg Monotony: 1.82 (normal)
 
 Section 11 Flags During Block:
   Wk 3 Thu: HRV 12% below baseline → modified VO2max session (removed
@@ -97,7 +98,7 @@ ride decoupling dropping from 4.8% to 2.1% — the aerobic engine is
 building nicely, confirmed by the aggregate durability trend improving
 steadily across all four weeks (3.2% → 1.8%). Efficiency Factor tracked
 upward in parallel (1.42 → 1.50), reinforcing the aerobic fitness gains. Grey zone stayed well
-controlled throughout, with only a minor creep in week 3 (4.2%) during
+controlled throughout, with only a minor creep in week 3 (4%) during
 peak load. TID held Polarized at block scale (PI 3.05). One flag
 triggered in week 3 but was handled correctly with a session modification.
 Deload week brought TSB back to +28, athlete enters next block fresh.
@@ -156,18 +157,18 @@ Key Performance Markers:
   Best 5-min power: 308W (week 2)
 
 Polarization (block average):
-  Z1+Z2: 89.1%
-  Z3 (Grey Zone): 5.2% (target <5%) ⚠️
-  Z4+ (Quality): 5.7%
+  Z1+Z2: 89%
+  Z3 (Grey Zone): 5% (target <5%) ⚠️
+  Z4+ (Quality): 6%
   TID 28d (block-scale): Pyramidal (PI: 1.90) ⚠️
   Hard days/week avg: 1.4
 
 Polarization by Week:
-  Wk 1: Z1+Z2 84%, Z3 3.5%, Z4+ 12.5% — Polarized (PI: 2.95)
-  Wk 2: Z1+Z2 82%, Z3 4.1%, Z4+ 13.9% — Polarized (PI: 2.88)
-  Wk 3: Z1+Z2 91%, Z3 6.8%, Z4+ 2.2%
-  Wk 4: Z1+Z2 96%, Z3 3.1%, Z4+ 0.9%
-  Wk 5: Z1+Z2 88%, Z3 5.8%, Z4+ 6.2%
+  Wk 1: Z1+Z2 84%, Z3 4%, Z4+ 13% — Polarized (PI: 2.95)
+  Wk 2: Z1+Z2 82%, Z3 4%, Z4+ 14% — Polarized (PI: 2.88)
+  Wk 3: Z1+Z2 91%, Z3 7%, Z4+ 2%
+  Wk 4: Z1+Z2 96%, Z3 3%, Z4+ 1%
+  Wk 5: Z1+Z2 88%, Z3 6%, Z4+ 6%
 
 Durability by Week:
   Wk 1: mean(3) dec 2.5%, 0 high-drift
@@ -190,6 +191,7 @@ Wellness (block avg vs previous block):
   RHR: 52 bpm (prev block: 49 bpm) ↑ elevated — monitor
   Sleep: 6.4h (prev block: 7.1h) ↓ declining — monitor
   Avg RI: 0.79 (prev block: 0.91)
+  Avg Monotony: 2.10 (elevated during illness recovery)
 
 Section 11 Flags During Block:
   Wk 3 Thu: HRV >15% below baseline → rest day inserted
