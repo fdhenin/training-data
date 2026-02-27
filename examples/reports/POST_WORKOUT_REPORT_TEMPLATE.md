@@ -63,7 +63,7 @@ Round zone percentages to the nearest **whole number** (1%). The JSON data sourc
 | Power / Power zones | Activities with power data | Omit if no power meter |
 | Grey Zone / Quality | Always for cycling | Highlights polarization compliance |
 | Cadence | Cycling, running | Omit for SkiErg, strength |
-| Decoupling | Sessions ≥ 1 hour | Key aerobic efficiency marker |
+| Decoupling | Sessions ≥ 1 hour | Key aerobic efficiency marker. Per-session scale (<5% good) per Friel/Coggan. Aggregate durability uses tighter scale (<3% good) |
 | EF | Activities with power + HR | Aerobic efficiency (NP ÷ HR); track trend over like-for-like sessions. Absolute value is individual-dependent |
 | Variability Index | Cycling with power | 1.00–1.05 = steady, >1.05 = variable. Assessment labels apply to steady-state only; omit label for interval sessions where high VI is expected |
 | Carbs used | Sessions with power data | Omit if unavailable |
@@ -76,7 +76,7 @@ Round zone percentages to the nearest **whole number** (1%). The JSON data sourc
 
 | Metric | Good | Watch | Flag |
 |--------|------|-------|------|
-| Decoupling | < 3% | 3–5% | > 5% |
+| Decoupling (per-session) | < 5% | 5–10% | > 10% |
 | Variability Index | ≤ 1.05 | 1.05–1.10 | > 1.10 |
 | ACWR | 0.8–1.3 | 1.3–1.5 | > 1.5 or < 0.8 |
 | Grey Zone (Z3) | < 5% (base) | 5–10% | > 10% (base phase) |
