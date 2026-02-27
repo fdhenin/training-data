@@ -22,6 +22,7 @@ TSB: +1.85
 CTL: 72.40
 ATL: 70.55
 ACWR: 0.84 (optimal)
+Recovery Index: 0.93 (good)
 Ramp Rate: -1.30
 Polarization: Z1+Z2 97%, Z3 1%, Z4+ 2% — Polarized (PI: 3.20)
 Durability: 2.14% 7d mean(4) (stable)
@@ -62,6 +63,7 @@ TSB: -3.20
 CTL: 73.50
 ATL: 76.70
 ACWR: 1.04 (optimal)
+Recovery Index: 0.88 (good)
 Ramp Rate: 0.45
 Polarization: Z1+Z2 96%, Z3 1%, Z4+ 3% — Polarized (PI: 3.15)
 Durability: 1.85% 7d mean(3) (stable)
@@ -101,6 +103,7 @@ TSB: +0.50
 CTL: 74.20
 ATL: 73.70
 ACWR: 0.99 (optimal)
+Recovery Index: 0.91 (good)
 Ramp Rate: 0.30
 Polarization: Z1+Z2 95%, Z3 1%, Z4+ 4% — Polarized (PI: 3.10)
 Durability: 2.40% 7d mean(3) (improving)
@@ -139,6 +142,7 @@ TSB: -12.80
 CTL: 74.90
 ATL: 87.70
 ACWR: 1.17 (optimal)
+Recovery Index: 0.68 (moderate)
 Ramp Rate: 1.10
 Monotony: 2.5 — elevated, add variety this week
 Load/Recovery: 7.1 (tolerance 6.4) — over threshold; back off today.
