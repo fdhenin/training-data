@@ -44,15 +44,14 @@ Polarization (block average):
   Z1+Z2: [XX.X]%
   Z3 (Grey Zone): [X.X]% (target <5%)
   Z4+ (Quality): [X.X]% (target ~20% of intensity sessions)
-  Classification: [Classification] (PI: [X.XX])
   TID 28d (block-scale): [Classification] (PI: [X.XX])
   Hard days/week avg: [X.X]
 
 Polarization by Week:
-  Wk 1: Z1+Z2 [XX]%, Z3 [X]%, Z4+ [X]% — [Classification] (PI: [X.XX])
-  Wk 2: Z1+Z2 [XX]%, Z3 [X]%, Z4+ [X]% — [Classification] (PI: [X.XX])
-  Wk 3: Z1+Z2 [XX]%, Z3 [X]%, Z4+ [X]% — [Classification] (PI: [X.XX])
-  Wk 4: Z1+Z2 [XX]%, Z3 [X]%, Z4+ [X]% — [Classification] (PI: [X.XX])
+  Wk 1: Z1+Z2 [XX]%, Z3 [X]%, Z4+ [X]%
+  Wk 2: Z1+Z2 [XX]%, Z3 [X]%, Z4+ [X]%
+  Wk 3: Z1+Z2 [XX]%, Z3 [X]%, Z4+ [X]%
+  Wk 4: Z1+Z2 [XX]%, Z3 [X]%, Z4+ [X]%
 
 Durability by Week:
   Wk 1: mean([X]) dec [X.X]%, [X] high-drift
@@ -109,7 +108,7 @@ Next Block Plan:
 | **eFTP** | Intervals.icu estimated FTP | Track alongside formal FTP — catches drift |
 | **Performance Markers** | Best efforts + target comparison | Shows whether stimulus is producing adaptation |
 | **Decoupling trend** | Long ride aerobic efficiency | Improving decoupling = aerobic base building |
-| **Polarization by Week** | Weekly zone distributions | Catches grey zone creep within a block |
+| **Polarization by Week** | Weekly zone distributions | Catches grey zone creep within a block. Append classification + PI only when week diverges from block-scale TID |
 | **Durability by Week** | Weekly mean decoupling from steady-state sessions | VI ≤ 1.05, ≥ 90min. Shows aerobic efficiency trajectory across block |
 | **Efficiency Factor by Week** | Weekly mean EF from steady-state cycling | VI ≤ 1.05, ≥ 20min. Shows aerobic fitness trajectory across block |
 | **TID 28d** | Block-scale Seiler classification | 28d window roughly matches block length; confirms or challenges weekly TID |
