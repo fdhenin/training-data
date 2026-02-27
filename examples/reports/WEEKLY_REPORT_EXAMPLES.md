@@ -41,7 +41,8 @@ Polarization:
   Z1+Z2: 83.4%
   Z3 (Grey Zone): 3.1% (target <5%)
   Z4+ (Quality): 13.5% (target ~20% of intensity sessions)
-  Classification 7d: Polarized (PI: 2.92) | 28d: Polarized (PI: 3.05) — consistent
+  TID 7d: Polarized (PI: 2.92)
+  TID 28d: Polarized (PI: 3.05) — drift: consistent
 
 Durability (steady-state sessions, VI ≤ 1.05, ≥ 90min):
   7d mean(3): 2.10% | 28d mean(11): 2.65%
@@ -113,7 +114,8 @@ Polarization:
   Z1+Z2: 91.2%
   Z3 (Grey Zone): 6.8% (target <5%) ⚠️
   Z4+ (Quality): 2.0%
-  Classification 7d: Pyramidal (PI: 1.85) | 28d: Polarized (PI: 2.90) — acute_depolarization ⚠️
+  TID 7d: Pyramidal (PI: 1.85)
+  TID 28d: Polarized (PI: 2.90) — drift: acute_depolarization ⚠️
 
 Durability (steady-state sessions, VI ≤ 1.05, ≥ 90min):
   7d mean(2): 4.80% | 28d mean(9): 2.90%
