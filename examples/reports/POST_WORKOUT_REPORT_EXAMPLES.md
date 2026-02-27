@@ -40,8 +40,8 @@ TSS: 10 (planned 10)
 
 Weekly totals:
 Polarization: Z1+Z2 96.5%, Z3 0.8%, Z4+ 2.7%
-Durability: 2.14% 7d / 2.50% 28d (stable)
-EF: 1.45 7d / 1.42 28d (stable)
+Durability: 2.14% 7d mean(3) / 2.50% 28d mean(11) (stable)
+EF: 1.45 7d mean(4) / 1.42 28d mean(14) (stable)
 TID 28d: Polarized (PI: 3.18) — drift: consistent
 TSB: -4.85
 CTL: 71.20
@@ -51,7 +51,7 @@ ACWR: 1.07 (optimal)
 Hours: 12.40
 TSS: 410
 
-Overall:
+Interpretation:
 Both sessions compliant with plan. Bike decoupling 2.14% over 2.5 hours shows solid aerobic control.
 Rowing stayed in Z1-Z2 as prescribed. Load tracking well — TSB manageable heading into Thursday.
 ```
@@ -85,8 +85,8 @@ TSS: 95 (planned 90)
 
 Weekly totals:
 Polarization: Z1+Z2 84.2%, Z3 2.4%, Z4+ 13.4%
-Durability: 2.95% 7d / 2.50% 28d (stable)
-EF: 1.46 7d / 1.43 28d (stable)
+Durability: 2.95% 7d mean(3) / 2.50% 28d mean(11) (stable)
+EF: 1.46 7d mean(4) / 1.43 28d mean(14) (stable)
 TID 28d: Polarized (PI: 3.10) — drift: consistent
 TSB: -11.40
 CTL: 72.80
@@ -96,7 +96,7 @@ ACWR: 1.16 (optimal)
 Hours: 14.75
 TSS: 485
 
-Overall:
+Interpretation:
 Interval targets met — all three efforts within ±3W of prescribed power. Z3 at 3.1% is
 from warm-up/cool-down transitions, not drift. Decoupling 3.82% across interval session is
 acceptable. TSB at -11.40 reflects build week loading. Recovery spin tomorrow. 🔄
@@ -134,8 +134,8 @@ Reason: Precautionary — knee discomfort from ride
 
 Weekly totals:
 Polarization: Z1+Z2 98.1%, Z3 0.1%, Z4+ 1.8%
-Durability: 1.92% 7d / 2.40% 28d (improving)
-EF: 1.41 7d / 1.42 28d (stable)
+Durability: 1.92% 7d mean(2) / 2.40% 28d mean(10) (improving)
+EF: 1.41 7d mean(3) / 1.42 28d mean(12) (stable)
 TID 28d: Polarized (PI: 3.15) — drift: consistent
 TSB: +2.35
 CTL: 70.50
@@ -145,7 +145,7 @@ ACWR: 0.97 (optimal)
 Hours: 4.25
 TSS: 132
 
-Overall:
+Interpretation:
 Session cut short — right call given the knee discomfort. Aerobic quality during the 1.5h
 was excellent (decoupling 1.92%, VI 1.00). TSS 47 vs planned 78 means a lighter day than
 intended. Monitor knee before tomorrow's session. If persistent, consider swapping to
@@ -172,8 +172,8 @@ TSS: 6
 
 Weekly totals:
 Polarization: Z1+Z2 97%, Z3 0%, Z4+ 3%
-Durability: 2.30% 7d / 2.55% 28d (stable)
-EF: 1.44 7d / 1.43 28d (stable)
+Durability: 2.30% 7d mean(3) / 2.55% 28d mean(11) (stable)
+EF: 1.44 7d mean(4) / 1.43 28d mean(13) (stable)
 TID 28d: Polarized (PI: 3.22) — drift: consistent
 TSB: +0.85
 CTL: 73.10
@@ -183,7 +183,7 @@ ACWR: 0.82 (optimal)
 Hours: 15.50
 TSS: 498
 
-Overall:
+Interpretation:
 Easy recovery walk, entirely in Z1 as expected on a rest day. TSB positive at +0.85 —
 recovering well heading into tomorrow's interval session. Braved the rain at 4°C too. 🌧️
 ```
