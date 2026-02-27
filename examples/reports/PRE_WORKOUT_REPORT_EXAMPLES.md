@@ -1,7 +1,7 @@
 # Pre-Workout Report Examples
 
 > Anonymized examples showing standard pre-workout report format.  
-> See `PRE_WORKOUT_TEMPLATE.md` for field reference.
+> See `PRE_WORKOUT_REPORT_TEMPLATE.md` for field reference.
 
 ---
 
