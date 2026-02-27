@@ -142,5 +142,5 @@ Next Block Plan:
 - **Efficiency Factor by Week** catches aerobic fitness trends that complement durability; rising EF at same intensity = improving fitness
 - **Phase Progression Check** makes the protocol's decision logic transparent to the athlete
 - **Next Block Plan** should flow directly from the Phase Progression Check — if criteria aren't met, explain what the next block does differently
-- Keep "Assessment" to coaching interpretation — the data is already presented above
+- Keep "Interpretation" to coaching interpretation — the data is already presented above
 - Block reports are the most detailed report type (~45-60 lines) — this is where the deep analysis lives
