@@ -1,7 +1,7 @@
 # Pre-Workout Report Examples
 
 > Anonymized examples showing standard pre-workout report format.  
-> See `PRE_WORKOUT_TEMPLATE.md` for field reference.
+> See `PRE_WORKOUT_REPORT_TEMPLATE.md` for field reference.
 
 ---
 
@@ -22,10 +22,11 @@ TSB: +1.85
 CTL: 72.40
 ATL: 70.55
 ACWR: 0.84 (optimal)
+Recovery Index: 0.93 (good)
 Ramp Rate: -1.30
-Polarization: Z1+Z2 97%, Z3 1%, Z4+ 2%
-Durability: 2.14% 7d mean (stable) — 4 qualifying sessions
-EF: 1.44 7d mean (stable) — 4 qualifying sessions
+Polarization: Z1+Z2 97%, Z3 1%, Z4+ 2% — Polarized (PI: 3.20)
+Durability: 2.14% 7d mean(4) (stable)
+EF: 1.44 7d mean(4) (stable)
 Total hours, last 7 days: 14.20 hours
 Total activities, last 7 days: 11
 Total TSS, last 7 days: 468
@@ -62,10 +63,11 @@ TSB: -3.20
 CTL: 73.50
 ATL: 76.70
 ACWR: 1.04 (optimal)
+Recovery Index: 0.88 (good)
 Ramp Rate: 0.45
-Polarization: Z1+Z2 96%, Z3 1%, Z4+ 3%
-Durability: 1.85% 7d mean (stable) — 3 qualifying sessions
-EF: 1.45 7d mean (stable) — 3 qualifying sessions
+Polarization: Z1+Z2 96%, Z3 1%, Z4+ 3% — Polarized (PI: 3.15)
+Durability: 1.85% 7d mean(3) (stable)
+EF: 1.45 7d mean(3) (stable)
 Total hours, last 7 days: 15.30 hours
 Total activities, last 7 days: 12
 Total TSS, last 7 days: 502
@@ -101,10 +103,11 @@ TSB: +0.50
 CTL: 74.20
 ATL: 73.70
 ACWR: 0.99 (optimal)
+Recovery Index: 0.91 (good)
 Ramp Rate: 0.30
-Polarization: Z1+Z2 95%, Z3 1%, Z4+ 4%
-Durability: 2.40% 7d mean (improving) — 3 qualifying sessions
-EF: 1.47 7d mean (improving) — 3 qualifying sessions
+Polarization: Z1+Z2 95%, Z3 1%, Z4+ 4% — Polarized (PI: 3.10)
+Durability: 2.40% 7d mean(3) (improving)
+EF: 1.47 7d mean(3) (improving)
 Total hours, last 7 days: 16.10 hours
 Total activities, last 7 days: 13
 Total TSS, last 7 days: 530
@@ -139,12 +142,14 @@ TSB: -12.80
 CTL: 74.90
 ATL: 87.70
 ACWR: 1.17 (optimal)
+Recovery Index: 0.68 (moderate)
 Ramp Rate: 1.10
 Monotony: 2.5 — elevated, add variety this week
 Load/Recovery: 7.1 (tolerance 6.4) — over threshold; back off today.
-Polarization: Z1+Z2 93%, Z3 2%, Z4+ 5% — Polarized (PI: 2.85) | TID drift: shifting (28d Pyramidal)
-Durability: 5.80% 7d mean (declining) — 3 qualifying sessions ⚠️
-EF: 1.38 7d mean (declining) — 3 qualifying sessions ⚠️
+Polarization: Z1+Z2 93%, Z3 2%, Z4+ 5% — Polarized (PI: 2.85)
+TID 28d: Pyramidal (PI: 1.90) — drift: shifting ⚠️
+Durability: 5.80% 7d mean(3) (declining) ⚠️
+EF: 1.38 7d mean(3) (declining) ⚠️
 Total hours, last 7 days: 18.40 hours
 Total activities, last 7 days: 14
 Total TSS, last 7 days: 612

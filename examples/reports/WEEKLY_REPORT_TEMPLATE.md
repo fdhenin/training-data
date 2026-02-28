@@ -39,17 +39,18 @@ Quality Session Detail:
     HR: [XXX] avg / [XXX] max
 
 Polarization:
-  Z1+Z2: [XX.X]%
-  Z3 (Grey Zone): [X.X]% (target <5%)
-  Z4+ (Quality): [X.X]% (target ~20% of intensity sessions)
-  Classification 7d: [Classification] (PI: [X.XX]) | 28d: [Classification] (PI: [X.XX]) — [drift status]
+  Z1+Z2: [XX]%
+  Z3 (Grey Zone): [X]% (target <5%)
+  Z4+ (Quality): [X]% (target ~20% of intensity sessions)
+  TID 7d: [Classification] (PI: [X.XX])
+  TID 28d: [Classification] (PI: [X.XX]) — drift: [consistent/shifting/acute_depolarization]
 
 Durability (steady-state sessions, VI ≤ 1.05, ≥ 90min):
-  7d mean: [X.XX]% ([X] sessions) | 28d mean: [X.XX]% ([X] sessions)
+  7d mean([X]): [X.XX]% | 28d mean([X]): [X.XX]%
   Trend: [improving/stable/declining] | High drift (>5%): [X] sessions
 
 Efficiency Factor (steady-state cycling, VI ≤ 1.05, ≥ 20min):
-  7d mean: [X.XX] ([X] sessions) | 28d mean: [X.XX] ([X] sessions)
+  7d mean([X]): [X.XX] | 28d mean([X]): [X.XX]
   Trend: [improving/stable/declining]
 
 Fitness:
@@ -70,7 +71,7 @@ Wellness Trends:
 
 Section 11 Flags: [list any triggered flags, or "None"]
 
-Overall:
+Interpretation:
 [2-4 sentences — week assessment, compliance, what went well, any flags,
 recovery status. Reference Section 11 flag triggers if any were hit.]
 
@@ -103,8 +104,8 @@ focus areas. Reference load targets and phase progression.]
 |--------|------|-------|------|
 | ACWR | 0.80–1.30 (optimal) | 1.30–1.50 (elevated) | >1.50 (high risk) |
 | Ramp rate | <1.0 (conservative) | 1.0–1.5 (moderate) | >1.5 (aggressive) |
-| Grey Zone % | <5% (excellent) | 5–10% (watch) | >10% (too much Z3) |
-| Decoupling | <5% (good) | 5–10% (moderate) | >10% (drift) |
+| Grey Zone % | <5% (good) | 5–10% (watch) | >10% (too much Z3) |
+| Decoupling (per-session) | <5% (good) | 5–10% (elevated) | >10% (flag) |
 | Durability (7d mean) | <3% (good) | 3–5% (moderate) | >5% (declining) |
 | Durability trend | improving/stable | declining | declining >2% vs 28d |
 | EF trend | improving/stable | declining | declining >0.05 vs 28d |
@@ -117,4 +118,4 @@ focus areas. Reference load targets and phase progression.]
 - **Quality Session Detail** only includes hard/intensity sessions — omit recovery/endurance rides unless metrics were notable. Cap at 2–3 key sessions per week; if 4+ hard days occurred, prioritize sessions with the most notable targets, flags, or breakthroughs
 - **Section 11 Flags** should surface immediately in weekly reports, not deferred to block reports
 - **Wellness arrows** use simple thresholds: >5% change from previous week = ↑ or ↓, otherwise →
-- Keep "Overall" concise — this is coaching interpretation, not data repetition
+- Keep "Interpretation" concise — this is coaching interpretation, not data repetition

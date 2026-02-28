@@ -21,13 +21,13 @@ See templates and examples below for annotated reference.
 - Completed session metrics (power, HR, zones, decoupling, VI, TSS vs planned)
 - Plan compliance assessment
 - Weekly running totals (polarization, durability 7d/28d + trend, TID 28d + drift, CTL, ATL, TSB, ACWR, hours, TSS)
-- Overall coach note (2-4 sentences: compliance, key quality observations, load context, recovery note)
+- Interpretation (2-4 sentences: compliance, key quality observations, load context, recovery note)
 
 **Weekly Reports must include:**
 - Session breakdown with compliance status (✅/⚠️/❌)
 - Quality session detail (top 2-3 intensity sessions: target vs actual, decoupling, VI)
-- Polarization with Grey Zone and Quality tracking, plus 7d vs 28d TID classification and drift status
-- Durability subsection (7d/28d means, qualifying sessions, trend, high-drift count)
+- Polarization with Grey Zone and Quality tracking, plus TID 7d and TID 28d with drift status
+- Durability subsection (7d/28d mean(X) counts, trend, high-drift count)
 - Fitness deltas (CTL, ATL, TSB start → end with Δ)
 - ACWR with acute/chronic components shown
 - Wellness trends with directional arrows and threshold labels
@@ -43,7 +43,7 @@ See templates and examples below for annotated reference.
 - Phase Progression Check (criteria met Y/N, recommendation, rationale)
 - Next block plan with specific targets
 
-See `POST_WORKOUT_TEMPLATE.md` for field reference and rounding conventions.  
+See `POST_WORKOUT_REPORT_TEMPLATE.md` for field reference and rounding conventions.  
 See `REPORT_HIERARCHY.md` for how data flows between report levels.
 
 ---
@@ -53,9 +53,9 @@ See `REPORT_HIERARCHY.md` for how data flows between report levels.
 | File | Description |
 |------|-------------|
 | [REPORT_HIERARCHY.md](REPORT_HIERARCHY.md) | Overview of all report types, length norms, and data flow |
-| [PRE_WORKOUT_TEMPLATE.md](PRE_WORKOUT_TEMPLATE.md) | Template structure for pre-workout briefings (no data) |
+| [PRE_WORKOUT_REPORT_TEMPLATE.md](PRE_WORKOUT_REPORT_TEMPLATE.md) | Template structure for pre-workout briefings (no data) |
 | [PRE_WORKOUT_REPORT_EXAMPLES.md](PRE_WORKOUT_REPORT_EXAMPLES.md) | 4 anonymized example pre-workout reports |
-| [POST_WORKOUT_TEMPLATE.md](POST_WORKOUT_TEMPLATE.md) | Template structure for post-workout analysis (no data) |
+| [POST_WORKOUT_REPORT_TEMPLATE.md](POST_WORKOUT_REPORT_TEMPLATE.md) | Template structure for post-workout analysis (no data) |
 | [POST_WORKOUT_REPORT_EXAMPLES.md](POST_WORKOUT_REPORT_EXAMPLES.md) | 4 anonymized example post-workout reports |
 | [WEEKLY_REPORT_TEMPLATE.md](WEEKLY_REPORT_TEMPLATE.md) | Template structure for weekly summaries (no data) |
 | [WEEKLY_REPORT_EXAMPLES.md](WEEKLY_REPORT_EXAMPLES.md) | 2 anonymized example weekly reports |
@@ -88,8 +88,8 @@ Generated **after** a completed session. Includes:
 Generated **end of training week** (Saturday or Sunday morning). Includes:
 - Session breakdown with compliance status for every day
 - Quality session detail for top 2-3 intensity sessions
-- Polarization (Z1+Z2, Grey Zone, Quality) with 7d vs 28d TID + drift status
-- Durability subsection (7d/28d means, qualifying sessions, trend, high-drift count)
+- Polarization (Z1+Z2, Grey Zone, Quality) with TID 7d and TID 28d + drift status
+- Durability subsection (7d/28d mean(X) counts, trend, high-drift count)
 - Fitness deltas with ramp rate and ACWR breakdown
 - Wellness trends with week-over-week comparison and directional labels
 - Section 11 flags triggered during the week
@@ -132,6 +132,6 @@ Some fields appear only when relevant:
 ## Notes
 
 - All examples use anonymized/placeholder data — replace with actual values from your JSON feed
-- Zone percentages round to nearest whole number (see rounding convention in POST_WORKOUT_TEMPLATE.md)
+- Zone percentages round to nearest whole number (see rounding convention in POST_WORKOUT_REPORT_TEMPLATE.md)
 - Data flows upward between reports: post-workout → weekly → block (see REPORT_HIERARCHY.md)
 - Section 11 flags surface at the weekly level and are summarized with resolution in block reports
