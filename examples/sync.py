@@ -3523,7 +3523,7 @@ class IntervalsSync:
             entry = {
                 "id": f"event_{i+1}" if anonymize else evt.get("id", f"unknown_{i+1}"),
                 "date": evt_date,
-                "name": "Planned Workout" if anonymize else evt.get("name", ""),
+                "name": evt.get("name", "")
                 "type": evt.get("category", ""),
                 "planned_tss": evt.get("icu_training_load"),
                 "duration_hours": round(evt.get("moving_time", 0) / 3600, 2),
