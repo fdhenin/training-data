@@ -12,7 +12,7 @@
   },
   "metadata": {
     "athlete_id": "REDACTED",
-    "last_updated": "2026-03-01T13:55:59.123881",
+    "last_updated": "2026-03-01T14:22:55.368210",
     "data_range_days": 7,
     "extended_range_days": 28,
     "version": "3.6.0"
@@ -213,7 +213,7 @@
     "p_max": 634,
     "power_model_source": "wellness.sportInfo",
     "vo2max": null,
-    "calculation_timestamp": "2026-03-01T13:55:59.123029",
+    "calculation_timestamp": "2026-03-01T14:22:55.367396",
     "data_quality": {
       "hrv_data_points": 7,
       "rhr_data_points": 7,
@@ -492,24 +492,6 @@
   "planned_workouts": [
     {
       "id": "event_1",
-      "date": "2026-03-02T09:00:00",
-      "name": "Planned Workout",
-      "type": "WORKOUT",
-      "description": "Warmup\n- Bonjour Fr\u00e9d\u00e9ric d\u00e9butons doucement cette s\u00e9ance 9m 60% pace\n\nMain Set Fat Max\n- Course stable et respiration nasale 42m 68% pace\n\nCooldown\n- Excellent travail Fr\u00e9d\u00e9ric la r\u00e9cup\u00e9ration commence maintenant 6m 55% pace\n\n[Weekly Plan - Base]",
-      "planned_tss": 41,
-      "duration_hours": 0.0
-    },
-    {
-      "id": "event_2",
-      "date": "2026-03-08T09:00:00",
-      "name": "Planned Workout",
-      "type": "WORKOUT",
-      "description": "Warmup\n- Bonjour Fr\u00e9d\u00e9ric commen\u00e7ons doucement cette sortie 11m 60% pace\n\nMain Set Progressive Aerobic\n- Premier bloc en endurance basse 19m 62% pace\n- Deuxi\u00e8me bloc en progression constante 19m 68% pace\n- Troisi\u00e8me bloc en endurance active 19m 74% pace\n\nCooldown\n- Excellent travail Fr\u00e9d\u00e9ric r\u00e9cup\u00e8re bien maintenant 8m 58% pace\n\n[Weekly Plan - Base]",
-      "planned_tss": 55,
-      "duration_hours": 0.0
-    },
-    {
-      "id": "event_3",
       "date": "2026-04-05T00:00:00",
       "name": "Planned Workout",
       "type": "RACE_A",
