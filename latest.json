@@ -12,7 +12,7 @@
   },
   "metadata": {
     "athlete_id": "REDACTED",
-    "last_updated": "2026-03-02T04:11:29.235309",
+    "last_updated": "2026-03-02T05:20:26.066660",
     "data_range_days": 7,
     "extended_range_days": 28,
     "version": "3.6.0"
@@ -213,7 +213,7 @@
     "p_max": 634,
     "power_model_source": "wellness.sportInfo",
     "vo2max": null,
-    "calculation_timestamp": "2026-03-02T04:11:29.234482",
+    "calculation_timestamp": "2026-03-02T05:20:26.065808",
     "data_quality": {
       "hrv_data_points": 6,
       "rhr_data_points": 7,
@@ -492,6 +492,24 @@
   "planned_workouts": [
     {
       "id": "event_1",
+      "date": "2026-03-04T09:00:00",
+      "name": "Planned Workout",
+      "type": "WORKOUT",
+      "description": "Warmup\n- Bonjour Fr\u00e9d\u00e9ric, commen\u00e7ons cette progression a\u00e9robie 8m ramp 40-55% 90rpm\n\nMain Set\n- Bloc 1 Basse Intensit\u00e9 13m 58% 85rpm\n- Bloc 2 Intensit\u00e9 Moyenne 14m 65% 95rpm\n- Bloc 3 Haute Intensit\u00e9 14m 72% 85rpm\n\nCooldown\n- Excellent travail Fr\u00e9d\u00e9ric, r\u00e9cup\u00e8re bien 5m ramp 50-40% 90rpm\n\n[Weekly Plan - Base]",
+      "planned_tss": 35,
+      "duration_hours": 0.0
+    },
+    {
+      "id": "event_2",
+      "date": "2026-03-09T09:00:00",
+      "name": "Planned Workout",
+      "type": "WORKOUT",
+      "description": "Warmup\n- Bonjour Fr\u00e9d\u00e9ric commen\u00e7ons cette s\u00e9ance a\u00e9robie doucement 9m 60% pace\n\nMain Set Fat Max\n- Course stable \u00e0 intensit\u00e9 constante pour l'oxydation des graisses 42m 68% pace\n\nCooldown\n- Excellent travail Fr\u00e9d\u00e9ric la r\u00e9cup\u00e9ration commence maintenant 6m 58% pace\n\n[Weekly Plan - Base]",
+      "planned_tss": 41,
+      "duration_hours": 0.0
+    },
+    {
+      "id": "event_3",
       "date": "2026-04-05T00:00:00",
       "name": "Planned Workout",
       "type": "RACE_A",
