@@ -1,10 +1,11 @@
+# push.py v0.3 workflow — supports push, list, move, delete, set-threshold, annotate
 name: Push Workout to Intervals.icu
 
 on:
   workflow_dispatch:
     inputs:
       command:
-        description: 'Subcommand: push, list, move, delete'
+        description: 'Subcommand'
         required: false
         default: 'push'
         type: choice
@@ -13,16 +14,18 @@ on:
           - list
           - move
           - delete
+          - set-threshold
+          - annotate
       workouts:
         description: 'JSON workout(s) — required for push'
         required: false
         type: string
       event_id:
-        description: 'Event ID — required for move/delete'
+        description: 'Event ID — for move/delete/annotate (planned)'
         required: false
         type: string
       date:
-        description: 'Target date YYYY-MM-DD — required for move'
+        description: 'Target date YYYY-MM-DD — for move'
         required: false
         type: string
       oldest:
@@ -33,6 +36,42 @@ on:
         description: 'List end date (default: +6 days)'
         required: false
         type: string
+      sport:
+        description: 'Sport family or type — for set-threshold (cycling, Ride, run, etc.)'
+        required: false
+        type: string
+      ftp:
+        description: 'FTP — for set-threshold'
+        required: false
+        type: string
+      indoor_ftp:
+        description: 'Indoor FTP — for set-threshold'
+        required: false
+        type: string
+      lthr:
+        description: 'LTHR — for set-threshold'
+        required: false
+        type: string
+      max_hr:
+        description: 'Max HR — for set-threshold'
+        required: false
+        type: string
+      activity_id:
+        description: 'Activity ID — for annotate (completed)'
+        required: false
+        type: string
+      message:
+        description: 'Note text — for annotate'
+        required: false
+        type: string
+      chat:
+        description: 'Post to activity chat instead of description — for annotate'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
       confirm:
         description: 'Execute write (false = preview only)'
         required: false
@@ -126,6 +165,43 @@ jobs:
               fi
               ARGS="delete --event-id ${{ github.event.inputs.event_id }}"
               ;;
+            set-threshold)
+              if [ -z "${{ github.event.inputs.sport }}" ]; then
+                echo '{"success": false, "error": "sport is required for set-threshold"}'
+                exit 1
+              fi
+              ARGS="set-threshold --sport ${{ github.event.inputs.sport }}"
+              if [ -n "${{ github.event.inputs.ftp }}" ]; then
+                ARGS="$ARGS --ftp ${{ github.event.inputs.ftp }}"
+              fi
+              if [ -n "${{ github.event.inputs.indoor_ftp }}" ]; then
+                ARGS="$ARGS --indoor-ftp ${{ github.event.inputs.indoor_ftp }}"
+              fi
+              if [ -n "${{ github.event.inputs.lthr }}" ]; then
+                ARGS="$ARGS --lthr ${{ github.event.inputs.lthr }}"
+              fi
+              if [ -n "${{ github.event.inputs.max_hr }}" ]; then
+                ARGS="$ARGS --max-hr ${{ github.event.inputs.max_hr }}"
+              fi
+              ;;
+            annotate)
+              if [ -z "${{ github.event.inputs.message }}" ]; then
+                echo '{"success": false, "error": "message is required for annotate"}'
+                exit 1
+              fi
+              ARGS="annotate --message \"${{ github.event.inputs.message }}\""
+              if [ -n "${{ github.event.inputs.activity_id }}" ]; then
+                ARGS="$ARGS --activity-id ${{ github.event.inputs.activity_id }}"
+              elif [ -n "${{ github.event.inputs.event_id }}" ]; then
+                ARGS="$ARGS --event-id ${{ github.event.inputs.event_id }}"
+              else
+                echo '{"success": false, "error": "activity_id or event_id is required for annotate"}'
+                exit 1
+              fi
+              if [ "${{ github.event.inputs.chat }}" = "true" ]; then
+                ARGS="$ARGS --chat"
+              fi
+              ;;
             *)
               echo '{"success": false, "error": "unknown command: '"$CMD"'"}'
               exit 1
@@ -138,7 +214,7 @@ jobs:
           fi
 
           echo "Running: python push.py $ARGS"
-          python push.py $ARGS
+          eval python push.py $ARGS
 
       - name: Notify on failure
         if: failure()
@@ -147,5 +223,5 @@ jobs:
           echo "Common issues:"
           echo "  - Invalid workout JSON format"
           echo "  - Invalid date (must be today or future)"
-          echo "  - Event ID not found"
+          echo "  - Event/activity ID not found"
           echo "  - Intervals.icu API unreachable"
