@@ -176,7 +176,14 @@
       "hard_days": 2,
       "longest_ride_hours": 4.0,
       "avg_feel": 3.0,
-      "weight_kg": 72.5
+      "weight_kg": 72.5,
+      "acwr": 1.05,
+      "monotony": 1.85,
+      "intensity_basis_breakdown": {
+        "power": 2,
+        "hr": 0
+      },
+      "phase_detected": "Build"
     },
     {
       "week_start": "2026-01-06",
@@ -196,7 +203,14 @@
       "hard_days": 2,
       "longest_ride_hours": 3.5,
       "avg_feel": 3.0,
-      "weight_kg": null
+      "weight_kg": null,
+      "acwr": 1.02,
+      "monotony": 1.92,
+      "intensity_basis_breakdown": {
+        "power": 2,
+        "hr": 0
+      },
+      "phase_detected": "Build"
     },
     {
       "week_start": "2025-12-30",
@@ -216,7 +230,14 @@
       "hard_days": 1,
       "longest_ride_hours": 2.5,
       "avg_feel": 2.5,
-      "weight_kg": 72.8
+      "weight_kg": 72.8,
+      "acwr": 0.58,
+      "monotony": 1.14,
+      "intensity_basis_breakdown": {
+        "power": 1,
+        "hr": 0
+      },
+      "phase_detected": "Base"
     }
   ],
   "monthly_1y": [
