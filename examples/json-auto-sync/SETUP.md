@@ -77,6 +77,14 @@ Then add these files to your repository:
 | `ATHLETE_ID` | Your Intervals.icu athlete ID (e.g., `i123456`) |
 | `INTERVALS_KEY` | Your Intervals.icu API key |
 
+**Optional:** If your training week starts on a day other than Monday, add one more secret:
+
+| Secret Name | Value |
+|-------------|-------|
+| `WEEK_START` | Training week start day: `mon`, `tue`, `wed`, `thu`, `fri`, `sat`, or `sun` |
+
+If not set, defaults to `mon` (ISO week). This controls phase detection windows — ensures deload/build classification aligns with your actual training week structure.
+
 **Note:** `GITHUB_TOKEN` is provided automatically by GitHub Actions.
 
 ---
@@ -241,9 +249,8 @@ run: python sync.py --no-anonymize
 By default, the script anonymizes your data:
 - Athlete ID → "REDACTED"
 - Outdoor activity names → "Training Session"
-- Activity IDs → Generic `activity_1`, `activity_2`, etc.
 
-Indoor/virtual ride names are preserved for workout identification.
+Activity and event IDs are always real (opaque database keys, not PII) to enable features like coach annotations and planned-vs-actual pairing. Indoor/virtual ride names are preserved for workout identification.
 
 For additional privacy, use a **private repository** and a separate GitHub account for your data repository.
 
