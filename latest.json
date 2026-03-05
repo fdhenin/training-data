@@ -12,7 +12,7 @@
   },
   "metadata": {
     "athlete_id": "REDACTED",
-    "last_updated": "2026-03-05T04:09:56.533175",
+    "last_updated": "2026-03-05T05:17:21.793334",
     "data_range_days": 7,
     "extended_range_days": 28,
     "version": "3.6.0"
@@ -57,10 +57,10 @@
   },
   "current_status": {
     "fitness": {
-      "ctl": 50.65,
-      "atl": 66.29,
-      "tsb": -15.64,
-      "ramp_rate": 5.62,
+      "ctl": 49.85,
+      "atl": 62.25,
+      "tsb": -12.4,
+      "ramp_rate": 4.82,
       "fitness_source": "Decayed from yesterday (today's planned workouts not yet completed)"
     },
     "thresholds": {
@@ -232,7 +232,7 @@
     "p_max": 634,
     "power_model_source": "wellness.sportInfo",
     "vo2max": null,
-    "calculation_timestamp": "2026-03-05T04:09:56.532286",
+    "calculation_timestamp": "2026-03-05T05:17:21.792374",
     "data_quality": {
       "hrv_data_points": 6,
       "rhr_data_points": 7,
@@ -610,6 +610,15 @@
     },
     {
       "id": "event_6",
+      "date": "2026-03-12T09:00:00",
+      "name": "Planned Workout",
+      "type": "WORKOUT",
+      "description": "Warmup\n- Bonjour Fr\u00e9d\u00e9ric on commence doucement pour s'\u00e9chauffer 11m 65% pace\n\nMain Set\n3x\n- Bloc allure marathon 18m 82% pace\n- R\u00e9cup\u00e9ration active 3m 60% pace\n\nCooldown\n- Excellent travail Fr\u00e9d\u00e9ric bravo pour cette s\u00e9ance 8m 60% pace\n\n[Weekly Plan - Base]",
+      "planned_tss": 77,
+      "duration_hours": 0.0
+    },
+    {
+      "id": "event_7",
       "date": "2026-04-05T00:00:00",
       "name": "Planned Workout",
       "type": "RACE_A",
