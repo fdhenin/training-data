@@ -15,7 +15,7 @@
     "Upgrade note: After updating sync.py, delete history.json and run twice — first run regenerates history, second run uses it for phase detection",
     "— v3.6.2→v3.6.4 + push.py v0.2 (2026-03-03) —",
     "sync.py v3.6.2→3.6.4: Planned workout summaries — interval sessions compressed to one-line shapes. Tiered detail: full days 0-7, skeleton days 8-42. Human-readable time fields (XhYm) throughout",
-    "push.py + push-workout.yml: Write planned workouts to Intervals.icu calendar via GitHub Actions dispatch or local CLI. Template ID mappings for all 14 Workout Reference sessions",
+    "push.py v0.2 + push-workout.yml: Write planned workouts to Intervals.icu calendar (push, list, move, delete). GitHub Actions dispatch or local CLI. Template ID mappings for all 14 Workout Reference sessions",
     "Report templates: All report templates and examples updated with XhYm formatting + Formatting Rule section"
   ]
 }
