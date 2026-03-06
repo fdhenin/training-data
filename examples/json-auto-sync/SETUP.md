@@ -77,11 +77,30 @@ Then add these files to your repository:
 | `ATHLETE_ID` | Your Intervals.icu athlete ID (e.g., `i123456`) |
 | `INTERVALS_KEY` | Your Intervals.icu API key |
 
+**Optional:** If your training week starts on a day other than Monday, add one more secret:
+
+| Secret Name | Value |
+|-------------|-------|
+| `WEEK_START` | Training week start day: `mon`, `tue`, `wed`, `thu`, `fri`, `sat`, or `sun` |
+
+If not set, defaults to `mon` (ISO week). This controls phase detection windows — ensures deload/build classification aligns with your actual training week structure.
+
 **Note:** `GITHUB_TOKEN` is provided automatically by GitHub Actions.
 
 ---
 
-## Step 4: Enable GitHub Actions
+## Step 4: Enable Workflow Permissions
+
+1. Still in **Settings**, click **Actions → General** in the left sidebar
+2. Scroll down to **"Workflow permissions"**
+3. Select **"Read and write permissions"**
+4. Click **Save**
+
+This allows the sync workflow to commit updated data files to the repo. Without this, the workflow may fail silently on push.
+
+---
+
+## Step 5: Enable GitHub Actions
 
 1. Go to your repo → **Actions** tab
 2. If prompted, enable workflows
@@ -90,9 +109,11 @@ Then add these files to your repository:
 
 Wait 30-60 seconds, then check if `latest.json` has been updated.
 
+If the run fails with a permission error, go back and check that workflow permissions are set to "Read and write" in Step 4.
+
 ---
 
-## Step 5: Verify
+## Step 6: Verify
 
 Your data should now be accessible at:
 ```
@@ -228,9 +249,8 @@ run: python sync.py --no-anonymize
 By default, the script anonymizes your data:
 - Athlete ID → "REDACTED"
 - Outdoor activity names → "Training Session"
-- Activity IDs → Generic `activity_1`, `activity_2`, etc.
 
-Indoor/virtual ride names are preserved for workout identification.
+Activity and event IDs are always real (opaque database keys, not PII) to enable features like coach annotations and planned-vs-actual pairing. Indoor/virtual ride names are preserved for workout identification.
 
 For additional privacy, use a **private repository** and a separate GitHub account for your data repository.
 
@@ -238,7 +258,11 @@ For additional privacy, use a **private repository** and a separate GitHub accou
 
 ## Using Private Repos with AI Agents
 
-Normal AI chats (ChatGPT Projects, Claude Projects, Gemini Gems, etc.) cannot access private GitHub repos — they need public URLs or manual file uploads. Agent platforms can access private repos through their own GitHub integrations:
+Normal AI chats (ChatGPT Projects, Claude Projects, Gemini Gems, etc.) cannot access private GitHub repos — they need public URLs or manual file uploads.
+
+Some web chat platforms (ChatGPT, Gemini) now offer GitHub integrations that can read private repos, but availability varies by plan and account. Claude Projects still requires public URLs or manual file uploads.
+
+For consistent private repo access, use an agentic platform:
 
 **OpenClaw** — Install the GitHub skill and authenticate with `gh auth login`. Once authenticated, OpenClaw can read files from any private repo your token has access to. For limited access, use a [fine-grained personal access token](https://github.com/settings/tokens?type=beta) scoped to your data repo only.
 

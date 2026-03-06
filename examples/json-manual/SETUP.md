@@ -63,7 +63,7 @@ The script creates/maintains these files:
 | `latest.json` | Training data export | Every run with `--output` |
 | `history.json` | Longitudinal data — daily (90d), weekly (180d), monthly (3y) | First run, regenerates when outdated |
 | `ftp_history.json` | FTP progression tracking | Automatically on first run |
-| `.sync_config.json` | Your credentials (local only) | After `--setup` |
+| `.sync_config.json` | Your credentials + preferences (local only) | After `--setup` |
 
 ### FTP History
 
@@ -129,8 +129,11 @@ Claude Cowork, OpenAI Codex CLI, and local OpenClaw can read files directly from
 | `--setup` | Run setup wizard | - |
 | `--days N` | Days of data to export | 7 |
 | `--output FILE` | Save to local file | - |
+| `--week-start DAY` | Training week start day (mon/tue/wed/thu/fri/sat/sun) | mon |
 | `--debug` | Show API field debug info | off |
 | `--anonymize` | Remove identifying info | on |
+
+**Note:** `--week-start` can also be set in `.sync_config.json` (`"week_start": "sun"`) or via `WEEK_START` environment variable. Config file setting persists across runs — no need to pass the flag every time.
 
 **Note:** Anonymization is enabled by default. Activity names, athlete ID, and location data are redacted in the output.
 

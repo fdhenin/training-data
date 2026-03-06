@@ -1,6 +1,6 @@
 ---
 name: section-11
-description: Evidence-based endurance cycling coaching protocol (v11.5). Use when analyzing training data, reviewing sessions, generating pre/post-workout reports, planning workouts, answering training questions, or giving cycling coaching advice. Always fetch athlete JSON data before responding to any training question.
+description: Evidence-based endurance cycling coaching protocol (v11.10). Use when analyzing training data, reviewing sessions, generating pre/post-workout reports, planning workouts, answering training questions, or giving cycling coaching advice. Always fetch athlete JSON data before responding to any training question.
 ---
 
 # Section 11 — AI Coaching Protocol
@@ -41,6 +41,10 @@ Fetch and follow: https://raw.githubusercontent.com/CrankAddict/section-11/main/
 
 **Current version:** 11.5
 
+## External Sources
+
+All external files referenced by this skill (`sync.py`, `SECTION_11.md`, templates, setup guides) are maintained in the open-source [CrankAddict/section-11](https://github.com/CrankAddict/section-11) repository and can be inspected there.
+
 ## Data Hierarchy
 1. JSON data (always fetch latest.json first, then history.json for longitudinal context)
 2. Protocol rules (SECTION_11.md)
@@ -53,6 +57,20 @@ Fetch and follow: https://raw.githubusercontent.com/CrankAddict/section-11/main/
 - No virtual math on pre-computed metrics — use fetched values for CTL, ATL, TSB, ACWR, RI, zones, etc. Custom analysis from raw data is fine when pre-computed values don't cover the question.
 - Follow Section 11 C validation checklist before generating recommendations
 - Cite frameworks per protocol (checklist item #10)
+
+## Write Capabilities
+
+If `push.py` is available in the data repo, the skill can manage the athlete's Intervals.icu calendar and training data:
+- **push** — write planned workouts to calendar
+- **list** — show planned workouts for a date range
+- **move** — reschedule a workout to a different date
+- **delete** — remove a workout from the calendar
+- **set-threshold** — update sport-specific thresholds (FTP, indoor FTP, LTHR, max HR, threshold pace). Only after validated test results, never from estimates
+- **annotate** — add notes to completed activities (description by default, `--chat` for messages panel) or planned workouts (`NOTE:` prepended to description)
+
+All write operations default to preview mode — nothing is written without `--confirm`. Execution via GitHub Actions dispatch (uses existing repository secrets configured by the athlete) or local CLI. See `examples/agentic/README.md` for full usage, workout syntax, and template ID mappings.
+
+Only available on platforms that can execute code or trigger GitHub Actions (OpenClaw, Claude Code, Cowork, etc.). Web chat users cannot use this.
 
 ## Report Templates
 
@@ -77,8 +95,10 @@ On each heartbeat, follow the checks and scheduling rules defined in your HEARTB
 **Data ownership & storage**
 All training data is stored where the user chooses: on their own device or in a Git repository they control. This project does not run any backend service, cloud storage, or third-party infrastructure. Nothing is uploaded anywhere unless the user explicitly configures it.
 
+The skill reads from: user-configured JSON data sources, DOSSIER.md, and HEARTBEAT.md in the workspace. It writes to: DOSSIER.md and HEARTBEAT.md in the workspace (during first-use setup only).
+
 **Anonymization**
-`sync.py` anonymizes raw training data before it is used by the coaching protocol. Identifying information is stripped; only aggregated and derived metrics (CTL, ATL, TSB, zone distributions, power/HR summaries) are used by the AI coach.
+`sync.py` (maintained in the source repository) anonymizes raw training data. The skill does not perform anonymization itself. Only aggregated and derived metrics (CTL, ATL, TSB, zone distributions, power/HR summaries) are used by the AI coach.
 
 **Network behavior**
 The skill performs simple HTTP GET requests to fetch:

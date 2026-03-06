@@ -127,7 +127,15 @@ Walk them through:
 
 **Important:** The secret names must match exactly — `ATHLETE_ID` and `INTERVALS_KEY`. These are what the workflow expects.
 
-Confirm both secrets are added before continuing.
+**Optional:** If their training week starts on a day other than Monday, add one more secret:
+
+| Name | Value |
+|------|-------|
+| `WEEK_START` | Training week start day: `mon`, `tue`, `wed`, `thu`, `fri`, `sat`, or `sun` |
+
+If not set, defaults to `mon` (ISO week). This controls phase detection windows — ensures deload/build classification aligns with the athlete's actual training week structure.
+
+Confirm both required secrets are added before continuing.
 
 ### Step 5: Enable workflow permissions
 
@@ -230,7 +238,7 @@ This is where the two paths diverge.
 
 #### Golden Path: Web chat setup (public repo)
 
-Walk them through setting up a ChatGPT or Claude project. If they use a different platform (Grok, Mistral, Gemini), adapt these instructions — the concept is the same: create a project, paste instructions, upload files.
+Walk them through setting up a ChatGPT or Claude project. If they use a different platform (Grok, Mistral, Gemini), adapt these instructions — the concept is the same: create a project, paste instructions, upload files. Note that Gemini's file access and web search behavior varies across Google accounts, so it may not work for everyone.
 
 **1. Create a Project:**
 
@@ -273,7 +281,7 @@ No citations, no source markers, no parenthetical references. Raw data and analy
 1. Data timestamp
 2. One-line summary
 3. Session block(s) — one per activity, line-by-line:
-   Activity type & name, start time, duration (actual vs planned), distance, power (avg/NP), power zones (%), Grey Zone (Z3) %, Quality (Z4+) %, HR (avg/max), HR zones (%), cadence, decoupling (with label), Variability Index (with label), calories (kcal), carbs used (g), TSS (actual vs planned)
+   Activity type & name, start time, duration (actual vs planned), distance, power (avg/NP), power zones (%), Grey Zone (Z3) %, Quality (Z4+) %, HR (avg/max), HR zones (%), cadence, decoupling (with label), EF (when power + HR available), Variability Index (with label), calories (kcal), carbs used (g), TSS (actual vs planned)
 4. Weekly totals: Polarization, Durability (7d/28d + trend), TID 28d (+ drift), TSB, CTL, ATL, Ramp rate, ACWR, Hours, TSS
 5. Overall: Coach note (2–4 sentences — compliance, quality observations, load context, recovery note)
 
@@ -308,7 +316,7 @@ Tell them to upload these two files to their project's knowledge/files section:
 - **Claude Projects:** Upload to "Project Knowledge." Enable "Web search" in settings (required for JSON fetch).
 - **Grok:** Upload to "Sources" in Project configuration.
 - **Mistral (Le Chat):** Upload during project creation. Web access is available.
-- **Gemini Gems:** Paste Section 11 content into the instructions field and upload the dossier separately.
+- **Gemini Gems:** Paste Section 11 content into the instructions field and upload the dossier separately. *(Note: Gemini behavior varies across Google accounts — it may not work for everyone. See troubleshooting in the README if you run into issues.)*
 
 ---
 
@@ -341,6 +349,14 @@ Ask which platform they use or want to try, then walk them through:
 1. Connect GitHub at https://chatgpt.com/codex
 2. Authorize access to their data repo
 3. Codex clones the repo and can read `latest.json` and `history.json` directly
+
+**Optional: Enable calendar push**
+
+If the user wants their AI coach to write planned workouts directly to their Intervals.icu calendar, walk them through copying these files from the Section 11 repo into their data repo:
+- `examples/agentic/push.py` → repo root as `push.py`
+- `examples/agentic/push-workout.yml` → `.github/workflows/push-workout.yml`
+
+No new secrets needed — uses the same `ATHLETE_ID` and `INTERVALS_KEY` from Step 4. See `examples/agentic/README.md` for usage details and workout syntax.
 
 Agent platforms fetch data automatically, work with private repos, and some (like OpenClaw) support autonomous heartbeat checks — scheduled coaching observations without the user asking.
 

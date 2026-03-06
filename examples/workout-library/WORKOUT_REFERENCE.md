@@ -1,23 +1,25 @@
 # Section 11 — Workout Reference Library
 
-**Version:** 0.5.0  
+**Version:** 0.6  
 **Companion to:** Section 11 B — AI Training Plan Protocol  
-**Last updated:** 2026-02-25
+**Last updated:** 2026-02-28
 
 ---
 
 ## Purpose & Scope
 
-This document is a **menu of session templates**, not a training plan. It provides structured workout formats that an AI coaching system can select from when generating or recommending sessions under Section 11 B.
+This document is a **library of session templates for inspiration**, not a rigid prescription list. It provides structured workout formats that an AI coaching system can reference when designing sessions under Section 11 B.
 
-**Section 11 decides *when* and *what type*. This document provides *how*.**
+**Templates are starting points. The AI must adapt structure, duration, intensity, and recovery to the individual athlete's current fitness, goals, phase, and constraints.** Copy-pasting a template without customization is the wrong approach — a good coach never prescribes the same workout the same way to every athlete.
+
+**Section 11 decides *when* and *what type*. This document provides *how* — as a starting point.**
 
 ### Design Principles
 
 - **Section 11 A readiness logic always has final say.** No template in this document overrides go/modify/skip decisions.
 - **Zone references use the athlete's Intervals.icu zone configuration.** Power targets are expressed as zone ranges, not hardcoded %FTP values, because athlete zones are individually calibrated and update with fitness changes.
 - **This is a living catalog.** Athletes and coaches should adapt, extend, or replace templates to match individual needs, equipment, and sport demands.
-- **Templates are starting points.** The AI should apply Section 11's progression pathways, regression rules, and load constraints when selecting and scaling these sessions.
+- **Templates are inspiration, not prescription.** The AI should use these as structural references, then adjust interval count, duration, rest periods, and intensity to match the athlete's current state. A Sweet Spot 3x15 might become 3x12 for a fatigued athlete or 3x18 for a fresh one approaching peak.
 - **Optional/advanced templates are clearly marked.** Templates flagged as *(Optional)* or *(Advanced)* are not necessary for every athlete and should not be prescribed by default. The AI should only select these when the athlete's goals, phase, and readiness specifically warrant them.
 
 ---
@@ -511,12 +513,17 @@ These rules govern the placement of sessions within a microcycle (training week)
 
 ### 3.1 Minimum Spacing Between Hard Sessions
 - **Hard session definition (zone ladder):** A day qualifies as hard if ANY of the following cumulative thresholds are met (per Seiler/Foster, matching sync.py's `is_hard_day` logic):
-  - Z3+ ≥ 30 min (tempo and above, cumulative)
-  - Z4+ ≥ 10 min (threshold and above)
-  - Z5+ ≥ 5 min (VO₂max and above)
-  - Z6+ ≥ 2 min (anaerobic and above)
-  - Z7 ≥ 1 min (neuromuscular)
-  Higher zones need less time to qualify — 1 min of Z7 sprints is as "hard" as 30 min of Z3 tempo. Each template's YAML metadata (`is_hard_session: true/false`) reflects this ladder.
+  - **Power ladder** (preferred, 5 rungs):
+    - Z3+ ≥ 30 min (tempo and above, cumulative)
+    - Z4+ ≥ 10 min (threshold and above)
+    - Z5+ ≥ 5 min (VO₂max and above)
+    - Z6+ ≥ 2 min (anaerobic and above)
+    - Z7 ≥ 1 min (neuromuscular)
+  - **HR fallback** (when no power zones available, 2 rungs — per Seiler 3-zone model):
+    - Z4+ ≥ 10 min (sustained above LT2)
+    - Z5+ ≥ 5 min (VO₂max)
+  - HR zones are too wide and lagged for fine-grained classification. Short-duration rungs (Z6+/Z7) and the Z3 tempo trigger are invalid for HR due to cardiac lag and false-positive risk on steady-state runs. HR-classified hard days are flagged with `intensity_basis: "hr"` in daily tier output.
+  - Higher zones need less time to qualify — 1 min of Z7 sprints is as "hard" as 30 min of Z3 tempo. Each template's YAML metadata (`is_hard_session: true/false`) reflects the power ladder.
 - **Minimum gap:** 48 hours between hard sessions (i.e., at least one easy/rest day between).
 - **Exception:** Back-to-back hard days permitted only when **TSB > 0 and RI ≥ 0.85** (per Section 11 B §4).
 

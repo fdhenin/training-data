@@ -25,6 +25,7 @@ An open protocol for deterministic, auditable AI-powered endurance coaching. Bui
 |------|-------------|
 | [SECTION_11.md](SECTION_11.md) | Complete protocol: AI Coach Guidance (11 A), Training Plan Protocol (11 B), Validation Protocol (11 C) |
 | [examples/workout-library/](examples/workout-library/) | Workout Reference Library — 26 session templates that Section 11 B §8 requires AI systems to select from |
+| [examples/agentic/](examples/agentic/) | Write planned workouts to Intervals.icu calendar — for agentic AI platforms with code execution |
 | [DOSSIER_TEMPLATE.md](DOSSIER_TEMPLATE.md) | Blank athlete dossier template — fill in your own data |
 | [examples/](examples/) | JSON sync setup, report templates, README template, example files |
 | [SETUP_ASSISTANT.md](SETUP_ASSISTANT.md) | Interactive AI-guided setup — paste into any AI chat to get started |
@@ -98,7 +99,7 @@ No citations, no source markers, no parenthetical references. Raw data and analy
 1. Data timestamp
 2. One-line summary
 3. Session block(s) — one per activity, line-by-line:
-   Activity type & name, start time, duration (actual vs planned), distance, power (avg/NP), power zones (%), Grey Zone (Z3) %, Quality (Z4+) %, HR (avg/max), HR zones (%), cadence, decoupling (with label), Variability Index (with label), calories (kcal), carbs used (g), TSS (actual vs planned)
+   Activity type & name, start time, duration (actual vs planned), distance, power (avg/NP), power zones (%), Grey Zone (Z3) %, Quality (Z4+) %, HR (avg/max), HR zones (%), cadence, decoupling (with label), EF (when power + HR available), Variability Index (with label), calories (kcal), carbs used (g), TSS (actual vs planned)
 4. Weekly totals: Polarization, Durability (7d/28d + trend), TID 28d (+ drift), TSB, CTL, ATL, Ramp rate, ACWR, Hours, TSS
 5. Overall: Coach note (2–4 sentences — compliance, quality observations, load context, recovery note)
 
@@ -164,9 +165,19 @@ Upload these files to your AI platform's knowledge base:
 3. Web access is available
 
 ### Gemini (Gems)
+
+> **Note:** Not all Google accounts have the same access. Gemini's file access and web search capabilities vary by account type and region, so it may not work for everyone. If you run into issues:
+
 1. Create Gem
 2. Paste instructions + Section 11 content in instructions field
 3. Upload dossier or paste contents
+
+**Troubleshooting:**
+- Import the repo via GitHub integration: in Gemini web chat, click **+** → **Import code**, paste the repo URL, and authorize. This also works for Gems.
+- Enable the GitHub extension: go to gemini.google.com → **Settings → Extensions (Connected Apps)** and make sure GitHub is turned on.
+- If it's a private repo, you'll need to authorize your GitHub account when prompted.
+- You can also try referencing the repo directly in chat using `@GitHub`.
+- If Gemini ignores your synced data or fabricates metrics, download the full section-11 repo as a zip and upload it directly into your Gem or chat.
 
 ### OpenClaw (formerly ClawdBot/MoltBot)
 Section 11 works well with [OpenClaw](https://github.com/openclaw/openclaw). The combination of OpenClaw's persistent memory + autonomous execution + Section 11's structured validation makes for a capable coaching setup. Install the GitHub skill (`npx skills add https://github.com/openclaw/openclaw --skill github`) and authenticate with `gh auth login` to access private repos.
@@ -176,6 +187,10 @@ Cowork runs on your local machine and can read files directly from your filesyst
 
 ### OpenAI Codex
 Connect your GitHub account via the ChatGPT GitHub connector at [chatgpt.com/codex](https://chatgpt.com/codex). During setup, authorize access to your private training data repo. Codex clones the repo into an isolated container and can read `latest.json` and `history.json` directly. The Codex CLI works locally with your existing filesystem and Git setup.
+
+### Recommended Setup
+
+The most reliable experience is the agentic path: a private repo with an agent platform that has GitHub access. This gives the AI direct access to your data and the full protocol without depending on web search or manual uploads. We use [OpenClaw](https://github.com/openclaw/openclaw) with Section 11 daily.
 
 ---
 
@@ -189,11 +204,11 @@ After configuration, test with:
 
 **Good response includes:**
 - ✅ Fetched both latest.json and history.json automatically (no asking for it)
-- ✅ Session summary with all fields (type, start time, duration, power, HR, TSS, cadence, decoupling, zones, carbs, energy)
+- ✅ Session summary with all fields (type, start time, duration, power, HR, TSS, cadence, decoupling, EF, zones, carbs, energy)
 - ✅ Training load context (TSB, CTL, ATL, weekly totals)
 - ✅ Brief interpretation
 - ✅ No "(GitHub)" or URL citations
-- ✅ No emojis
+- ✅ No excessive emojis
 - ✅ No false recovery warnings for normal TSB (-10 to -30)
 
 **Bad response:**
@@ -236,8 +251,8 @@ After configuration, test with:
 - See [examples/json-auto-sync/SETUP.md](examples/json-auto-sync/SETUP.md)
 
 ### 404 error on private repo URLs
-- Normal AI chats (ChatGPT, Claude, Gemini) cannot access private GitHub repos
-- Either use a public repo, upload files manually to your AI Project/Space, or use an agent platform (OpenClaw, Cowork, Codex) that has GitHub access configured
+- Normal AI chats cannot access private GitHub repos — some platforms (ChatGPT, Gemini) now offer GitHub integrations, but availability varies by plan and account
+- Either use a public repo, upload files manually to your AI Project/Space, or use an agentic platform (OpenClaw, Claude Cowork, ChatGPT Codex APP, CLI, etc.) that has GitHub access configured
 
 ---
 
@@ -306,13 +321,15 @@ The protocol integrates 19+ validated endurance science frameworks:
 
 ### Rolling Phase Logic
 
-Training blocks adapt dynamically based on real data:
+Training blocks adapt dynamically using dual-stream phase detection:
 
 ```
-Base → Build → Peak → Taper → Recovery
+Build ↔ Base ↔ Deload ↔ Peak → Taper → Recovery
+                                  ↑ Race calendar
+Overreached (safety gate — triggers from any state)
 ```
 
-Phase transitions are triggered by actual metrics (TSB trend, ACWR, RI), not fixed calendar dates.
+Phase classification combines retrospective history (4-week CTL/ACWR/hard-day trends) with prospective calendar data (planned workouts + race proximity). Confidence scoring (high/medium/low) and reason codes provide full auditability.
 
 ### Readiness Thresholds
 
@@ -362,7 +379,7 @@ The sync script pre-calculates Section 11-compliant metrics so AI doesn't need t
 | Quality Intensity % | Z4+ time — target ~20% |
 | Polarisation Index | Easy time ratio — target ~0.80 |
 | Benchmark Index | 8-week FTP progression (indoor/outdoor) |
-| Phase Detected | Auto-detected training phase |
+| Phase Detected | Dual-stream classification: Build, Base, Peak, Taper, Deload, Recovery, Overreached, null |
 | Seiler TID | 3-zone classification (Polarized/Pyramidal/Threshold/HIT/Base) |
 | Polarization Index (PI) | Treff et al. quantitative polarization score |
 | Hard Days/Week | Zone ladder classification per Seiler/Foster |

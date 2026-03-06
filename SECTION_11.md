@@ -1,11 +1,52 @@
 # Section 11 — AI Coach Protocol
 
-**Protocol Version:** 11.9  
-**Last Updated:** 2026-02-26
+**Protocol Version:** 11.13  
+**Last Updated:** 2026-03-05
 **License:** [MIT](https://opensource.org/licenses/MIT)
 
-
 ### Changelog
+
+**v11.13 — Readiness Decision (AAS Formalization):**
+- Pre-computed `readiness_decision` replaces implicit go/modify/skip synthesis
+- Priority ladder: P0 (safety stop) → P1 (acute overload) → P2 (accumulated fatigue) → P3 (green light)
+- 7 signals evaluated: HRV, RHR, Sleep, TSB, ACWR, Feel, RI — each with green/amber/red/unavailable status
+- Phase modifiers: Build loosens thresholds (3 amber), Taper/Race week tighten (1 amber), all others default (2 amber)
+- Structured modification output: trigger categories + adjustment directions (intensity/volume/cap_zone)
+- Wires into existing alerts (P0/P1 read tier-1 alarms, no duplication)
+- AAS row removed from threshold table — replaced by `readiness_decision` reference
+- sync.py v3.72: `_compute_readiness_decision()`, `_get_phase_modifiers()`, `_build_modification()`
+
+**v11.12 — HRRc Integration + Phase Transition Narrative:**
+- HRRc (heart rate recovery) added to activity output and capability namespace (7d/28d aggregate trend)
+- HRRc: largest 60s HR drop (bpm) after exceeding threshold HR for >1 min. API field `icu_hrr`. Display only
+- Trend: 7d mean vs 28d mean, >10% = meaningful. Min 1 session/7d, 3 sessions/28d
+- Phase transition narrative guidance added to weekly/block report templates
+- Phase timeline added to block report template
+- References: Fecchio et al. (2019) HRR reproducibility; Lamberts et al. (2024) cyclist HRR reliability; Buchheit (2006)
+
+**v11.11 — Phase Detection v2 (Dual-Stream Architecture):**
+- Phase detection rewritten from single-point snapshot to dual-stream architecture
+- Stream 1 (retrospective): 4-week lookback from `weekly_180d` — CTL slope, ACWR trend, hard-day density, monotony
+- Stream 2 (prospective): planned workouts + race calendar — planned TSS delta, race proximity, plan coverage
+- 8 phase states: Build, Base, Peak, Taper, **Deload** (new), Recovery, Overreached, null
+- Classification priority: Overreached → Taper → Peak → Deload → Build/Base (scored) → Recovery → null
+- Confidence model (high/medium/low) based on signal strength, data quality, stream agreement
+- Hysteresis: bias toward previous phase when scores are close, prevents phase flapping
+- Reason codes for full auditability (e.g., `RACE_IMMINENT_VOLUME_REDUCING`, `PLAN_GAP_NEXT_WEEK`)
+- `phase_detection` output object with basis, confidence, reason_codes; backward-compat `phase_detected`/`phase_triggers` preserved
+- Overreached fix: requires current-week ACWR >1.5 (not historical max); monotony threshold raised 2.0→2.5
+- Weekly tier enriched: `acwr`, `monotony` (5+ day guard), `intensity_basis_breakdown`, `phase_detected` per row
+- Old `_detect_phase` function removed
+
+**v11.10 — Hard Day HR Zone Fallback:**
+- Hard day counter now falls back to HR zones (`icu_hr_zone_times`) when power zones unavailable
+- Running, SkiErg, rowing sessions were invisible to phase detection — fixed
+- Conservative 2-rung HR ladder (Z4+ ≥ 10min, Z5+ ≥ 5min) per Seiler 3-zone model; power ladder unchanged
+- Shared `_get_activity_zones()` and `_classify_hard_day()` helpers across all call sites
+- Daily tier rows now include `intensity_basis` field (power/hr/mixed/null)
+- `is_hard_day` returns `null` when no zone data exists (not `false`)
+- `hard_days_this_week` field type updated to `number/null`
+- Workout Reference hard session definition (§3.1) updated with both ladders
 
 **v11.9 — Efficiency Factor Tracking:**
 - Added Efficiency Factor (EF = NP ÷ Avg HR, Coggan) to Validated Optional Metrics
@@ -26,23 +67,8 @@
 - Validation Checklist item 1 updated for sport-family lookup
 - Global estimates (`eftp`, `w_prime`, `w_prime_kj`, `p_max`, `vo2max`) remain at top level
 
-**v11.7 — Workout Reference Library Integration:**
-- Formalised Section 11 B §8 interface to the Workout Reference Library (v0.5.0)
-- AI systems must now select structured sessions exclusively from the curated template catalog
-- Added selection rules, sequencing enforcement, WU/CD mandates, and audit traceability via `session_template` field
-- Library provides 26 session templates, progression logic, deload variants, and decision matrix
-- Path: `examples/workout-library/WORKOUT_REFERENCE.md`
-
-**v11.6 — Race-Week Protocol:**
-- Added Race-Week Protocol: day-by-day decision tree for D-7 through D-0 before goal events
-- Added three-layer race awareness architecture (90-day calendar → 14-day taper onset → 7-day race week)
-- Added event-type modifiers (short/medium/long) with duration-specific TSB targets, opener intensity, carb loading triggers
-- Added go/no-go checklist (only illness/injury can recommend DNS; HRV and sleep are context only)
-- Added mandatory protocol guidance: taper tantrums, pre-race sleep/HRV, carb loading science
-- Added RACE_B modifications (lighter taper, lower TSB targets, athlete discretion prevails)
-- Race priority detection via Intervals.icu event categories (RACE_A/B/C)
-- Scientific basis: Mujika & Padilla (2003), Bosquet et al. (2007), Wang et al. (2023), Altini (HRV), Pyne et al. (2009)
-
+**v11.7** — Workout Reference Library integration (26 templates, v0.5.0), selection rules, sequencing enforcement, WU/CD mandates, audit traceability via `session_template` field  
+**v11.6** — Race-Week Protocol (D-7 to D-0), three-layer race awareness (calendar → taper onset → race week), event-type modifiers, go/no-go checklist, RACE_A/B/C priority detection via Intervals.icu  
 **v11.5** — Capability Metrics, Seiler TID classification (Treff PI, 5-class, 7→3 zone mapping), dual-timeframe TID drift detection, aggregate durability (7d/28d mean decoupling)  
 **v11.4** — Graduated alerts, history.json, confidence scoring, monotony deload context  
 **v11.3** — Output format guidelines, report templates, communication style  
@@ -241,7 +267,7 @@ All AI analyses, interpretations, and recommendations must be grounded in valida
 |   Noakes’ Central Governor Model                            | Neural fatigue and perceptual regulation of performance; modern application via HRV × RPE for motivational readiness tracking |                                                    
 |   Mujika’s Tapering Model                                   | Pre-event load reduction, adaptation optimization, and peaking strategies                                                     |
 |   Sandbakk–Holmberg Integration Framework                   | Adaptive feedback synthesis across endurance, recovery, and environmental load                                                |
-|   Sandbakk–Holberg Adaptive Action Score (AAS)              | Synthesises multi-framework feedback into weighted block-level action guidance for AI decision and feed-forward logic         |
+|   Sandbakk–Holberg Adaptive Action Score (AAS)              | Original inspiration for readiness synthesis. Replaced by deterministic `readiness_decision` (P0–P3 priority ladder) in v11.13 |
 |   Randonneur Performance System (RPS) - Intervals.ICU forum | KPI-driven durability and adaptive feedback architecture for endurance progression                                            |
 |   Friel’s Training Stress Framework                         | Plan adherence, TSS-based progression, and sustainable load control                                                           |
 |   Skiba’s Critical Power Model                              | Fatigue decay and endurance performance prediction using CP–W′ curve                                                          |
@@ -279,21 +305,46 @@ The system continuously reflects the athlete’s true state — evolving natural
 
 ### Phase Detection Criteria
 
-To ensure deterministic phase classification, AI systems must evaluate the following trigger conditions when identifying the current training phase:
+Phase detection uses a **dual-stream architecture** combining retrospective training history with prospective calendar data. This replaces single-point snapshot classification and eliminates common mislabels (e.g., deload weeks classified as taper/recovery).
 
-| **Phase** | **Primary Triggers** | **Supporting Indicators** |
-|-----------|---------------------|---------------------------|
-| Base | CTL rising steadily, ACWR 0.8–1.0, Quality Intensity <15% (by time) or ≤1 hard day/week | Polarisation index ≥0.85, RI ≥0.8, Grey Zone <5% |
-| Build | ACWR 1.0–1.3, Quality Intensity 15–25% (by time) or 2 hard days/week | CTL slope positive, TSB neutral to slightly negative, Grey Zone <8% |
-| Peak | CTL plateau or slight decline, interval intensity at maximum | Specificity Score ≥0.85, TSB trending positive, 2–3 hard days/week |
-| Overreached | ACWR >1.3 OR Strain >3500 OR RI <0.6 for ≥3 days | HRV ↓>15%, Feel ≥4, Monotony >2.5 |
-| Taper | CTL declining 5–15%, TSB rising toward positive | Volume reduction 30–50%, intensity maintained, 1–2 hard days/week |
-| Recovery | TSB >+10, weekly load <50% of 4-week average | RI ≥0.85, HRV stable or improving, 0 hard days |
+**Stream 1 (Retrospective):** Rolling 4-week lookback from `weekly_180d` rows — CTL slope, ACWR trend, hard-day density, monotony trend.
 
-**Phase Transition Rules:**
-- Phase changes require ≥3 consecutive days of trigger conditions being met
-- Overreached state triggers immediate phase reassessment regardless of planned block
-- AI must cite specific trigger values when declaring phase transitions
+**Stream 2 (Prospective):** Next 7–14 days of planned workouts + race calendar — planned TSS delta, hard sessions planned, race proximity, plan coverage (current/next ISO week).
+
+**Phase States:**
+
+| **Phase** | **Classification Logic** | **Key Thresholds** |
+|-----------|------------------------|--------------------|
+| Overreached | Safety gate — triggers immediately when detected | Current-week ACWR >1.5, or elevated monotony (>2.5) + ACWR >1.3 + rising trend |
+| Taper | Race-anchored — requires race in calendar | Race (A/B priority) within 14 days + volume reducing (planned TSS ≤80% of recent avg) |
+| Peak | Race approaching, fitness at cycle high | Race within 21 days + CTL within 5% of lookback max + volume NOT yet reducing + positive CTL slope |
+| Deload | Calendar-driven load reduction within Build block | Build history (rising CTL + ≥1.5 hard days/week over 3+ weeks) + planned TSS ≤80% + no hard sessions planned. Confirmed if next week load resumes (≥80%). Medium confidence if next-week plan is empty. |
+| Build | Scored — CTL rising + sustained hard days | CTL slope >1.0, hard-day avg ≥1.5, ACWR rising/stable. Planned week continues pattern (hard sessions ≥2). |
+| Base | Scored — CTL stable + low hard days | CTL slope −1.0 to +1.0, hard-day avg ≤1.5, ACWR stable. |
+| Recovery | Residual — declining load, no structured pattern | Declining CTL + <0.5 hard days/week + no Build history + no race proximity |
+| null | Insufficient or conflicting data | <3 weeks lookback, Build/Base scores tied, streams conflict |
+
+**Classification Priority Order:** Overreached → Taper → Peak → Deload → Build/Base (scored) → Recovery → null.
+
+**Build/Base Scoring:** When neither safety gates nor calendar-anchored phases apply, Build and Base are scored from CTL slope, hard-day density, ACWR trend, and planned session intensity. The phase with a margin ≥2 wins. Margins <2 apply hysteresis (bias toward previous phase). Tied scores with no previous phase → null.
+
+**Confidence Model:**
+
+| **Confidence** | **Conditions** |
+|---------------|---------------|
+| high | Strong signal (margin ≥3), good data quality, streams agree |
+| medium | Moderate signal (margin ≥2) or good data quality but weaker signal |
+| low | Weak signal, poor data quality (<3 weeks), conflicting streams, or null phase |
+
+Confidence is downgraded by: poor data quality (HR-only majority in lookback), empty plan coverage (no planned workouts), partial-week data.
+
+**Hysteresis:** If the previous phase is among the top-2 candidates and not contradicted by data, it is preferred. This prevents phase flapping between similar states (e.g., Build ↔ Base at the margin).
+
+**Deload→Build Transition:** When `previous_phase` is Deload, the classifier uses planned workout content (hard sessions planned) rather than TSS delta, because the trailing 3-week average includes the deload week and produces unreliable ratios.
+
+**Reason Codes:** Every classification includes machine-readable reason codes for auditability (e.g., `RACE_IMMINENT_VOLUME_REDUCING`, `BUILD_HISTORY_REDUCED_LOAD_REBOUND_CONFIRMED`, `PLAN_GAP_NEXT_WEEK`, `INSUFFICIENT_LOOKBACK`).
+
+**Output Structure:** See `phase_detection` in Field Definitions below.
 
 ---
 
@@ -645,7 +696,7 @@ When validating datasets, cross-check computed fatigue and load ratios against v
 | Fatigue Trend                | −0.2 to +0.2                                       | —                                  | —                                   | ΔATL − ΔCTL (stable range)                                          |
 | Polarisation Ratio           | 0.75–0.9                                           | —                                  | —                                   | ~80/20 distribution                                                 |
 | Durability Index (DI)        | ≥ 0.9                                              | —                                  | —                                   | Avg Power last hour ÷ first hour                                    |
-| Adaptive Action Score (AAS)  | ≥ 0.75 maintain / < 0.7 deload                     | —                                  | —                                   | Block-level transition                                              |
+| Readiness Decision         | Pre-computed go/modify/skip (P0–P3 ladder)         | —                                  | —                                   | See Readiness Decision section. sync.py v3.72+          |
 | Load Ratio                   | < 3500                                             | —                                  | —                                   | Monotony × Mean Load — cumulative stress indicator                  |
 | Stress Tolerance             | 3–6 sustainable / <3 low buffer / >6 high capacity | —                                  | —                                   | (Strain ÷ Monotony) ÷ 100 — load absorption capacity                |
 | Load-Recovery Ratio          | <2.5 normal / ≥2.5 alert                           | —                                  | —                                   | 7-day Load ÷ RI — **secondary** overreach detector (see note below) |
@@ -654,6 +705,7 @@ When validating datasets, cross-check computed fatigue and load ratios against v
 | Hard Days per Week           | 2–3 typical / 1 (base/recovery) / 0 (deload)       | —                                  | —                                   | For high-volume athletes (10+ hrs/week)                             |
 | Consistency Index            | ≥0.9 consistent / <0.8 non-compliant               | —                                  | —                                   | Sessions Completed ÷ Sessions Planned                               |
 | Aggregate Durability (7d)    | <3% good / 3–5% moderate / >5% declining           | 7d mean > 28d mean by >2%         | 28d mean > 5% sustained             | Mean decoupling from steady-state sessions (VI ≤ 1.05, ≥ 90min)    |
+| HRRc Trend                   | stable (within ±10% of 28d mean)                   | declining (7d >10% below 28d)     | —                                   | Largest 60s HR drop after threshold. Min 1/7d, 3/28d. Display only  |
 | TID Drift                    | consistent (7d = 28d)                              | shifting (7d ≠ 28d classification) | acute_depolarization (7d PI <2, 28d PI ≥2) | Seiler TID comparison between 7d and 28d windows           |
 
 **Monotony Deload Context:**  
@@ -712,6 +764,64 @@ RI = (HRV_today / HRV_baseline) ÷ (RHR_today / RHR_baseline)
 - If RI < 0.6 → immediate deload required regardless of duration
 
 AI systems must only consider caloric-reduction or weight-optimization phases during readiness-positive windows (DI ≥ 0.95, HR drift ≤ 3 %, RI ≥ 0.8), referencing Section 8 — Weight Adjustment Control.
+
+---
+
+### Readiness Decision (v11.13)
+
+`sync.py` v3.72+ pre-computes a deterministic `readiness_decision` object using a priority ladder. AI coaches read this as the baseline go/modify/skip recommendation. The AI writes the coaching note and can override with explicit explanation, but the default decision is auditable and reproducible across LLMs.
+
+**Priority Ladder (first match wins):**
+
+| Priority | Condition | Result |
+|----------|-----------|--------|
+| **P0 — Safety stop** | RI < 0.6, OR any tier-1 alarm active | **Skip** (non-negotiable) |
+| **P1 — Acute overload** | ACWR > 1.5, OR (TSB < -30 + HRV ↓>10%), OR (RI < 0.7 + tier-1 alert persisting ≥2 days) | **Skip** |
+| **P1 — Acute overload (modify)** | ACWR > 1.3, OR (TSB < -25 + HRV ↓>10%) | **Modify** |
+| **P2 — Accumulated fatigue** | Red signal count ≥ 2, OR (1 red in tightened phase), OR amber count ≥ phase threshold | **Modify** (or Skip if 2+ red) |
+| **P3 — Green light** | None of the above | **Go** |
+
+**Signal Classification:**
+
+| Signal | Green | Amber | Red |
+|--------|-------|-------|-----|
+| HRV | Within ±10% of 7d baseline | ↓ 10–20% | ↓ >20% |
+| RHR | At or below baseline | ↑ 3–4 bpm | ↑ ≥5 bpm |
+| Sleep | ≥ 7h AND quality ≤ 2 | 5–7h OR quality 3 | < 5h OR quality 4 |
+| TSB | > phase threshold (default -15) | Between threshold and -30 | < -30 |
+| ACWR | 0.8–1.3 | <0.8 or 1.3–1.5 | > 1.5 |
+| Feel | ≤ 3 (1=Strong, 5=Weak) | 4 | 5 |
+| RI | ≥ 0.8 | 0.6–0.79 | < 0.6 |
+
+Missing signals are classified as `unavailable` and excluded from amber/red counts.
+
+**Phase Modifiers (shift P2 thresholds):**
+
+| Phase | Amber threshold | TSB amber shift | Red tightened | Rationale |
+|-------|----------------|-----------------|---------------|-----------|
+| Build | 3 | -20 | No | Fatigue accumulation is the goal |
+| Taper | 1 | -15 | Yes | Protecting race freshness |
+| Race week | 1 | -15 | Yes | Race freshness paramount |
+| Recovery / Deload | 2 (default) | -15 | No | Already resting — single amber is noise |
+| Overreached | 2 (default) | -15 | No | Already compromised — default threshold sufficient |
+| Base / Peak / null | 2 (default) | -15 | No | Standard operation |
+
+**Structured Modification Output:**
+
+When recommendation is `modify`, the output includes trigger categories and adjustment directions as data. The AI writes the coaching language.
+
+| Trigger pattern | Intensity | Volume | Cap zone |
+|----------------|-----------|---------|----------|
+| Sleep-only | preserve | reduce | — |
+| Autonomic (HRV/RHR/RI) | reduce | preserve | — |
+| TSB-only | preserve | reduce | — |
+| ACWR-driven | reduce | reduce | Z2 |
+| Combined (2+) | reduce | reduce | — |
+| Feel-only | reduce | preserve | — |
+
+**Race week interaction:** Readiness can escalate (Go → Modify → Skip) during race week but cannot loosen race protocol targets. When `race_week_defers: true`, modification guidance defers to the race-week protocol's day-by-day targets. The race protocol sets the ceiling; readiness can only push it down.
+
+**JSON output location:** Top-level `readiness_decision` object in `latest.json`, alongside `alerts` and `derived_metrics`.
 
 ---
 
@@ -1123,6 +1233,43 @@ Trend direction matters more than absolute values — an athlete's baseline deco
 
 ---
 
+#### HRRc — Heart Rate Recovery (Capability Metric)
+
+HRRc measures how quickly heart rate recovers after a hard effort — a marker of parasympathetic reactivation quality. Intervals.icu computes HRRc as the largest 60-second HR drop (in bpm) starting from a HR above the athlete's configured threshold, after exceeding that threshold for at least 1 minute. The API field is `icu_hrr`.
+
+**Data Source:** The `capability.hrrc` object in the data mirror provides rolling 7-day and 28-day aggregate HRRc from qualifying sessions.
+
+**Qualifying Sessions:**
+- `icu_hrr` is not null and > 0 (self-selects: only fires when threshold HR held >1min and cooldown recorded)
+- No duration, VI, or sport-type filter — HRRc self-selects by its own triggering criteria
+
+**Window Minimums:**
+
+| Field               | Description                                                | Min Sessions |
+|---------------------|------------------------------------------------------------|--------------|
+| mean_hrrc_7d        | Mean HRRc (bpm) from qualifying sessions in last 7 days   | ≥ 1 session  |
+| mean_hrrc_28d       | Mean HRRc (bpm) from qualifying sessions in last 28 days  | ≥ 3 sessions |
+| trend               | 7d vs 28d comparison: improving / stable / declining       | Both windows |
+
+**Trend Logic:**
+- `improving`: 7d mean > 28d mean by > 10%
+- `stable`: 7d and 28d means within ±10%
+- `declining`: 7d mean < 28d mean by > 10%
+
+The 10% threshold is conservative for a field metric. Lab reliability of HRR60s is high (CV 3–14%, ICC up to 0.99 per Fecchio et al. 2019 systematic review), but field variability is substantially higher due to variable workout type, intensity, recording duration, and recovery posture. The asymmetric window minimums (1 session/7d, 3 sessions/28d) reflect the reality that most athletes generate 1–2 HRRc readings per week — the 28d baseline is where noise dampening matters.
+
+Higher HRRc = faster recovery = better parasympathetic rebound. Trend direction matters more than absolute values — an athlete's baseline HRRc varies with fitness, age, exercise modality, and conditions. Compare like-for-like where possible.
+
+**Scope:** Display only. HRRc is not wired into readiness_decision signals. It complements the existing autonomic/wellness signal chain (resting HRV, resting HR, subjective markers) as an exercise-context recovery quality marker.
+
+**References:**
+- Fecchio et al. (2019): Systematic review of HRR reproducibility. HRR60s exhibits high reliability across protocols.
+- Lamberts et al. (2024): HRR60s in trained-to-elite cyclists — ICC = 0.97, TEM = 4.3%.
+- Buchheit (2006): HRR associated with training loads, not VO2max.
+- Tinker (2019): Intervals.icu renamed HRR to HRRc to distinguish from Heart Rate Reserve.
+
+---
+
 #### W′ Balance Metrics *(When Interval Data Available)*
 
 If workout files include W′ balance data (from Intervals.icu or WKO), the following metrics provide anaerobic capacity insights:
@@ -1517,7 +1664,7 @@ This subsection defines the formal self-validation and audit metadata structure 
   "validation_metadata": {
     "data_source_fetched": true,
     "json_fetch_status": "success",
-    "protocol_version": "11.8",
+    "protocol_version": "11.11",
     "checklist_passed": [1, 2, 3, 4, 5, 6, "6b", 7, 8, 9, 10],
     "checklist_failed": [],
     "data_timestamp": "2026-01-13T22:32:05Z",
@@ -1531,7 +1678,34 @@ This subsection defines the formal self-validation and audit metadata structure 
     "frameworks_cited": ["Seiler 80/20", "Gabbett ACWR"],
     "recommendation_count": 3,
     "phase_detected": "Build",
-    "phase_triggers_met": ["ACWR 1.12", "Hard days 2/week", "CTL slope +0.8"],
+    "phase_triggers": [],
+    "phase_detection": {
+      "phase": "Build",
+      "confidence": "medium",
+      "reason_codes": [],
+      "basis": {
+        "stream_1": {
+          "ctl_slope": 0.7,
+          "acwr_trend": "falling",
+          "hard_day_pattern": 1.8,
+          "weeks_available": 4
+        },
+        "stream_2": {
+          "planned_tss_delta": 0.93,
+          "hard_sessions_planned": 2,
+          "race_proximity": null,
+          "next_week_load": 1.19,
+          "plan_coverage_current_week": 1.2,
+          "plan_coverage_next_week": 2.6
+        },
+        "data_quality": "good",
+        "stream_agreement": null
+      },
+      "previous_phase": "Build",
+      "phase_duration_weeks": 4,
+      "dossier_declared": null,
+      "dossier_agreement": null
+    },
     "seasonal_context": "Late Base / Build",
     "consistency_index": 0.92,
     "stress_tolerance": 4.2,
@@ -1552,7 +1726,10 @@ This subsection defines the formal self-validation and audit metadata structure 
     "tid_drift": "consistent",
     "durability_7d_mean": 2.1,
     "durability_28d_mean": 2.5,
-    "durability_trend": "stable"
+    "durability_trend": "stable",
+    "hrrc_7d_mean": 38,
+    "hrrc_28d_mean": 36,
+    "hrrc_trend": "stable"
   }
 }
 ```
@@ -1576,14 +1753,36 @@ This subsection defines the formal self-validation and audit metadata structure 
 | `missing_inputs`               | array    | List of metrics that were unavailable                                               |
 | `frameworks_cited`             | array    | Scientific frameworks applied in reasoning                                          |
 | `recommendation_count`         | number   | Number of actionable recommendations provided                                       |
-| `phase_detected`               | string   | Current phase classification (Base/Build/Peak/Taper/Recovery/Overreached)           |
-| `phase_triggers_met`           | array    | Specific trigger conditions that determined phase classification                    |
+| `phase_detected`               | string/null | Backward-compat shortcut: current phase (Build/Base/Peak/Taper/Deload/Recovery/Overreached/null). Extracted from `phase_detection.phase`. |
+| `phase_triggers`               | array    | Backward-compat shortcut: reason codes from `phase_detection.reason_codes`.         |
+| `phase_detection`              | object   | Full phase detection v2 output (see sub-fields below).                              |
+| `phase_detection.phase`        | string/null | Classified phase: Build, Base, Peak, Taper, Deload, Recovery, Overreached, or null. |
+| `phase_detection.confidence`   | string   | "high" / "medium" / "low" — based on signal strength, data quality, stream agreement. |
+| `phase_detection.reason_codes` | array    | Machine-readable classification reasons (e.g., `RACE_IMMINENT_VOLUME_REDUCING`, `BUILD_HISTORY_REDUCED_LOAD_REBOUND_CONFIRMED`, `PLAN_GAP_NEXT_WEEK`, `INSUFFICIENT_LOOKBACK`). |
+| `phase_detection.basis.stream_1` | object | Retrospective features: `ctl_slope`, `acwr_trend`, `hard_day_pattern`, `weeks_available`. |
+| `phase_detection.basis.stream_2` | object | Prospective features: `planned_tss_delta`, `hard_sessions_planned`, `race_proximity`, `next_week_load`, `plan_coverage_current_week`, `plan_coverage_next_week`. |
+| `phase_detection.basis.data_quality` | string | "good" / "mixed" / "poor" — penalized by HR-only intensity basis, short lookback. |
+| `phase_detection.basis.stream_agreement` | boolean/null | Whether Stream 1 and Stream 2 suggested the same phase. null if either stream has no opinion. |
+| `phase_detection.previous_phase` | string/null | Phase from last weekly_180d row (feeds hysteresis).                              |
+| `phase_detection.phase_duration_weeks` | number | Consecutive weeks classified as current phase.                                 |
+| `phase_detection.dossier_declared` | string/null | Phase declared in athlete dossier (optional input).                            |
+| `phase_detection.dossier_agreement` | boolean/null | Whether detected phase matches dossier declaration.                           |
+| `readiness_decision`           | object   | Pre-computed go/modify/skip decision (v3.72+). Top-level, alongside `alerts`. |
+| `readiness_decision.recommendation` | string | "go" / "modify" / "skip" — baseline recommendation for pre-workout reports. |
+| `readiness_decision.priority`  | number   | 0 (safety stop), 1 (acute overload), 2 (accumulated fatigue), 3 (green light). |
+| `readiness_decision.signals`   | object   | Per-signal status objects (hrv, rhr, sleep, tsb, acwr, feel, ri). Each has `status` (green/amber/red/unavailable) and raw values with deltas. |
+| `readiness_decision.signal_summary` | object | Pre-counted tallies: `green`, `amber`, `red`, `unavailable`. |
+| `readiness_decision.phase_context` | object | `phase`, `phase_week`, `amber_threshold`, `modifier_applied` — shows which phase rule shifted thresholds. |
+| `readiness_decision.race_week_defers` | boolean | When true, modification guidance defers to race-week protocol day-by-day targets. |
+| `readiness_decision.modification` | object/null | When recommendation is "modify": `triggers` (signal names), `suggested_adjustments` (`intensity`, `volume`, `cap_zone`). Null for "go" and "skip". |
+| `readiness_decision.reason`    | string   | Audit-grade factual reason. E.g., "P2 signal count. 2 amber (rhr, sleep) >= threshold 2." Not coaching prose. |
+| `readiness_decision.alarm_refs` | array   | Alert metric names that triggered P0/P1. Empty array for P2/P3. |
 | `seasonal_context`             | string   | Current position in annual training cycle                                           |
 | `consistency_index`            | number   | 7-day plan adherence ratio (0–1)                                                    |
 | `stress_tolerance`             | number   | Current load absorption capacity                                                    |
 | `grey_zone_percentage`         | number   | Grey zone time as percentage — to minimize                                          |
 | `quality_intensity_percentage` | number   | Quality intensity time as percentage                                                |
-| `hard_days_this_week`          | number   | Count of days meeting zone ladder thresholds: Z3+ ≥ 30min, Z4+ ≥ 10min, Z5+ ≥ 5min, Z6+ ≥ 2min, or Z7 ≥ 1min |
+| `hard_days_this_week`          | number/null | Count of days meeting zone ladder thresholds. **Power ladder** (5 rungs): Z3+ ≥ 30min, Z4+ ≥ 10min, Z5+ ≥ 5min, Z6+ ≥ 2min, or Z7 ≥ 1min. **HR fallback** (2 rungs, when no power zones): Z4+ ≥ 10min or Z5+ ≥ 5min. `null` if no zone data exists. Per Seiler 3-zone model + Foster |
 | `polarisation_index`           | number   | Easy time (Z1+Z2) as ratio of total                                                 |
 | `specificity_volume_ratio`     | number   | Event-specific volume ratio (0–1)                                                   |
 | `load_recovery_ratio`          | number   | 7-day load divided by RI (secondary metric)                                         |
@@ -1599,6 +1798,10 @@ This subsection defines the formal self-validation and audit metadata structure 
 | `durability_7d_mean`           | number   | Mean HR–Power decoupling (%) from qualifying steady-state sessions, 7-day       |
 | `durability_28d_mean`          | number   | Mean HR–Power decoupling (%) from qualifying steady-state sessions, 28-day      |
 | `durability_trend`             | string   | Durability trend: "improving" / "stable" / "declining"                          |
+| `hrrc`                         | number/null | Per-activity HRRc: largest 60-second HR drop (bpm) after exceeding configured threshold HR for >1 min. Intervals.icu API field `icu_hrr`. Null when threshold not reached, recording stopped before cooldown, or no HR data. Higher = better parasympathetic recovery. |
+| `capability.hrrc.mean_hrrc_7d` | number/null | Mean HRRc (bpm) from qualifying sessions in last 7 days. Requires ≥ 1 session. |
+| `capability.hrrc.mean_hrrc_28d`| number/null | Mean HRRc (bpm) from qualifying sessions in last 28 days. Requires ≥ 3 sessions. |
+| `capability.hrrc.trend`        | string/null | HRRc trend: "improving" / "stable" / "declining". >10% difference between 7d and 28d means = meaningful. Null if either window has insufficient sessions. Display only — not wired into readiness_decision signals. |
 
 ---
 
