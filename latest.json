@@ -12,7 +12,7 @@
   },
   "metadata": {
     "athlete_id": "REDACTED",
-    "last_updated": "2026-03-07T04:58:58.359581",
+    "last_updated": "2026-03-07T05:41:56.084201",
     "data_range_days": 7,
     "extended_range_days": 28,
     "version": "3.6.0"
@@ -233,7 +233,7 @@
     "p_max": 634,
     "power_model_source": "wellness.sportInfo",
     "vo2max": null,
-    "calculation_timestamp": "2026-03-07T04:58:58.358740",
+    "calculation_timestamp": "2026-03-07T05:41:56.083359",
     "data_quality": {
       "hrv_data_points": 6,
       "rhr_data_points": 7,
@@ -618,6 +618,42 @@
   "planned_workouts": [
     {
       "id": "event_1",
+      "date": "2026-03-08T09:00:00",
+      "name": "Planned Workout",
+      "type": "WORKOUT",
+      "description": "Warmup\n- 11m ramp 60-80% pace\n\nMain Set\n- Aerobic 56m ramp 70-80% pace\n\nCooldown\n- 7m ramp 70-60% pace\n\n[Weekly Plan - Base]",
+      "planned_tss": 66,
+      "duration_hours": 0.0
+    },
+    {
+      "id": "event_2",
+      "date": "2026-03-09T09:00:00",
+      "name": "Planned Workout",
+      "type": "WORKOUT",
+      "description": "Warmup\n- 9m ramp 60-80% pace\n\nMain Set\n- Aerobic 29m 70% pace\n- Tempo Touch 11m 80% pace\n- Easy Finish 5m 70% pace\n\nCooldown\n- 6m ramp 70-60% pace\n\n[Weekly Plan - Base]",
+      "planned_tss": 51,
+      "duration_hours": 0.0
+    },
+    {
+      "id": "event_3",
+      "date": "2026-03-11T09:00:00",
+      "name": "Planned Workout",
+      "type": "WORKOUT",
+      "description": "Warmup\n- Bonjour Fr\u00e9d\u00e9ric, on commence doucement pour cette s\u00e9ance d'endurance 9m ramp 40-55% 90rpm\n\nMain Set\n- Endurance stable 8m 65% 85rpm\n- Tempo touch 30s 80% 95rpm\n- Endurance stable 8m 68% 85rpm\n- Tempo touch 30s 80% 95rpm\n- Endurance stable 8m 63% 85rpm\n- Tempo touch 30s 80% 95rpm\n- Endurance stable 8m 66% 85rpm\n- Tempo touch 30s 80% 95rpm\n- Endurance finale 6m 60% 85rpm\n\nCooldown\n- Excellent travail Fr\u00e9d\u00e9ric, la r\u00e9cup\u00e9ration commence maintenant 5m ramp 55-40% 90rpm\n\n[Weekly Plan - Base]",
+      "planned_tss": 35,
+      "duration_hours": 0.0
+    },
+    {
+      "id": "event_4",
+      "date": "2026-03-14T09:00:00",
+      "name": "Planned Workout",
+      "type": "WORKOUT",
+      "description": "Warmup\n- Bonjour Fr\u00e9d\u00e9ric, pr\u00e9parons le corps pour cette longue sortie 15m ramp 40-70% 90rpm\n\nMain Set\n- Endurance de base 45m 65% 85rpm\n- Premier surge 5m 85% 95rpm\n- R\u00e9cup\u00e9ration active 25m 60% 85rpm\n- Acc\u00e9l\u00e9ration soutenue 3m 95% 90rpm\n- R\u00e9cup\u00e9ration active 30m 62% 80rpm\n- Effort tempo 4m 82% 100rpm\n- R\u00e9cup\u00e9ration active 35m 60% 85rpm\n- Punch au seuil 2m 100% 95rpm\n- R\u00e9cup\u00e9ration active 40m 63% 80rpm\n- Effort progressif 5m 88% 90rpm\n- R\u00e9cup\u00e9ration active 30m 60% 85rpm\n- Dernier surge 1m 105% 100rpm\n- Retour au calme endurance 35m 62% 85rpm\n\nCooldown\n- Excellent travail Fr\u00e9d\u00e9ric, quelle endurance 10m ramp 60-40% 85rpm\n\n[Weekly Plan - Base]",
+      "planned_tss": 198,
+      "duration_hours": 0.0
+    },
+    {
+      "id": "event_5",
       "date": "2026-04-05T00:00:00",
       "name": "Planned Workout",
       "type": "RACE_A",
