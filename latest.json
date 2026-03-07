@@ -12,7 +12,7 @@
   },
   "metadata": {
     "athlete_id": "REDACTED",
-    "last_updated": "2026-03-06T23:49:37.501488",
+    "last_updated": "2026-03-07T01:43:56.594550",
     "data_range_days": 7,
     "extended_range_days": 28,
     "version": "3.6.0"
@@ -57,10 +57,10 @@
   },
   "current_status": {
     "fitness": {
-      "ctl": 49.85,
-      "atl": 59.85,
-      "tsb": -10.0,
-      "ramp_rate": 3.26,
+      "ctl": 48.67,
+      "atl": 51.88,
+      "tsb": -3.21,
+      "ramp_rate": 3.18,
       "fitness_source": "From Intervals.icu API (reflects completed workouts)"
     },
     "thresholds": {
@@ -76,21 +76,21 @@
     },
     "current_metrics": {
       "weight_kg": 69.054,
-      "resting_hr": 55,
-      "hrv": 43.0,
-      "sleep_quality": 2,
-      "sleep_hours": 8.05
+      "resting_hr": 60,
+      "hrv": null,
+      "sleep_quality": null,
+      "sleep_hours": null
     }
   },
   "derived_metrics": {
-    "recovery_index": 1.11,
-    "hrv_baseline_7d": 39.3,
-    "rhr_baseline_7d": 55.6,
-    "hrv_baseline_28d": 38.2,
-    "rhr_baseline_28d": 55.7,
-    "latest_hrv": 43.0,
-    "latest_rhr": 55,
-    "acwr": 1.05,
+    "recovery_index": null,
+    "hrv_baseline_7d": 38.7,
+    "rhr_baseline_7d": 56.1,
+    "hrv_baseline_28d": 38.3,
+    "rhr_baseline_28d": 55.8,
+    "latest_hrv": null,
+    "latest_rhr": 60,
+    "acwr": 1.18,
     "acwr_interpretation": "optimal",
     "monotony": 0.66,
     "monotony_interpretation": "normal",
@@ -101,9 +101,9 @@
     "multi_sport_detected": false,
     "strain": 319.0,
     "stress_tolerance": 4.8,
-    "load_recovery_ratio": 4.4,
+    "load_recovery_ratio": null,
     "tss_7d_total": 483.0,
-    "tss_28d_total": 1843.0,
+    "tss_28d_total": 1643.0,
     "zone_distribution_7d": {
       "z1_hours": 3.7,
       "z2_hours": 1.95,
@@ -141,23 +141,23 @@
       "sport": "cycling"
     },
     "seiler_tid_28d": {
-      "z1_seconds": 71039,
-      "z2_seconds": 15907,
-      "z3_seconds": 21209,
-      "z1_pct": 65.7,
-      "z2_pct": 14.7,
-      "z3_pct": 19.6,
-      "polarization_index": 1.94,
+      "z1_seconds": 62968,
+      "z2_seconds": 14646,
+      "z3_seconds": 18998,
+      "z1_pct": 65.2,
+      "z2_pct": 15.2,
+      "z3_pct": 19.7,
+      "polarization_index": 1.93,
       "classification": "Pyramidal"
     },
     "seiler_tid_28d_primary": {
-      "z1_seconds": 62498,
-      "z2_seconds": 14357,
-      "z3_seconds": 21063,
-      "z1_pct": 63.8,
-      "z2_pct": 14.7,
-      "z3_pct": 21.5,
-      "polarization_index": 1.97,
+      "z1_seconds": 54427,
+      "z2_seconds": 13096,
+      "z3_seconds": 18852,
+      "z1_pct": 63.0,
+      "z2_pct": 15.2,
+      "z3_pct": 21.8,
+      "polarization_index": 1.96,
       "classification": "Pyramidal",
       "sport": "cycling"
     },
@@ -184,8 +184,8 @@
         "classification_7d": "Polarized",
         "classification_28d": "Pyramidal",
         "pi_7d": 2.04,
-        "pi_28d": 1.94,
-        "pi_delta": 0.1,
+        "pi_28d": 1.93,
+        "pi_delta": 0.11,
         "drift": "shifting",
         "note": "Compares 7d vs 28d Seiler TID to detect distribution shifts. pi_delta positive = more polarized acutely."
       }
@@ -208,7 +208,7 @@
     },
     "phase_detected": "Build",
     "phase_triggers": [
-      "ACWR 1.05 in 0.8-1.3",
+      "ACWR 1.18 in 0.8-1.3",
       "Quality Intensity 21.2% in 15-25%",
       "Hard days 3/week >= 2"
     ],
@@ -233,12 +233,12 @@
     "p_max": 634,
     "power_model_source": "wellness.sportInfo",
     "vo2max": null,
-    "calculation_timestamp": "2026-03-06T23:49:37.500639",
+    "calculation_timestamp": "2026-03-07T01:43:56.593700",
     "data_quality": {
-      "hrv_data_points": 7,
+      "hrv_data_points": 6,
       "rhr_data_points": 7,
       "activities_7d": 5,
-      "activities_28d": 22,
+      "activities_28d": 21,
       "planned_workouts_7d": 2,
       "ftp_history_days": {
         "indoor": 0,
@@ -510,21 +510,6 @@
   ],
   "wellness_data": [
     {
-      "date": "2026-02-28",
-      "weight_kg": null,
-      "resting_hr": 56,
-      "hrv_rmssd": 43.0,
-      "hrv_sdnn": null,
-      "sleep_hours": 8.53,
-      "sleep_quality": 3,
-      "sleep_score": 61.0,
-      "mental_energy": null,
-      "fatigue": null,
-      "soreness": null,
-      "avg_sleeping_hr": null,
-      "vo2max": null
-    },
-    {
       "date": "2026-03-01",
       "weight_kg": null,
       "resting_hr": 55,
@@ -613,6 +598,21 @@
       "soreness": null,
       "avg_sleeping_hr": null,
       "vo2max": null
+    },
+    {
+      "date": "2026-03-07",
+      "weight_kg": null,
+      "resting_hr": 60,
+      "hrv_rmssd": null,
+      "hrv_sdnn": null,
+      "sleep_hours": null,
+      "sleep_quality": null,
+      "sleep_score": null,
+      "mental_energy": null,
+      "fatigue": null,
+      "soreness": null,
+      "avg_sleeping_hr": null,
+      "vo2max": null
     }
   ],
   "planned_workouts": [
@@ -630,8 +630,8 @@
     "total_training_hours": 8.54,
     "total_tss": 483,
     "activities_count": 5,
-    "avg_hrv": 39.3,
-    "avg_resting_hr": 55.6
+    "avg_hrv": 38.7,
+    "avg_resting_hr": 56.1
   },
   "race_calendar": {
     "next_race": {
@@ -639,7 +639,7 @@
       "date": "2026-04-05",
       "category": "RACE_A",
       "type": "Ride",
-      "days_until": 30,
+      "days_until": 29,
       "moving_time_seconds": null,
       "distance_meters": 130000.0
     },
@@ -649,7 +649,7 @@
         "date": "2026-04-05",
         "category": "RACE_A",
         "type": "Ride",
-        "days_until": 30,
+        "days_until": 29,
         "moving_time_seconds": null,
         "distance_meters": 130000.0
       },
@@ -658,7 +658,7 @@
         "date": "2026-04-26",
         "category": "RACE_A",
         "type": "Ride",
-        "days_until": 51,
+        "days_until": 50,
         "moving_time_seconds": null,
         "distance_meters": 126000.0
       },
@@ -667,7 +667,7 @@
         "date": "2026-05-14",
         "category": "RACE_B",
         "type": "Ride",
-        "days_until": 69,
+        "days_until": 68,
         "moving_time_seconds": null,
         "distance_meters": null
       }
