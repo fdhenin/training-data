@@ -12,7 +12,7 @@
   },
   "metadata": {
     "athlete_id": "REDACTED",
-    "last_updated": "2026-03-08T04:20:26.751546",
+    "last_updated": "2026-03-08T05:27:53.490096",
     "data_range_days": 7,
     "extended_range_days": 28,
     "version": "3.6.0"
@@ -224,7 +224,7 @@
     "p_max": 634,
     "power_model_source": "wellness.sportInfo",
     "vo2max": null,
-    "calculation_timestamp": "2026-03-08T04:20:26.750733",
+    "calculation_timestamp": "2026-03-08T05:27:53.489261",
     "data_quality": {
       "hrv_data_points": 6,
       "rhr_data_points": 7,
@@ -612,8 +612,8 @@
       "date": "2026-03-08T09:00:00",
       "name": "Planned Workout",
       "type": "WORKOUT",
-      "description": "Warmup\n- 11m ramp 60-80% pace\n\nMain Set\n- Aerobic 56m ramp 70-80% pace\n\nCooldown\n- 7m ramp 70-60% pace\n\n[Weekly Plan - Base]",
-      "planned_tss": 66,
+      "description": "Warmup\n- Bonjour Fr\u00e9d\u00e9ric on commence doucement pour r\u00e9veiller les jambes 4m 65% pace\n\nMain Set\n2x\n- Endurance avec variation 8m 75% pace\n- Pickup l\u00e9ger 30s 85% pace\n\nCooldown\n- Bien jou\u00e9 Fr\u00e9d\u00e9ric place \u00e0 la r\u00e9cup\u00e9ration maintenant 5m 60% pace",
+      "planned_tss": 22,
       "duration_hours": 0.0
     },
     {
@@ -645,6 +645,15 @@
     },
     {
       "id": "event_5",
+      "date": "2026-03-15T09:00:00",
+      "name": "Planned Workout",
+      "type": "WORKOUT",
+      "description": "Warmup\n- Bonjour Fr\u00e9d\u00e9ric commen\u00e7ons cette s\u00e9ance progressivement 11m 60% pace\n\nMain Set Progressive Aerobic\n- Premier bloc stable en basse zone deux 19m 58% pace\n- Deuxi\u00e8me bloc stable en milieu de zone deux 19m 65% pace\n- Troisi\u00e8me bloc stable en haut de zone deux 19m 73% pace\n\nCooldown\n- Excellent travail Fr\u00e9d\u00e9ric r\u00e9cup\u00e8re bien maintenant 8m 55% pace\n\n[Weekly Plan - Base]",
+      "planned_tss": 51,
+      "duration_hours": 0.0
+    },
+    {
+      "id": "event_6",
       "date": "2026-04-05T00:00:00",
       "name": "Planned Workout",
       "type": "RACE_A",
