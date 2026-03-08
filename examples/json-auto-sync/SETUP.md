@@ -4,6 +4,8 @@ This guide explains how to create an automated JSON data mirror of your Interval
 
 > **Prefer an interactive guide?** Paste [SETUP_ASSISTANT.md](../../SETUP_ASSISTANT.md) into any AI chat and it will walk you through this entire setup step by step.
 
+> **Running an agentic platform locally?** If your AI coach runs on the same machine as your data (OpenClaw, Claude Code, Cowork, etc.), consider [local sync](../json-local-sync/SETUP.md) instead — simpler setup, no GitHub needed, data never leaves your machine.
+
 ---
 
 ## Overview
@@ -265,4 +267,6 @@ For additional privacy, use a **private repository** and a separate GitHub accou
 
 ## Update Notifications
 
-The sync script automatically checks for upstream protocol updates from the [Section 11 repository](https://github.com/CrankAddict/section-11). When a new version is available, a GitHub Issue is created in your data repo with a summary of changes. No action is needed — just watch your Issues tab.
+The sync script checks for upstream updates using `manifest.json` from the [Section 11 repository](https://github.com/CrankAddict/section-11). When new versions are available, a GitHub Issue is created in your data repo listing the changed files. No action is needed — just watch your Issues tab.
+
+For local setups (non-GitHub), see [json-local-sync](../json-local-sync/SETUP.md#staying-up-to-date) for the local update mechanism.
