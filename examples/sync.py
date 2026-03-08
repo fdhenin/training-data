@@ -4,6 +4,29 @@ Intervals.icu → GitHub/Local JSON Export
 Exports training data for LLM access.
 Supports both automated GitHub sync and manual local export.
 
+Version 3.76 - Bug fixes: workout summary off-by-one, deload phase detection
+  - Workout summary parser: trailing solo work step (final rep, no paired rest) was silently dropped
+    in both _detect_alternating_in_nested (Pattern A) and _try_alternating_block (Pattern B).
+    e.g., 13×30s reported as 12×30s. Both paths now consume the orphaned trailing rep.
+  - Phase detection Path C: retrospective deload when plan coverage is 0%.
+    Existing paths required planned_tss_delta (Path A) or ctl_slope > 1.0 (Path B, unrealistic
+    during deload). Path C: completed-week TSS ≤ 80% of prior-3-week avg + prior build evidence.
+    Build evidence uses [-4:-1] slices to exclude the current deload week from averages.
+    No hard-day gate — deload weeks legitimately contain reduced-volume quality sessions.
+    Validated against 26 weeks: catches all confirmed deloads, zero false positives.
+
+Version 3.75 - Working directory awareness + local setup
+  - Data files (history.json, ftp_history.json) now write to caller's working directory, not script's directory
+  - Enables running sync.py from a parent directory: python section11/examples/sync.py --output latest.json
+  - No change for users who run sync.py from its own directory
+  - Migration: if you run sync.py from a parent directory, move history.json and ftp_history.json to your working directory
+  - --init flag: download the full Section 11 repo to section11/ for local-only setups (no GitHub needed)
+  - --update flag: check for updates from official repo, show diff, pull changed files after confirmation
+  - Manifest check on sync runs: once per 24h, silent notification if updates available
+  - --lockfile flag: prevent overlapping runs for automated timers (stale detection via PID + 10-min age)
+  - Update notifications: manifest.json preferred, changelog.json fallback (backward compatible)
+  - Bootstrap flow: python sync.py --setup → python sync.py --init → use section11/examples/sync.py going forward
+
 Version 3.73 - Phase detection: week-aligned prospective windows
   - Stream 2 windows aligned to training week instead of rolling 7-day from today
   - Fixes mid-week deload misclassification: rolling window leaked next week's build sessions
@@ -66,6 +89,11 @@ from typing import Dict, List, Optional, Tuple
 import base64
 import math
 import statistics
+import hashlib
+import zipfile
+import tempfile
+import shutil
+import atexit
 from collections import defaultdict
 from pathlib import Path
 
@@ -79,7 +107,7 @@ class IntervalsSync:
     HISTORY_FILE = "history.json"
     UPSTREAM_REPO = "CrankAddict/section-11"
     CHANGELOG_FILE = "changelog.json"
-    VERSION = "3.74"
+    VERSION = "3.76"
 
     # Sport family mapping for per-sport monotony calculation
     # Multi-sport athletes get inflated total monotony when cross-training
@@ -121,6 +149,7 @@ class IntervalsSync:
         self.github_repo = github_repo
         self.debug = debug
         self.script_dir = Path(__file__).parent
+        self.data_dir = Path.cwd()  # Data files (history.json, ftp_history.json) write to caller's working directory
         self.week_start_day = week_start_day if week_start_day is not None else self.WEEK_START_DAY
     
     def _intervals_get(self, endpoint: str, params: Dict = None) -> Dict:
@@ -218,7 +247,7 @@ class IntervalsSync:
             "outdoor": {"2026-01-01": 280, "2026-02-01": 287}
         }
         """
-        ftp_history_path = self.script_dir / self.FTP_HISTORY_FILE
+        ftp_history_path = self.data_dir / self.FTP_HISTORY_FILE
         
         if ftp_history_path.exists():
             try:
@@ -282,7 +311,7 @@ class IntervalsSync:
                     print(f"  Outdoor FTP recorded: {current_ftp_outdoor}")
         
         # Save to file
-        ftp_history_path = self.script_dir / self.FTP_HISTORY_FILE
+        ftp_history_path = self.data_dir / self.FTP_HISTORY_FILE
         try:
             with open(ftp_history_path, 'w') as f:
                 json.dump(history, f, indent=2, sort_keys=True)
@@ -2268,16 +2297,17 @@ class IntervalsSync:
             elif hard_planned >= 1 or (plan_cov_curr > 0 and (not tss_delta_reliable or tss_delta > 0.80)):
                 return "Build", "low", ["BUILD_RESUMING_AFTER_DELOAD_TENTATIVE"]
         
-        # === Priority 5: Deload (calendar-driven) ===
+        # === Priority 5: Deload (calendar-driven or retrospective) ===
         # Deload = Build history + reduced/easy planned load + ≤1 hard session planned.
         # The 3-week Build history gate (weeks >= 3, rising CTL, hard_avg >= 1.5) is
         # intentional: an athlete doing their first-ever deload with <3 weeks of Build
         # data gets Recovery instead. This is the safer classification — without sufficient
         # Build evidence, we can't distinguish "planned deload" from "athlete just isn't
         # training hard". False Recovery is less harmful than false Deload.
-        # Two paths:
+        # Three paths:
         #  A) Reliable TSS delta ≤ 0.80 + ≤1 hard session → strong Deload signal
         #  B) Sparse plan (< 3 sessions) + ≤1 hard session + Build history → Deload candidate
+        #  C) No plan at all + completed week TSS ≤ 80% of prior 3-week avg → retrospective Deload
         hard_planned = s2.get("hard_sessions_planned", 0)
         build_history = (ctl_slope is not None and ctl_slope > 0 and
                         hard_avg is not None and hard_avg >= 1.5 and
@@ -2301,6 +2331,36 @@ class IntervalsSync:
                   and ctl_slope > 1.0 and hard_avg >= 2.0):
                 deload_signal = True
                 deload_path = "B"
+        
+        # Path C: Retrospective deload — no usable plan, but completed week
+        # shows clear TSS reduction vs prior 3 weeks.  Build evidence computed
+        # from prior 3 weeks ONLY (excludes the current deload week which
+        # would dilute hard_avg / ctl_slope in the 4-week window).
+        if not deload_signal and next_7d_sessions == 0:
+            tss_values = s1.get("tss_values", [])
+            hard_values = s1.get("hard_day_values", [])
+            if len(tss_values) >= 4 and len(hard_values) >= 4:
+                current_tss = tss_values[-1]
+                prior_3_avg = statistics.mean(tss_values[-4:-1])
+                prior_3_hard_avg = statistics.mean(hard_values[-4:-1])
+                
+                # Build evidence from PRIOR 3 weeks only
+                prior_build = (prior_3_hard_avg >= 1.5 and
+                               prior_3_avg > 0 and
+                               weeks >= 4)
+                
+                if prior_build:
+                    actual_ratio = current_tss / prior_3_avg if prior_3_avg > 0 else 1.0
+                    # ≤80% of prior volume — same threshold as Path A (≥20%
+                    # reduction).  Validated against 26 weeks of history: catches
+                    # confirmed deload weeks with zero false positives.
+                    # Hard-day count is NOT gated here: deload weeks often keep
+                    # 1-2 reduced-volume quality sessions (e.g., 2x10m SS) that
+                    # still trigger the zone ladder as "hard". The TSS reduction
+                    # captures the volume difference that matters.
+                    if actual_ratio <= 0.80:
+                        deload_signal = True
+                        deload_path = "C"
         
         if deload_signal:
             if next_week_delta is not None and next_week_delta >= 0.80:
@@ -2432,7 +2492,7 @@ class IntervalsSync:
     
     def _load_weekly_rows_for_phase(self) -> List[Dict]:
         """Load recent weekly_180d rows from history.json for phase detection lookback."""
-        history_path = self.script_dir / self.HISTORY_FILE
+        history_path = self.data_dir / self.HISTORY_FILE
         if not history_path.exists():
             return []
         try:
@@ -3191,7 +3251,7 @@ class IntervalsSync:
         """
         Check history.json availability and return confidence metadata.
         """
-        history_path = self.script_dir / self.HISTORY_FILE
+        history_path = self.data_dir / self.HISTORY_FILE
         
         if history_path.exists():
             try:
@@ -3243,7 +3303,7 @@ class IntervalsSync:
         Refresh runs only on Sundays (6) or Mondays (0), in the first two runs
         after midnight (00:00 and 00:15 UTC).
         """
-        history_path = self.script_dir / self.HISTORY_FILE
+        history_path = self.data_dir / self.HISTORY_FILE
         
         # If history.json doesn't exist, ALWAYS generate (bypass time gate)
         if not history_path.exists():
@@ -3420,7 +3480,7 @@ class IntervalsSync:
         }
         
         # Save locally
-        history_path = self.script_dir / self.HISTORY_FILE
+        history_path = self.data_dir / self.HISTORY_FILE
         with open(history_path, 'w') as f:
             json.dump(history, f, indent=2, default=str)
         print(f"  ✅ history.json saved ({len(daily_90d)} daily, {len(weekly_180d)} weekly rows)")
@@ -3935,17 +3995,10 @@ class IntervalsSync:
     
     def check_upstream_updates(self):
         """
-        Check CrankAddict/section-11 for new releases and create a GitHub Issue
-        if there's a new notification_id.
+        Check CrankAddict/section-11 for new releases and create a GitHub Issue.
         
-        Uses date-based changelog format:
-        {
-            "notification_id": "2026-02-11",
-            "changes": [
-                "SECTION_11.md - UPDATE - 2026-02-11 - Description",
-                "sync.py - UPDATE - 2026-02-11 - Description"
-            ]
-        }
+        Tries manifest.json first (version-based comparison). Falls back to
+        changelog.json (notification_id-based) if manifest.json is not available.
         """
         if not self.github_token or not self.github_repo:
             if self.debug:
@@ -3957,7 +4010,48 @@ class IntervalsSync:
             "Accept": "application/vnd.github+json"
         }
         
-        # Fetch changelog.json from upstream
+        # Try manifest.json first, fall back to changelog.json
+        manifest = _fetch_upstream_manifest()
+        
+        if manifest and manifest.get("files"):
+            self._check_updates_via_manifest(manifest, headers)
+        else:
+            self._check_updates_via_changelog(headers)
+    
+    def _check_updates_via_manifest(self, manifest, headers):
+        """Create a GitHub Issue if manifest versions have changed."""
+        files = manifest.get("files", {})
+        
+        # Generate deterministic fingerprint from sorted file:version pairs
+        version_pairs = sorted(f"{k}:{v.get('version', '?')}" for k, v in files.items())
+        fingerprint = "|".join(version_pairs)
+        
+        # Use a short hash for the issue title
+        fp_hash = hashlib.md5(fingerprint.encode()).hexdigest()[:8]
+        issue_title = f"Section 11 updates — {fp_hash}"
+        
+        # Check if issue already exists
+        if self._issue_exists(issue_title, headers):
+            if self.debug:
+                print(f"  Update notification already exists: {issue_title}")
+            return
+        
+        # Build issue body
+        body = "## Section 11 Update Available\n\n"
+        body += "### Current versions:\n"
+        for name, info in sorted(files.items()):
+            body += f"- **{name}** v{info.get('version', '?')} — {info.get('description', '')}\n"
+        body += f"\n### Repository:\n"
+        body += f"https://github.com/{self.UPSTREAM_REPO}\n"
+        body += f"\n### Update instructions:\n"
+        body += f"- **Local users:** `python section11/examples/sync.py --update`\n"
+        body += f"- **GitHub users:** download the latest files from the repository\n"
+        body += f"\n*This issue was auto-created by sync.py v{self.VERSION}*"
+        
+        self._create_issue(issue_title, body, headers)
+    
+    def _check_updates_via_changelog(self, headers):
+        """Legacy: Create a GitHub Issue from changelog.json notification_id."""
         try:
             url = f"https://raw.githubusercontent.com/{self.UPSTREAM_REPO}/main/{self.CHANGELOG_FILE}"
             response = requests.get(url, timeout=10)
@@ -3980,26 +4074,12 @@ class IntervalsSync:
         
         issue_title = f"Section 11 updates — {notification_id}"
         
-        # Check if issue already exists (open or closed)
-        try:
-            search_url = f"{self.GITHUB_API_URL}/search/issues"
-            search_params = {
-                "q": f'repo:{self.github_repo} "{issue_title}" in:title'
-            }
-            response = requests.get(search_url, headers=headers, params=search_params, timeout=10)
-            
-            if response.status_code == 200:
-                results = response.json()
-                if results.get("total_count", 0) > 0:
-                    if self.debug:
-                        print(f"  Update notification already exists: {issue_title}")
-                    return
-        except Exception as e:
+        if self._issue_exists(issue_title, headers):
             if self.debug:
-                print(f"  Could not search issues: {e}")
+                print(f"  Update notification already exists: {issue_title}")
             return
         
-        # Create new issue
+        # Build issue body
         changes = changelog.get("changes", [])
         body = f"## Section 11 Update Available\n\n"
         body += f"**Notification ID:** {notification_id}\n\n"
@@ -4010,17 +4090,38 @@ class IntervalsSync:
         body += f"https://github.com/{self.UPSTREAM_REPO}\n"
         body += f"\n*This issue was auto-created by sync.py v{self.VERSION}*"
         
+        self._create_issue(issue_title, body, headers)
+    
+    def _issue_exists(self, title, headers):
+        """Check if a GitHub Issue with this title already exists."""
+        try:
+            search_url = f"{self.GITHUB_API_URL}/search/issues"
+            search_params = {
+                "q": f'repo:{self.github_repo} "{title}" in:title'
+            }
+            response = requests.get(search_url, headers=headers, params=search_params, timeout=10)
+            
+            if response.status_code == 200:
+                results = response.json()
+                return results.get("total_count", 0) > 0
+        except Exception as e:
+            if self.debug:
+                print(f"  Could not search issues: {e}")
+        return False
+    
+    def _create_issue(self, title, body, headers):
+        """Create a GitHub Issue."""
         try:
             issues_url = f"{self.GITHUB_API_URL}/repos/{self.github_repo}/issues"
             payload = {
-                "title": issue_title,
+                "title": title,
                 "body": body,
                 "labels": ["update-notification"]
             }
             response = requests.post(issues_url, headers=headers, json=payload, timeout=10)
             
             if response.status_code == 201:
-                print(f"  📢 Update notification created: {issue_title}")
+                print(f"  📢 Update notification created: {title}")
             else:
                 if self.debug:
                     print(f"  Could not create issue (HTTP {response.status_code}): {response.text}")
@@ -4400,10 +4501,24 @@ class IntervalsSync:
                 pairs.append((w_dur, w_power, r_dur, r_power))
                 i += 2
             
-            if len(pairs) < 3:
+            # Trailing solo work step: final rep with no rest (builder drops
+            # the last rest when it's followed by set recovery or cooldown).
+            has_trailing = False
+            if i == len(remaining) - 1:
+                trailing = remaining[i]
+                t_power = self._get_power(trailing)
+                t_dur = trailing.get("duration")
+                if (t_power is not None and t_dur is not None and pairs):
+                    ref_wd = pairs[0][0]
+                    ref_wp = pairs[0][1]
+                    if (t_dur == ref_wd and
+                            abs(int(round(t_power)) - ref_wp) <= 2):
+                        has_trailing = True
+            
+            if len(pairs) + (1 if has_trailing else 0) < 3:
                 return None
             
-            # Consistency check
+            # Consistency check (pairs only — trailing rep already validated above)
             ref_w_dur, ref_w_power, ref_r_dur, ref_r_power = pairs[0]
             for j, (wd, wp, rd, rp) in enumerate(pairs):
                 if wd != ref_w_dur:
@@ -4417,7 +4532,7 @@ class IntervalsSync:
                     return None
             
             # Build summary
-            n_reps = len(pairs)
+            n_reps = len(pairs) + (1 if has_trailing else 0)
             work_dur_str = self._format_duration(ref_w_dur)
             work_power = int(round(ref_w_power))
             rest_dur_str = self._format_duration(ref_r_dur)
@@ -4628,6 +4743,14 @@ class IntervalsSync:
                 
                 count += 1
                 j += 2
+            
+            # Trailing solo work step: final rep with no paired rest
+            if j < len(step_data):
+                wd, wp = step_data[j]
+                if (wd is not None and wp is not None
+                        and abs(wd - ref_w_dur) <= 1
+                        and abs(int(round(wp)) - ref_w_power) <= 2):
+                    count += 1
             
             if count < 3:
                 return None
@@ -5196,9 +5319,453 @@ class IntervalsSync:
         return filepath
 
 
+# === Local Setup & Update Helpers ===
+
+SECTION11_REPO_RAW = "https://raw.githubusercontent.com/CrankAddict/section-11/main"
+
+
+def _fetch_upstream_manifest():
+    """Fetch manifest.json from the official Section 11 repo.
+    Returns manifest dict or None on failure. Caller handles errors."""
+    try:
+        response = requests.get(f"{SECTION11_REPO_RAW}/manifest.json", timeout=30)
+        response.raise_for_status()
+        manifest = response.json()
+        if manifest.get("files"):
+            return manifest
+        return None
+    except Exception:
+        return None
+
+
+def _compare_versions(upstream_files, local_versions):
+    """Compare upstream manifest files against local versions.
+    Returns (needs_update, current) where each is a list of dicts."""
+    needs_update = []
+    current = []
+    
+    for name, info in upstream_files.items():
+        upstream_ver = info.get("version", "?")
+        local_ver = local_versions.get(name)
+        description = info.get("description", "")
+        path = info.get("path", "")
+        
+        if local_ver is None:
+            needs_update.append({
+                "name": name, "local": "?", "upstream": upstream_ver,
+                "description": description, "path": path
+            })
+        elif str(local_ver) != str(upstream_ver):
+            needs_update.append({
+                "name": name, "local": str(local_ver), "upstream": upstream_ver,
+                "description": description, "path": path
+            })
+        else:
+            current.append({
+                "name": name, "version": upstream_ver, "description": description
+            })
+    
+    return needs_update, current
+
+
+def do_init():
+    """
+    Download and extract the full Section 11 repo to section11/.
+    
+    Standalone function — does not require Intervals.icu credentials.
+    Downloads the repo as a zip from GitHub, extracts to section11/,
+    and optionally populates local_versions from manifest.json.
+    """
+    data_dir = Path.cwd()
+    target_dir = data_dir / "section11"
+    
+    # Guard: already exists
+    if target_dir.exists():
+        print("Section 11: section11/ already exists in this directory")
+        print("   To update: python section11/examples/sync.py --update")
+        print("   To reinstall: delete section11/ and run --init again")
+        return
+    
+    # Download zip
+    zip_url = "https://github.com/CrankAddict/section-11/archive/refs/heads/main.zip"
+    print("📦 Downloading Section 11 repository...")
+    
+    try:
+        response = requests.get(zip_url, timeout=60)
+        response.raise_for_status()
+    except Exception as e:
+        print(f"Section 11: download failed — {e}")
+        print("   Alternative: git clone https://github.com/CrankAddict/section-11.git section11")
+        return
+    
+    print(f"   Downloaded ({len(response.content) // 1024}KB)")
+    
+    # Extract to temp directory first, then move (atomic)
+    try:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            zip_path = Path(tmp_dir) / "repo.zip"
+            with open(zip_path, 'wb') as f:
+                f.write(response.content)
+            
+            with zipfile.ZipFile(zip_path, 'r') as zf:
+                zf.extractall(tmp_dir)
+            
+            # GitHub zips have a top-level folder like "section-11-main/"
+            extracted = [d for d in Path(tmp_dir).iterdir() 
+                        if d.is_dir() and d.name != '__MACOSX']
+            if len(extracted) != 1:
+                print(f"Section 11: unexpected zip structure — expected 1 directory, found {len(extracted)}")
+                return
+            
+            # Move extracted folder to section11/
+            shutil.move(str(extracted[0]), str(target_dir))
+    except Exception as e:
+        print(f"Section 11: extraction failed — {e}")
+        # Clean up partial extraction if it exists
+        if target_dir.exists():
+            shutil.rmtree(target_dir, ignore_errors=True)
+        return
+    
+    print(f"   ✅ Extracted to section11/")
+    
+    # Read manifest.json if present, populate local_versions in .sync_config.json
+    manifest_path = target_dir / "manifest.json"
+    config_path = data_dir / ".sync_config.json"
+    
+    if manifest_path.exists():
+        try:
+            with open(manifest_path, 'r') as f:
+                manifest = json.load(f)
+            local_versions = {}
+            for name, info in manifest.get("files", {}).items():
+                local_versions[name] = info.get("version")
+            
+            # Load existing config (from --setup) or create new
+            config = {}
+            if config_path.exists():
+                with open(config_path, 'r') as f:
+                    config = json.load(f)
+            config["local_versions"] = local_versions
+            with open(config_path, 'w') as f:
+                json.dump(config, f, indent=2)
+            print(f"   Registered {len(local_versions)} file versions")
+        except Exception as e:
+            print(f"   ⚠️ Could not read manifest.json: {e}")
+    
+    # Delete bootstrap sync.py — LAST STEP, only after extraction fully succeeded
+    bootstrap_path = data_dir / "sync.py"
+    repo_sync = target_dir / "examples" / "sync.py"
+    bootstrap_removed = False
+    
+    if bootstrap_path.exists() and repo_sync.exists():
+        # Verify bootstrap isn't the repo copy (safety check)
+        try:
+            if bootstrap_path.resolve() != repo_sync.resolve():
+                bootstrap_path.unlink()
+                bootstrap_removed = True
+        except Exception as e:
+            print(f"   ⚠️ Could not remove bootstrap sync.py: {e}")
+    
+    # Final message
+    print(f"\n✅ Setup complete.")
+    print(f"   sync.py is now at: section11/examples/sync.py")
+    if bootstrap_removed:
+        print(f"   Bootstrap copy removed.")
+    print(f"\n   From now on, run:")
+    print(f"      python section11/examples/sync.py --output latest.json")
+
+
+def do_update():
+    """
+    Check for updates and pull changed files from the official Section 11 repo.
+    
+    Standalone function — does not require Intervals.icu credentials.
+    Fetches manifest.json from GitHub, compares versions against local_versions
+    in .sync_config.json, and downloads only changed files after confirmation.
+    """
+    data_dir = Path.cwd()
+    target_dir = data_dir / "section11"
+    config_path = data_dir / ".sync_config.json"
+    
+    # Guard: section11/ must exist
+    if not target_dir.exists():
+        print("Section 11: section11/ not found in this directory")
+        print("   Run --init first to set up the local workspace")
+        return
+    
+    # Fetch manifest.json from upstream
+    print("🔍 Checking for Section 11 updates...")
+    manifest = _fetch_upstream_manifest()
+    if not manifest:
+        print("Section 11: could not fetch manifest from GitHub")
+        return
+    
+    upstream_files = manifest.get("files", {})
+    
+    # Load local_versions from .sync_config.json
+    local_versions = {}
+    config = {}
+    if config_path.exists():
+        try:
+            with open(config_path, 'r') as f:
+                config = json.load(f)
+            local_versions = config.get("local_versions", {})
+        except Exception:
+            pass
+    
+    # Compare versions
+    needs_update, current = _compare_versions(upstream_files, local_versions)
+    
+    # Nothing to update
+    if not needs_update:
+        print(f"✅ All {len(current)} files are current")
+        return
+    
+    # Show diff table
+    print(f"\n   Updates available ({len(needs_update)} file{'s' if len(needs_update) != 1 else ''}):\n")
+    
+    # Calculate column widths for alignment
+    name_width = max(len(u["name"]) for u in needs_update)
+    
+    for u in needs_update:
+        name_padded = u["name"].ljust(name_width)
+        print(f"   {name_padded}  {u['local']} → {u['upstream']}   {u['description']}")
+    
+    if current:
+        print(f"\n   Already current ({len(current)}):\n")
+        for c in current:
+            name_padded = c["name"].ljust(name_width)
+            print(f"   ✅ {name_padded}  {c['version']}")
+    
+    # Ask for confirmation
+    print()
+    try:
+        answer = input(f"   Pull {len(needs_update)} update{'s' if len(needs_update) != 1 else ''}? [y/N] ").strip().lower()
+    except (EOFError, KeyboardInterrupt):
+        print("\n   Cancelled")
+        return
+    
+    if answer not in ("y", "yes"):
+        print("   Cancelled")
+        return
+    
+    # Download changed files
+    print()
+    updated = []
+    failed = []
+    
+    for u in needs_update:
+        file_url = f"{SECTION11_REPO_RAW}/{u['path']}"
+        target_path = target_dir / u["path"]
+        
+        try:
+            resp = requests.get(file_url, timeout=30)
+            resp.raise_for_status()
+            
+            # Ensure target directory exists
+            target_path.parent.mkdir(parents=True, exist_ok=True)
+            
+            # Write to temp file, then atomic replace
+            tmp_path = target_path.with_suffix(target_path.suffix + ".tmp")
+            with open(tmp_path, 'wb') as f:
+                f.write(resp.content)
+            os.replace(str(tmp_path), str(target_path))
+            
+            updated.append(u)
+            print(f"   ✅ {u['name']}  {u['local']} → {u['upstream']}")
+        except Exception as e:
+            failed.append(u)
+            print(f"   ❌ {u['name']}  failed: {e}")
+            # Clean up temp file if it exists
+            tmp_path = target_path.with_suffix(target_path.suffix + ".tmp")
+            if tmp_path.exists():
+                try:
+                    tmp_path.unlink()
+                except Exception:
+                    pass
+    
+    # Save updated manifest.json to section11/
+    try:
+        manifest_target = target_dir / "manifest.json"
+        tmp_manifest = manifest_target.with_suffix(".json.tmp")
+        with open(tmp_manifest, 'w') as f:
+            json.dump(manifest, f, indent=2)
+        os.replace(str(tmp_manifest), str(manifest_target))
+    except Exception as e:
+        print(f"   ⚠️ Could not save manifest.json locally: {e}")
+    
+    # Update local_versions for successfully updated files
+    if updated:
+        for u in updated:
+            local_versions[u["name"]] = u["upstream"]
+        config["local_versions"] = local_versions
+        try:
+            with open(config_path, 'w') as f:
+                json.dump(config, f, indent=2)
+        except Exception as e:
+            print(f"   ⚠️ Could not save local_versions: {e}")
+    
+    # Summary
+    if failed:
+        print(f"\n   Updated {len(updated)} file{'s' if len(updated) != 1 else ''}, {len(failed)} failed")
+    elif updated:
+        print(f"\n   ✅ {len(updated)} file{'s' if len(updated) != 1 else ''} updated")
+
+
+def notify_if_updates_available():
+    """
+    Silent, rate-limited check for Section 11 updates during normal sync runs.
+    
+    Runs at most once per 24 hours. Fetches manifest.json from upstream,
+    compares against local_versions, prints a one-line notification if
+    updates are available. Completely silent on any failure — this must
+    never interrupt a sync run.
+    """
+    try:
+        config_path = Path.cwd() / ".sync_config.json"
+        
+        # Load config
+        if not config_path.exists():
+            return
+        with open(config_path, 'r') as f:
+            config = json.load(f)
+        
+        # Rate limit: once per 24 hours
+        last_check = config.get("last_manifest_check")
+        if last_check:
+            try:
+                last_dt = datetime.fromisoformat(last_check)
+                if datetime.now() - last_dt < timedelta(hours=24):
+                    return  # Checked recently, skip
+            except (ValueError, TypeError):
+                pass  # Malformed timestamp, proceed with check
+        
+        # Check if section11/ exists (only relevant for local setups)
+        local_versions = config.get("local_versions")
+        if not local_versions:
+            return  # No local_versions means not a local setup, skip
+        
+        # Fetch manifest
+        manifest = _fetch_upstream_manifest()
+        if not manifest:
+            return  # Silent failure
+        
+        # Compare
+        needs_update, _ = _compare_versions(manifest.get("files", {}), local_versions)
+        
+        # Update timestamp regardless of result
+        config["last_manifest_check"] = datetime.now().isoformat()
+        with open(config_path, 'w') as f:
+            json.dump(config, f, indent=2)
+        
+        # Notify if updates available
+        if needs_update:
+            print(f"\n⚠️  {len(needs_update)} Section 11 update{'s' if len(needs_update) != 1 else ''} available — run: python section11/examples/sync.py --update")
+    
+    except Exception:
+        pass  # Never interrupt a sync run
+
+
+# === Lockfile for automated sync ===
+
+_lockfile_path = None  # Module-level so atexit handler can find it
+
+
+def _is_pid_alive(pid):
+    """Check if a process with the given PID is still running."""
+    try:
+        os.kill(int(pid), 0)
+        return True  # Process exists (we own it)
+    except PermissionError:
+        return True  # Process exists (owned by another user)
+    except (OSError, ValueError, TypeError):
+        return False  # Process doesn't exist or invalid PID
+
+
+def _acquire_lockfile():
+    """
+    Acquire the sync lockfile. Returns True if acquired, False if another
+    instance is running. Handles stale lockfiles from crashed runs.
+    
+    Stale detection:
+    - PID in lockfile is dead → stale, override with warning
+    - Lockfile older than 10 minutes regardless of PID → stale, override
+    - PID alive and age < 10 minutes → another instance running, exit
+    """
+    global _lockfile_path
+    lockfile = Path.cwd() / ".sync.lock"
+    
+    if lockfile.exists():
+        try:
+            with open(lockfile, 'r') as f:
+                lock_data = json.load(f)
+        except Exception:
+            # Can't read lockfile — treat as stale
+            print("Section 11: removing unreadable lockfile")
+            lockfile.unlink(missing_ok=True)
+            lock_data = None
+        
+        if lock_data:
+            lock_pid = lock_data.get("pid")
+            lock_time = lock_data.get("started")
+            
+            # Check if lock is stale by age (>10 minutes)
+            stale_by_age = False
+            if lock_time:
+                try:
+                    lock_dt = datetime.fromisoformat(lock_time)
+                    age_minutes = (datetime.now() - lock_dt).total_seconds() / 60
+                    if age_minutes > 10:
+                        stale_by_age = True
+                except (ValueError, TypeError):
+                    stale_by_age = True  # Can't parse timestamp, treat as stale
+            else:
+                stale_by_age = True  # No timestamp, treat as stale
+            
+            # Check if owning process is alive
+            pid_alive = _is_pid_alive(lock_pid) if lock_pid else False
+            
+            if pid_alive and not stale_by_age:
+                # Legitimate lock — another instance is running
+                return False
+            
+            # Stale lock — override
+            if stale_by_age:
+                print(f"Section 11: lockfile is stale (>10 min) — overriding")
+            elif not pid_alive:
+                print(f"Section 11: lockfile owner (PID {lock_pid}) is not running — overriding stale lock")
+    
+    # Write new lockfile
+    _lockfile_path = lockfile
+    try:
+        with open(lockfile, 'w') as f:
+            json.dump({"pid": os.getpid(), "started": datetime.now().isoformat()}, f)
+        atexit.register(_release_lockfile)
+        return True
+    except Exception as e:
+        print(f"Section 11: could not create lockfile — {e}")
+        return True  # Proceed anyway, don't block sync over a lockfile issue
+
+
+def _release_lockfile():
+    """Remove the lockfile. Called via atexit on normal exit."""
+    global _lockfile_path
+    if _lockfile_path and _lockfile_path.exists():
+        try:
+            # Only remove if we still own it (check PID)
+            with open(_lockfile_path, 'r') as f:
+                lock_data = json.load(f)
+            if lock_data.get("pid") == os.getpid():
+                _lockfile_path.unlink(missing_ok=True)
+        except Exception:
+            pass  # Best effort cleanup
+
+
 def main():
     parser = argparse.ArgumentParser(description="Sync Intervals.icu data to GitHub or local file")
     parser.add_argument("--setup", action="store_true", help="Initial setup wizard")
+    parser.add_argument("--init", action="store_true", help="Download Section 11 repo to section11/ (first-time local setup)")
+    parser.add_argument("--update", action="store_true", help="Check for and pull Section 11 updates")
     parser.add_argument("--athlete-id", help="Intervals.icu athlete ID")
     parser.add_argument("--intervals-key", help="Intervals.icu API key")
     parser.add_argument("--github-token", help="GitHub Personal Access Token")
@@ -5210,6 +5777,7 @@ def main():
     parser.add_argument("--week-start", choices=["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
                         default=None, help="Training week start day (default: mon, or from config)")
     parser.add_argument("--generate-history", action="store_true", help="Force generate history.json (pulls up to 3 years)")
+    parser.add_argument("--lockfile", action="store_true", help="Prevent overlapping runs (recommended for automated timers)")
     
     args = parser.parse_args()
     
@@ -5241,6 +5809,19 @@ def main():
         print("  Push to GitHub:    python sync.py")
         print("  Generate history:  python sync.py --generate-history --output history.json")
         return
+    
+    if args.init:
+        do_init()
+        return
+    
+    if args.update:
+        do_update()
+        return
+    
+    # Lockfile: prevent overlapping runs (for automated timers)
+    if args.lockfile:
+        if not _acquire_lockfile():
+            return  # Another instance is running
     
     config = {}
     if os.path.exists(".sync_config.json"):
@@ -5362,7 +5943,7 @@ def main():
             try:
                 print("\n📊 Auto-generating history.json...")
                 history = sync.generate_history()
-                history_path = sync.script_dir / sync.HISTORY_FILE
+                history_path = sync.data_dir / sync.HISTORY_FILE
                 with open(history_path, 'w') as f:
                     json.dump(history, f, indent=2, default=str)
                 print(f"   ✅ history.json saved to {history_path}")
@@ -5398,6 +5979,9 @@ def main():
         except Exception as e:
             if args.debug:
                 print(f"   ⚠️ Update check failed (non-critical): {e}")
+    
+    # === MANIFEST UPDATE CHECK (local setups, once per 24h) ===
+    notify_if_updates_available()
 
 
 if __name__ == "__main__":
