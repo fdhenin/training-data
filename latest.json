@@ -12,7 +12,7 @@
   },
   "metadata": {
     "athlete_id": "REDACTED",
-    "last_updated": "2026-03-09T04:14:29.885533",
+    "last_updated": "2026-03-09T05:35:34.907786",
     "data_range_days": 7,
     "extended_range_days": 28,
     "version": "3.6.0"
@@ -214,7 +214,7 @@
     "p_max": 634,
     "power_model_source": "wellness.sportInfo",
     "vo2max": null,
-    "calculation_timestamp": "2026-03-09T04:14:29.884665",
+    "calculation_timestamp": "2026-03-09T05:35:34.906987",
     "data_quality": {
       "hrv_data_points": 6,
       "rhr_data_points": 7,
@@ -547,6 +547,51 @@
   "planned_workouts": [
     {
       "id": "event_1",
+      "date": "2026-03-11T09:00:00",
+      "name": "Planned Workout",
+      "type": "WORKOUT",
+      "description": "Warmup\n- 6m ramp 40-75%\n\nMain Set\n- Endurance 32m ramp 56-75%\n\nCooldown\n- 4m ramp 56-40%\n\n[Weekly Plan - Base]",
+      "planned_tss": 29,
+      "duration_hours": 0.0
+    },
+    {
+      "id": "event_2",
+      "date": "2026-03-12T09:00:00",
+      "name": "Planned Workout",
+      "type": "WORKOUT",
+      "description": "Warmup\n- 12m ramp 60-80% pace\n\nMain Set\n- Marathon Pace 1 17m 80% pace\n- Easy Jog 4m 70% pace\n- Marathon Pace 2 17m 80% pace\n- Easy Jog 4m 70% pace\n- Marathon Pace 3 17m 80% pace\n\nCooldown\n- 8m ramp 70-60% pace\n\n[Weekly Plan - Base]",
+      "planned_tss": 76,
+      "duration_hours": 0.0
+    },
+    {
+      "id": "event_3",
+      "date": "2026-03-14T09:00:00",
+      "name": "Planned Workout",
+      "type": "WORKOUT",
+      "description": "Warmup\n- 15m ramp 40-75%\n\nMain Set\n- Endurance 275m ramp 56-75%\n\nCooldown\n- 10m ramp 56-40%\n\n[Weekly Plan - Base]",
+      "planned_tss": 215,
+      "duration_hours": 0.0
+    },
+    {
+      "id": "event_4",
+      "date": "2026-03-15T09:00:00",
+      "name": "Planned Workout",
+      "type": "WORKOUT",
+      "description": "Warmup\n- Salut Fr\u00e9d\u00e9ric, on reste bien facile aujourd'hui pour le Fat Max 8m 65% pace\n\nMain Set\n- Steady low Z2 pour fat oxidation 42m 62% pace\n\nCooldown\n- Super boulot Fr\u00e9d\u00e9ric, r\u00e9cup\u00e8re bien 6m 60% pace\n\n[Weekly Plan - Base]",
+      "planned_tss": 36,
+      "duration_hours": 0.0
+    },
+    {
+      "id": "event_5",
+      "date": "2026-03-16T09:00:00",
+      "name": "Planned Workout",
+      "type": "WORKOUT",
+      "description": "Warmup\n- Salut Fr\u00e9d\u00e9ric, on reste dans le bas de Z2 pour l'oxydation des graisses 6m 60% pace\n\nMain Set\n- Effort constant bas Z2 cible graisse max 28m 62% pace\n\nCooldown\n- Super boulot Fr\u00e9d\u00e9ric, r\u00e9cup\u00e9ration douce 4m 58% pace\n\n[Weekly Plan - Base]",
+      "planned_tss": 24,
+      "duration_hours": 0.0
+    },
+    {
+      "id": "event_6",
       "date": "2026-04-05T00:00:00",
       "name": "Planned Workout",
       "type": "RACE_A",
