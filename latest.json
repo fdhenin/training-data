@@ -12,7 +12,7 @@
   },
   "metadata": {
     "athlete_id": "REDACTED",
-    "last_updated": "2026-03-11T04:18:21.344419",
+    "last_updated": "2026-03-11T05:31:02.653553",
     "data_range_days": 7,
     "extended_range_days": 28,
     "version": "3.6.0"
@@ -214,7 +214,7 @@
     "p_max": 634,
     "power_model_source": "wellness.sportInfo",
     "vo2max": null,
-    "calculation_timestamp": "2026-03-11T04:18:21.343596",
+    "calculation_timestamp": "2026-03-11T05:31:02.652737",
     "data_quality": {
       "hrv_data_points": 6,
       "rhr_data_points": 7,
@@ -495,6 +495,15 @@
   "planned_workouts": [
     {
       "id": "event_1",
+      "date": "2026-03-18T09:00:00",
+      "name": "Planned Workout",
+      "type": "WORKOUT",
+      "description": "Warmup\n- Salut Fr\u00e9d\u00e9ric ! Endurance \u00e0 venir, \u00e9chauffons-nous. 7m ramp 40-75%\n\nMain Set\n- Settle In 9m 56-59%\n- Build 9m 59-66%\n- Upper Z2 9m 66-72%\n- Cruise 7m 72-66%\n\nCooldown\n- Bien jou\u00e9 Fr\u00e9d\u00e9ric, r\u00e9cup\u00e8re bien maintenant. 5m ramp 56-40%\n\n[Weekly Plan - Peak]",
+      "planned_tss": 30,
+      "duration_hours": 0.0
+    },
+    {
+      "id": "event_2",
       "date": "2026-04-05T00:00:00",
       "name": "Planned Workout",
       "type": "RACE_A",
