@@ -1,22 +1,11 @@
 {
-  "notification_id": "2026-03-05",
+  "notification_id": "2026-03-17",
   "changes": [
-    "— v3.6.5→v3.74 + push.py v0.3 + protocol v11.13 (2026-03-05) —",
-    "sync.py v3.6.5: Real activity/event IDs (opaque keys, not PII). coach_notes + chat_notes arrays for AI annotation round-trip",
-    "sync.py v3.7: Phase detection v2 — dual-stream (retrospective history + prospective calendar). 8 states, confidence scoring, reason codes, hysteresis. weekly_180d enriched with per-week phase, acwr, monotony",
-    "sync.py v3.71: HRRc (heart rate recovery) — per-activity + 7d/28d aggregate trend in capability namespace. Display only",
-    "sync.py v3.72: Readiness Decision — deterministic go/modify/skip via P0-P3 priority ladder. 7 signals (HRV/RHR/Sleep/TSB/ACWR/Feel/RI) with phase-adjusted thresholds. Replaces phantom AAS",
-    "sync.py v3.73: Phase detection fix — prospective windows aligned to training week (configurable via WEEK_START secret/config/env, default Monday). Fixes mid-week deload misclassification",
-    "sync.py v3.74: Null-safe handling for planned event fields (moving_time, description). auto-sync.yml git config fix for README update step",
-    "push.py v0.3: set-threshold (sport-specific FTP/LTHR updates with preview), annotate (notes on activities/events via description or chat). push-workout.yml for GitHub Actions dispatch",
-    "SECTION_11.md v11.11→v11.13: Phase detection criteria, HRRc, Readiness Decision section. AAS replaced with deterministic priority ladder",
-    "Report templates: Phase narrative (weekly/block), HRRc (all templates), readiness_decision (pre-workout), EF added. XhYm formatting throughout",
-    "auto-sync.yml: WEEK_START secret support, archive monthly subdirectories (archive/YYYY-MM/)",
-    "Documentation: Gemini platform guidance, WEEK_START setup in all SETUP files, private repo access updates, WORKOUT_REFERENCE rewrite",
-    "Upgrade note: After updating sync.py, delete history.json and run twice — first run regenerates history, second run uses it for phase detection",
-    "— v3.6.2→v3.6.4 + push.py v0.2 (2026-03-03) —",
-    "sync.py v3.6.2→3.6.4: Planned workout summaries — interval sessions compressed to one-line shapes. Tiered detail: full days 0-7, skeleton days 8-42. Human-readable time fields (XhYm) throughout",
-    "push.py v0.2 + push-workout.yml: Write planned workouts to Intervals.icu calendar (push, list, move, delete). GitHub Actions dispatch or local CLI. Template ID mappings for all 14 Workout Reference sessions",
-    "Report templates: All report templates and examples updated with XhYm formatting + Formatting Rule section"
+    "— sync.py v3.84 — Activity description and chat_notes on completed activities. Phase week off-by-one fix (2026-03-15) —",
+    "— sync.py v3.85 + SECTION_11.md v11.16 — Remaining wellness fields added (~20 new). wellness_field_scales legend. hrvSDNN case fix (2026-03-15) —",
+    "— sync.py v3.86 — planned_tss_delta filters to primary sport. sport_tss_breakdown on weekly rows (2026-03-15) —",
+    "— SECTION_11.md v11.17 — Phase context and tomorrow preview in pre/post-workout report templates (2026-03-17) —",
+    "— Documentation — JSON examples refreshed to v3.85 schema, moved to examples/json-examples/. Strava data stripping warning in README + SETUP_ASSISTANT (2026-03-15) —",
+    "Most files touched — recommend pulling a fresh copy."
   ]
 }

@@ -24,6 +24,8 @@ python push.py push --json week.json --confirm
 
 Read operations (`list`) have no safety gate — they never modify anything.
 
+**Scope:** All write operations (push, move, delete) operate on planned events only — future calendar items. Completed activities and training history cannot be modified or deleted through push.py.
+
 ## Setup
 
 ### Path 1: GitHub Actions dispatch (recommended)
@@ -88,6 +90,8 @@ Credentials loaded from (first match wins):
 1. CLI args: `--athlete-id`, `--api-key`
 2. `.sync_config.json` in working directory (same file sync.py uses)
 3. Environment: `ATHLETE_ID`, `INTERVALS_KEY`
+
+To keep your local JSON data fresh automatically (so push.py and your agent always have current data), see [json-local-sync](../json-local-sync/SETUP.md).
 
 Python import also works:
 
