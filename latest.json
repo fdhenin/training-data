@@ -12,7 +12,7 @@
   },
   "metadata": {
     "athlete_id": "REDACTED",
-    "last_updated": "2026-03-19T16:07:34.257448",
+    "last_updated": "2026-03-19T17:14:04.524015",
     "data_range_days": 7,
     "extended_range_days": 28,
     "version": "3.6.0"
@@ -32,16 +32,16 @@
     "total_activities": 4,
     "by_activity_type": {
       "Ride": {
-        "duration_decimal_hours": 4.76,
-        "count": 2,
-        "tss": 338,
-        "distance_km": 125.3
+        "duration_decimal_hours": 6.25,
+        "count": 3,
+        "tss": 442,
+        "distance_km": 166.1
       },
       "VirtualRide": {
-        "duration_decimal_hours": 2.54,
-        "count": 2,
-        "tss": 183,
-        "distance_km": 69.7
+        "duration_decimal_hours": 1.05,
+        "count": 1,
+        "tss": 79,
+        "distance_km": 28.8
       }
     }
   },
@@ -213,7 +213,7 @@
     "p_max": 634,
     "power_model_source": "wellness.sportInfo",
     "vo2max": null,
-    "calculation_timestamp": "2026-03-19T16:07:34.256503",
+    "calculation_timestamp": "2026-03-19T17:14:04.523110",
     "data_quality": {
       "hrv_data_points": 7,
       "rhr_data_points": 7,
@@ -230,8 +230,8 @@
     {
       "id": "activity_1",
       "date": "2026-03-19T12:07:57",
-      "type": "VirtualRide",
-      "name": "Tour a\u00e9roport",
+      "type": "Ride",
+      "name": "Training Session",
       "duration_hours": 1.48,
       "distance_km": 40.86,
       "tss": 104,
