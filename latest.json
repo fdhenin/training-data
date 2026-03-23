@@ -12,7 +12,7 @@
   },
   "metadata": {
     "athlete_id": "REDACTED",
-    "last_updated": "2026-03-22T23:50:43.075758",
+    "last_updated": "2026-03-23T01:58:05.280262",
     "data_range_days": 7,
     "extended_range_days": 28,
     "version": "3.6.0"
@@ -20,10 +20,10 @@
   "alerts": [
     {
       "metric": "race_taper",
-      "value": 14,
+      "value": 13,
       "severity": "info",
       "threshold": "RACE_A within 8-14 days",
-      "context": "RACE_A 'Cyclosportive Les H\u00e9ros' in 14 days. Begin volume reduction (target 41-60% over 2 weeks). Maintain intensity. CTL should peak now or within the next few days.",
+      "context": "RACE_A 'Cyclosportive Les H\u00e9ros' in 13 days. Begin volume reduction (target 41-60% over 2 weeks). Maintain intensity. CTL should peak now or within the next few days.",
       "persistence_days": null,
       "tier": 1
     }
@@ -57,10 +57,10 @@
   },
   "current_status": {
     "fitness": {
-      "ctl": 64.9,
-      "atl": 95.96,
-      "tsb": -31.06,
-      "ramp_rate": 4.51,
+      "ctl": 63.37,
+      "atl": 83.19,
+      "tsb": -19.82,
+      "ramp_rate": 4.41,
       "fitness_source": "From Intervals.icu API (reflects completed workouts)"
     },
     "thresholds": {
@@ -76,20 +76,20 @@
     },
     "current_metrics": {
       "weight_kg": 69.502,
-      "resting_hr": 57,
-      "hrv": 28.0,
-      "sleep_quality": 2,
-      "sleep_hours": 7.85
+      "resting_hr": 59,
+      "hrv": null,
+      "sleep_quality": null,
+      "sleep_hours": null
     }
   },
   "derived_metrics": {
-    "recovery_index": 0.79,
-    "hrv_baseline_7d": 34.9,
-    "rhr_baseline_7d": 56.4,
-    "hrv_baseline_28d": 37.9,
-    "rhr_baseline_28d": 55.9,
-    "latest_hrv": 28.0,
-    "latest_rhr": 57,
+    "recovery_index": null,
+    "hrv_baseline_7d": 35.5,
+    "rhr_baseline_7d": 56.9,
+    "hrv_baseline_28d": 38.1,
+    "rhr_baseline_28d": 56,
+    "latest_hrv": null,
+    "latest_rhr": 59,
     "acwr": 1.1,
     "acwr_interpretation": "optimal",
     "monotony": 0.81,
@@ -101,7 +101,7 @@
     "multi_sport_detected": false,
     "strain": 497.0,
     "stress_tolerance": 6.1,
-    "load_recovery_ratio": 7.8,
+    "load_recovery_ratio": null,
     "tss_7d_total": 613.0,
     "tss_28d_total": 2221.0,
     "zone_distribution_7d": {
@@ -224,16 +224,16 @@
     "p_max": 634,
     "power_model_source": "wellness.sportInfo",
     "vo2max": null,
-    "calculation_timestamp": "2026-03-22T23:50:43.074815",
+    "calculation_timestamp": "2026-03-23T01:58:05.279287",
     "data_quality": {
-      "hrv_data_points": 7,
+      "hrv_data_points": 6,
       "rhr_data_points": 7,
       "activities_7d": 4,
       "activities_28d": 17,
       "planned_workouts_7d": 0,
       "ftp_history_days": {
-        "indoor": 24,
-        "outdoor": 24
+        "indoor": 25,
+        "outdoor": 25
       }
     }
   },
@@ -449,21 +449,6 @@
   ],
   "wellness_data": [
     {
-      "date": "2026-03-16",
-      "weight_kg": null,
-      "resting_hr": 56,
-      "hrv_rmssd": 31.0,
-      "hrv_sdnn": null,
-      "sleep_hours": 7.7,
-      "sleep_quality": 2,
-      "sleep_score": 83.0,
-      "mental_energy": null,
-      "fatigue": null,
-      "soreness": null,
-      "avg_sleeping_hr": null,
-      "vo2max": null
-    },
-    {
       "date": "2026-03-17",
       "weight_kg": null,
       "resting_hr": 56,
@@ -552,6 +537,21 @@
       "soreness": null,
       "avg_sleeping_hr": null,
       "vo2max": null
+    },
+    {
+      "date": "2026-03-23",
+      "weight_kg": null,
+      "resting_hr": 59,
+      "hrv_rmssd": null,
+      "hrv_sdnn": null,
+      "sleep_hours": null,
+      "sleep_quality": null,
+      "sleep_score": null,
+      "mental_energy": null,
+      "fatigue": null,
+      "soreness": null,
+      "avg_sleeping_hr": null,
+      "vo2max": null
     }
   ],
   "planned_workouts": [
@@ -578,8 +578,8 @@
     "total_training_hours": 10.21,
     "total_tss": 613,
     "activities_count": 4,
-    "avg_hrv": 34.9,
-    "avg_resting_hr": 56.4
+    "avg_hrv": 35.5,
+    "avg_resting_hr": 56.9
   },
   "race_calendar": {
     "next_race": {
@@ -587,7 +587,7 @@
       "date": "2026-04-05",
       "category": "RACE_A",
       "type": "Ride",
-      "days_until": 14,
+      "days_until": 13,
       "moving_time_seconds": null,
       "distance_meters": 130000.0
     },
@@ -597,7 +597,7 @@
         "date": "2026-04-05",
         "category": "RACE_A",
         "type": "Ride",
-        "days_until": 14,
+        "days_until": 13,
         "moving_time_seconds": null,
         "distance_meters": 130000.0
       },
@@ -606,7 +606,7 @@
         "date": "2026-04-26",
         "category": "RACE_A",
         "type": "Ride",
-        "days_until": 35,
+        "days_until": 34,
         "moving_time_seconds": null,
         "distance_meters": 126000.0
       },
@@ -615,7 +615,7 @@
         "date": "2026-05-14",
         "category": "RACE_B",
         "type": "Ride",
-        "days_until": 53,
+        "days_until": 52,
         "moving_time_seconds": null,
         "distance_meters": null
       },
@@ -624,7 +624,7 @@
         "date": "2026-06-13",
         "category": "RACE_A",
         "type": "Ride",
-        "days_until": 83,
+        "days_until": 82,
         "moving_time_seconds": null,
         "distance_meters": null
       }
@@ -633,8 +633,8 @@
       "active": true,
       "event_name": "Cyclosportive Les H\u00e9ros",
       "event_date": "2026-04-05",
-      "days_until": 14,
-      "message": "RACE_A 'Cyclosportive Les H\u00e9ros' in 14 days. Begin volume reduction (target 41-60% over 2 weeks). Maintain intensity. CTL should peak now or within the next few days."
+      "days_until": 13,
+      "message": "RACE_A 'Cyclosportive Les H\u00e9ros' in 13 days. Begin volume reduction (target 41-60% over 2 weeks). Maintain intensity. CTL should peak now or within the next few days."
     },
     "race_week": {
       "active": false
