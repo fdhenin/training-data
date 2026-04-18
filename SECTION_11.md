@@ -1,10 +1,22 @@
 # Section 11 — AI Coach Protocol
 
-**Protocol Version:** 11.33  
-**Last Updated:** 2026-04-15
+**Protocol Version:** 11.34  
+**Last Updated:** 2026-04-18
 **License:** [MIT](https://opensource.org/licenses/MIT)
 
 ### Changelog
+
+**v11.34 — Testing Protocol & RPE Expectation Bands:**
+- New section: `Testing Protocol` — codifies when formal testing adds value given continuous-data coverage (Benchmark Index, DFA a1 crossings, sustained-power observations, power-curve / HR-curve deltas). Continuous-data-first philosophy; tests as validation/confirmation/onboarding, not primary zone source
+- Data-driven staleness signals defined: DFA a1 calibration delta at `moderate`/`high` confidence and >5% dossier delta (primary trigger); Benchmark Index stall/regression outside seasonal expectation; sustained power above prescribed zones (requires ≥2 sessions in rolling 7d — noise guard); power-curve vs HR-curve divergence
+- Negative triggers: non-go readiness, recovery week, illness within 14d, ACWR outside safe band, RI persistent amber, phase Peak or Taper, Race-Week Protocol active, adverse environment
+- Protocol options table: 20-min ×0.95, ramp, 2×8min with honest strengths/limitations. Running equivalents deferred (owner: pace curve extension)
+- Interpretation rules: same-conditions comparison (indoor vs outdoor, protocol, freshness), accept/reject criteria, expected improvement rates by phase
+- New subsection: `RPE Expectation Bands (IF-calibrated)` — reference table mapping IF bands to expected RPE at the work portion. Consumers: test-result validation, general session-effort reading, canonical spec for future Effort Response Signal. Duration, indoor/outdoor, and environmental modifiers documented. Does NOT alter Feel/RPE Override rules (v11.14)
+- Boundaries: does NOT mandate testing, does NOT auto-update dossier zones, does NOT enter readiness P0–P3, does NOT override continuous data
+- Two-way cross-references added: Benchmark Index (Governance Rules) and DFA a1 Zone Validation Use both forward-link to Testing Protocol
+- Documentation-only; no sync.py changes, no template changes, no report changes
+- Future touchpoints flagged: post-workout report RPE-vs-expected commentary (separate template pass), running-specific RPE bands (with pace curve extension)
 
 **v11.33 — Athlete Profile, Notes & Activity Unit Labels:**
 - New top-level `athlete_profile` block in `latest.json` — stable identity fields from existing athlete endpoint call (zero new API calls): `date_of_birth`, derived `age`, `height_m`, `sex`, `location`, `timezone`, `platform_activated`, derived `years_on_platform`
@@ -609,6 +621,7 @@ Benchmark Index interpretation must account for seasonal training phases. Expect
 - Benchmark Index should be evaluated no more frequently than every 4 weeks
 - Negative trends persisting >8 weeks *outside expected seasonal context* warrant programme review
 - AI must not use Benchmark Index to override athlete-confirmed FTP values
+- When Benchmark Index stalls or regresses outside seasonal expectations, see the `Testing Protocol` section below for guidance on when formal confirmation testing adds value
 
 **Computational Consistency:**
 - All computations must maintain deterministic consistency
@@ -1623,6 +1636,8 @@ When `latest.json.derived_metrics.capability.dfa_a1_profile.trailing_by_sport.cy
 
 **Validated sports only:** Only cycling estimates qualify for calibration delta surfacing. Other sports' estimates are descriptive only.
 
+**Testing Protocol linkage:** When a calibration delta is surfaced per the rule above, see the `Testing Protocol` section below for guidance on when formal confirmation adds value vs. continued continuous-data tracking.
+
 #### Session Interpretation Rules
 
 For each completed session with a sufficient `dfa` block, the AI may apply the following interpretive rules:
@@ -1675,6 +1690,105 @@ DFA a1 is a **Tier-2 interpretive signal**. The following constraints are absolu
 | Mateo-March et al. (2023) Eur J Appl Physiol — pro cyclists | DFA a1 vs lactate threshold comparison in elite cyclists; method viable for field use, lactate remains gold standard | Pro-level cycling validation; DFA as accessible field proxy, not lab replacement |
 | Rogers, Peake et al. (2025) Eur J Appl Physiol — Fatmaxxer validation | Open-source Android implementation (Fatmaxxer) shows close alignment with Kubios HRV reference for both DFA a1 responses and HRV thresholds across 23 cyclists in step-ramp-step protocol | Validates the open-source phone-app path documented in `examples/dfa_a1/NON_GARMIN.md`; relevant when phone fallback ever ships |
 | Altini methodology (HRV4Training / AlphaHRV documentation) | Implementation: rolling 2-min windows, RR artifact correction, 5% artifact rate as trustworthiness threshold; sentinel zeros during warmup/uncorrected windows | Quality gates: 5% artifact filter, sentinel-zero exclusion, minimum dwell time |
+
+
+
+### Testing Protocol
+
+#### Overview
+
+Continuous data from structured sessions provides most of what a formal FTP test provides — and does so without the single-day dependency on pacing skill, motivation, sleep, and fueling all aligning. The Benchmark Index (longitudinal modeled-FTP tracking), DFA a1 crossing-band estimates, sustained-power observations from `intervals.json`, Efficiency Factor trends, and power/HR curve deltas together produce a continuous picture of aerobic and threshold capability. Well-executed training is the test.
+
+Formal testing retains value in specific situations: establishing a baseline when no historical data exists, resolving contradictions between continuous signals, confirming a suspected zone drift the athlete wants anchored to a number, or re-establishing baseline after an extended data gap.
+
+This section codifies those situations — not as a mandate, but as guidance on when the AI may *suggest* a test and which protocol fits. The decision to test belongs to the athlete.
+
+#### When Formal Testing Adds Value
+
+- **New athlete onboarding** — no historical data to extrapolate from. A single baseline test anchors the dossier; subsequent tracking reverts to continuous data.
+- **Athlete confidence** — continuous signals converge on a zone shift, but the athlete wants a concrete number to anchor training on before adjusting.
+- **Contradictory signals** — EF trending up while power curve is flat (or the reverse); Benchmark Index positive while DFA a1 profile suggests LT1 regression. A single test resolves which signal to trust.
+- **Post-break return** — returning from injury, illness, or extended layoff where continuous data was interrupted. Pre-break zones are unreliable; a test re-anchors.
+
+#### Data-Driven Staleness Signals
+
+The AI may surface a *test suggestion* (not a requirement) when one or more of the following are true. These are triggers for conversation, not prescriptions:
+
+- **DFA a1 calibration delta** — `dfa_a1_profile.trailing_by_sport.cycling` at `moderate` or `high` confidence reports an LT1 or LT2 estimate >5% away from dossier FTP/LTHR (see `Zone Validation Use` above). This is the primary continuous trigger.
+- **Benchmark Index stall or regression outside seasonal expectation** — sustained flat or negative Benchmark Index when the Seasonal Context table predicts progressive gains (e.g., Late Base / Build showing 0% or negative). See Benchmark Index section above for seasonal baselines.
+- **Sustained power above prescribed zones** — a qualifying session is one where work-interval average power ran ≥3% above prescribed target AND reported RPE landed within or below the expected band for the IF actually achieved. Trigger fires when ≥2 qualifying sessions occur in a rolling 7d window; single-session overshoots are noise and do not trigger.
+- **Power-curve vs HR-curve divergence** — shipped `power_curve_delta` shows improvement at a duration while `hr_curve_delta` is flat or negative at the same duration (same HR now sustaining more power). A test at that duration validates the capability shift.
+
+Multiple concurrent signals strengthen the case. A single signal is a conversation; two or more from different sources is a stronger indication.
+
+#### Negative Triggers (Do NOT Suggest a Test)
+
+The AI must not suggest a formal test when any of the following apply:
+
+- Readiness decision is not `go`
+- Athlete is within an active recovery week (phase `Recovery` or active deload)
+- Illness within the past 14 days (`alerts` block or athlete-reported)
+- ACWR outside safe band (<0.8 or ≥1.3)
+- RI persistent amber across the trailing 2 days
+- Phase is `Peak` or `Taper` — testing disrupts the taper response
+- Race-Week Protocol active (D-7 to D-0, see v11.6) — testing is categorically off-limits during race week
+- Environmental conditions are adverse (heat tier ≥2, or outdoor conditions unstable)
+
+A test during non-go readiness produces a number that anchors future training on a depressed day — worse than no test.
+
+#### Protocol Options
+
+| Protocol | Session Length | Strengths | Limitations |
+|---|---|---|---|
+| 20-min field test ×0.95 | ~60 min | Well-understood convention, familiar to most athletes, outdoor-capable | Pacing-skill dependent; first-time testers under-pace or over-pace; single-day dependency on all factors aligning |
+| Ramp test (e.g., FTP Ramp) | ~25–35 min | Shorter, less pacing skill required, reproducible indoor protocol | Tends to overestimate for endurance athletes (VO₂max-biased); produces a number that over-prescribes threshold work |
+| 2×8-min test | ~45 min | Less fatiguing than 20-min, better for mid-block checks, pacing easier than 20-min | Less common — athlete less familiar with effort; single-day dependency still applies |
+
+**Running equivalents** (30-min threshold run, 5K time trial, critical speed test) — deferred to a later version. Owner: pace curve extension when running data becomes available.
+
+All cycling protocols are outdoor-or-indoor; the result inherits the environment. Indoor tests produce an indoor FTP; outdoor tests produce an outdoor FTP. The shipped `ftp_indoor` / `ftp` dossier split already supports this — the athlete's dossier should carry both if both environments are trained.
+
+#### Interpretation Rules
+
+- **Same-conditions comparison** — compare a test result to the prior test in the same environment (indoor vs outdoor), same protocol, and similar freshness state. An indoor ramp result is not comparable to an outdoor 20-min result. The shipped `ftp_indoor` / `ftp` split formalizes this; apply the same discipline to raw test numbers.
+- **Accept / reject criteria** — pacing criterion depends on protocol. For constant-power tests (20-min, 2×8min), power across the work portion must be stable within ±5% of its own average. For ramp tests, the athlete must reach volitional failure at the expected wattage range given training history — early termination from non-physiological causes (GI, mechanical, mental) is grounds to reject. In all protocols, RPE must land in the expected band (see RPE Expectation Bands below) and no environmental or physiological confounders may have intervened (heat tier ≥2, cramping, mechanical issues, nutrition failure). Any of those → reject, retest when conditions allow.
+- **Expected improvement rates** — a progressive Base→Build block of 6–8 weeks may produce a +2% to +5% FTP change for an intermediate athlete; elite athletes see smaller absolute shifts. Larger apparent jumps (>7%) usually reflect a prior test that under-measured, not a genuine training response of that magnitude.
+
+#### RPE Expectation Bands (IF-calibrated)
+
+Reference table for interpreting effort against the intensity factor actually achieved. IF is read at session level by default; for highly structured sessions where warm-up and cool-down materially dilute session IF, the relevant read is the work-portion IF (computable from interval data). Used for test-result validation (was this a real threshold effort, or a pacing failure), for reading session effort in general, and as the spec reference for a future Effort Response Signal.
+
+| IF        | Expected RPE | Notes                                                     |
+|-----------|--------------|-----------------------------------------------------------|
+| 0.65–0.75 | 2–4          | Endurance. RPE ≥6 is a fatigue signal.                    |
+| 0.75–0.85 | 4–6          | Tempo / sweet spot. Drift late is normal.                 |
+| 0.85–0.95 | 6–8          | Threshold. Sustained RPE <5 is a positive (fitness) tell. |
+| 0.95–1.05 | 8–9          | Race-pace / FTP validation effort.                        |
+| >1.05     | 9–10         | Supra-threshold.                                          |
+
+**Duration modifier.** Same IF feels harder the longer the session. A 3h ride at IF 0.70 sits higher in the RPE band than 90min at IF 0.70 — drift within the band is expected and not a fatigue signal in itself. The table reads effort at the work portion; duration is a second axis the bands do not encode.
+
+**Indoor vs outdoor modifier.** Same IF typically costs ~1 RPE point more indoors (no convective cooling, constrained thermoregulation, no terrain variation). Consistent with the shipped `ftp_indoor` / `watts_indoor` / `watts_outdoor` split — the physiology differs meaningfully enough that RPE expectation shifts too.
+
+**Environmental modifier.** Heat tier ≥2, altitude, poor sleep, or accumulated fatigue all shift expected RPE up at the same IF. These are context, not override. Cross-reference Environmental Conditions Protocol for tier-specific expectations.
+
+Bands are interpretive overlays; they do NOT alter the Feel/RPE Override rules (v11.14). A reported RPE outside the expected band is an observation to surface, not a signal that changes the readiness decision or the planned session.
+
+#### Boundaries
+
+Testing Protocol constraints are absolute:
+
+1. **Does NOT mandate testing.** The AI suggests; the athlete decides. An athlete who never formally tests but has continuous data coverage remains correctly served.
+2. **Does NOT auto-update dossier zones.** A completed test produces a result; the athlete decides whether to update dossier thresholds. The AI surfaces the number and the delta from current dossier, nothing more.
+3. **Does NOT enter the readiness P0–P3 ladder.** A suggested-or-scheduled test does not modify the readiness decision. The readiness decision uses its existing 6 signals only.
+4. **Does NOT override continuous data.** When continuous signals and a recent test disagree, investigate first (pacing? environment? fueling?). A single test is one data point; the continuous picture accumulates many.
+5. **Does NOT prescribe running or SkiErg tests.** Running equivalents deferred. SkiErg and rowing tests out of current scope.
+
+#### Known Future Touchpoints
+
+- Post-workout report RPE-vs-expected commentary line (reads this section's bands). Not in v11.34 scope; separate template pass when the Effort Response Signal lands.
+- Future Effort Response Signal implementation consumes the RPE Expectation Bands as its spec. The bands here are the canonical definition.
+- Running-specific RPE bands (pace- or HR-calibrated) land with the pace curve extension.
 
 
 
