@@ -53,7 +53,7 @@ class IntervalsPush:
     """Manage planned workouts on Intervals.icu calendar."""
 
     BASE_URL = "https://intervals.icu/api/v1"
-    VERSION = "0.3"
+    VERSION = "0.4"
 
     VALID_TYPES = {
         "Ride", "VirtualRide", "MountainBikeRide", "GravelRide", "EBikeRide",
@@ -224,7 +224,6 @@ class IntervalsPush:
         description = workout.get("description", "")
         if description:
             event["description"] = description
-            event["workout_doc"] = {}
 
         target = workout.get("target")
         if target:
