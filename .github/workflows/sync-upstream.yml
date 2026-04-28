@@ -1,0 +1,30 @@
+name: Sync from CrankAddict
+
+on:
+  schedule:
+    - cron: '0 7 * * *'  # chaque matin à 7h
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch sync.py from upstream
+        run: |
+          curl -o sync.py https://raw.githubusercontent.com/CrankAddict/section-11/main/examples/json-auto-sync/sync.py
+          
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          
+          if ! git diff --quiet sync.py; then
+            git add sync.py
+            git commit -m "Update sync.py from CrankAddict upstream"
+            git push
+            echo "✅ sync.py mis à jour"
+          else
+            echo "⏭️ Aucune mise à jour"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
