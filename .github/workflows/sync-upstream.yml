@@ -2,7 +2,7 @@ name: Sync from CrankAddict
 
 on:
   schedule:
-    - cron: '0 * * * *'  # toutes les heures
+    - cron: '0 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -15,24 +15,27 @@ jobs:
         run: |
           BASE="https://raw.githubusercontent.com/CrankAddict/section-11/main"
           
-          FILES=(
-            "SECTION_11.md"
-            "SKILL.md"
-            "SETUP_ASSISTANT.md"
-            "DOSSIER_TEMPLATE.md"
-            "manifest.json"
-            "changelog.json"
-            "sync.py"
-          )
+          # Fichiers à la racine
+          curl -sf -o "SECTION_11.md" "$BASE/SECTION_11.md" && echo "✅ SECTION_11.md" || echo "⚠️ SECTION_11.md"
+          curl -sf -o "SKILL.md" "$BASE/SKILL.md" && echo "✅ SKILL.md" || echo "⚠️ SKILL.md"
+          curl -sf -o "SETUP_ASSISTANT.md" "$BASE/SETUP_ASSISTANT.md" && echo "✅ SETUP_ASSISTANT.md" || echo "⚠️ SETUP_ASSISTANT.md"
+          curl -sf -o "DOSSIER_TEMPLATE.md" "$BASE/DOSSIER_TEMPLATE.md" && echo "✅ DOSSIER_TEMPLATE.md" || echo "⚠️ DOSSIER_TEMPLATE.md"
+          curl -sf -o "manifest.json" "$BASE/manifest.json" && echo "✅ manifest.json" || echo "⚠️ manifest.json"
+          curl -sf -o "changelog.json" "$BASE/changelog.json" && echo "✅ changelog.json" || echo "⚠️ changelog.json"
           
-          for FILE in "${FILES[@]}"; do
-            curl -sf -o "$FILE" "$BASE/$FILE" && echo "✅ $FILE" || echo "⚠️ $FILE introuvable"
-          done
+          # sync.py est dans examples/json-auto-sync/
+          curl -sf -o "sync.py" "$BASE/examples/json-auto-sync/sync.py" && echo "✅ sync.py" || echo "⚠️ sync.py"
           
-          # Sync du dossier examples/ entier
-          curl -sf "https://api.github.com/repos/CrankAddict/section-11/git/trees/main?recursive=1" | \
-            python3 -c "
-          import json,sys,os,urllib.request
-          tree = json.load(sys.stdin)['tree']
-          for f in tree:
-              if f['path'].startswith('examples/') a
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add SECTION_11.md SKILL.md SETUP_ASSISTANT.md DOSSIER_TEMPLATE.md manifest.json changelog.json sync.py
+          
+          if ! git diff --staged --quiet; then
+            git commit -m "Sync from CrankAddict upstream - $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git push
+            echo "✅ Fichiers mis à jour"
+          else
+            echo "⏭️ Aucune mise à jour"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
