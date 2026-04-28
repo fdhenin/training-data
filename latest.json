@@ -70,7 +70,7 @@
   },
   "metadata": {
     "athlete_id": "REDACTED",
-    "last_updated": "2026-04-28T13:58:03.777279",
+    "last_updated": "2026-04-28T15:59:06.649980",
     "data_range_days": 7,
     "extended_range_days": 28,
     "version": "3.109"
@@ -607,7 +607,7 @@
           "current_week_hard_days_total": 0,
           "race_proximity": 11,
           "next_week_load": 0.15,
-          "plan_coverage_current_week": 0.75,
+          "plan_coverage_current_week": 1.0,
           "plan_coverage_next_week": 0.75
         },
         "data_quality": "good",
@@ -643,7 +643,7 @@
     "p_max": 669,
     "power_model_source": "wellness.sportInfo",
     "vo2max": null,
-    "calculation_timestamp": "2026-04-28T13:58:03.775995",
+    "calculation_timestamp": "2026-04-28T15:59:06.648724",
     "data_quality": {
       "hrv_data_points": 7,
       "rhr_data_points": 7,
@@ -3464,6 +3464,19 @@
       "description": "Main Set\n- Endurance a\u00e9robie Z2 60m 65% 88rpm"
     },
     {
+      "id": 107097146,
+      "date": "2026-04-30",
+      "name": "test",
+      "type": "WORKOUT",
+      "sport_type": "Ride",
+      "planned_tss": null,
+      "duration_hours": 0.0,
+      "duration_formatted": "0s",
+      "workout_summary": null,
+      "has_terrain": false,
+      "description": "ghhghghgh"
+    },
+    {
       "id": 103443305,
       "date": "2026-05-02",
       "name": "Z2",
@@ -3622,7 +3635,7 @@
     "success": 3,
     "patternA": 3,
     "patternB": 0,
-    "bail_no_workout_doc": 0,
+    "bail_no_workout_doc": 1,
     "bail_no_match": 8
   },
   "weekly_summary": {
