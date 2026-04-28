@@ -2,7 +2,7 @@ name: Sync from CrankAddict
 
 on:
   schedule:
-    - cron: '0 7 * * *'  # chaque matin à 7h
+    - cron: '0 * * * *'  # toutes les heures
   workflow_dispatch:
 
 jobs:
@@ -11,20 +11,28 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Fetch sync.py from upstream
+      - name: Fetch updated files from CrankAddict
         run: |
-          curl -o sync.py https://raw.githubusercontent.com/CrankAddict/section-11/main/examples/json-auto-sync/sync.py
+          BASE="https://raw.githubusercontent.com/CrankAddict/section-11/main"
           
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git config user.name "github-actions[bot]"
+          FILES=(
+            "SECTION_11.md"
+            "SKILL.md"
+            "SETUP_ASSISTANT.md"
+            "DOSSIER_TEMPLATE.md"
+            "manifest.json"
+            "changelog.json"
+            "sync.py"
+          )
           
-          if ! git diff --quiet sync.py; then
-            git add sync.py
-            git commit -m "Update sync.py from CrankAddict upstream"
-            git push
-            echo "✅ sync.py mis à jour"
-          else
-            echo "⏭️ Aucune mise à jour"
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          for FILE in "${FILES[@]}"; do
+            curl -sf -o "$FILE" "$BASE/$FILE" && echo "✅ $FILE" || echo "⚠️ $FILE introuvable"
+          done
+          
+          # Sync du dossier examples/ entier
+          curl -sf "https://api.github.com/repos/CrankAddict/section-11/git/trees/main?recursive=1" | \
+            python3 -c "
+          import json,sys,os,urllib.request
+          tree = json.load(sys.stdin)['tree']
+          for f in tree:
+              if f['path'].startswith('examples/') a
