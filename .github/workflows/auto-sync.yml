@@ -134,7 +134,8 @@ jobs:
             
             # Only commit if there are changes
             if ! git diff --staged --quiet; then
-              git commit -m "Archive training data + FTP history - $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+              #git commit -m "Archive training data + FTP history - $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+              git commit -m "Archive training data + FTP history - $(TZ='Europe/Paris' date +'%Y-%m-%d %H:%M:%S %Z')"
               git push
               echo "✅ Archive and FTP history committed and pushed"
             else
