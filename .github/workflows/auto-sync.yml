@@ -88,6 +88,8 @@ jobs:
       
       - name: Archive latest.json with timestamp
         if: success()
+        env:
+          TZ: Europe/Paris
         run: |
           # Create archive directory with year-month subdirectory
           YEAR_MONTH=$(date -u +"%Y-%m")
