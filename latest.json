@@ -70,7 +70,7 @@
   },
   "metadata": {
     "athlete_id": "REDACTED",
-    "last_updated": "2026-05-03T11:53:36.151448",
+    "last_updated": "2026-05-03T13:23:19.267978",
     "data_range_days": 14,
     "extended_range_days": 28,
     "version": "3.109"
@@ -143,7 +143,7 @@
       },
       "tsb": {
         "status": "amber",
-        "value": -24.8
+        "value": -20.1
       }
     },
     "signal_summary": {
@@ -175,7 +175,7 @@
   "history": {
     "available": true,
     "last_generated": "2026-04-28",
-    "age_days": 4,
+    "age_days": 5,
     "total_months": 35,
     "history_confidence": "high"
   },
@@ -225,10 +225,10 @@
   },
   "current_status": {
     "fitness": {
-      "ctl": 66.72,
-      "atl": 91.47,
-      "tsb": -24.75,
-      "ramp_rate": 1.14,
+      "ctl": 65.74,
+      "atl": 85.88,
+      "tsb": -20.14,
+      "ramp_rate": 0.15,
       "fitness_source": "From Intervals.icu API (reflects completed workouts)"
     },
     "thresholds": {
@@ -607,17 +607,16 @@
       },
       "dfa_a1_profile": null
     },
-    "consistency_index": 0.6,
+    "consistency_index": 0.5,
     "consistency_details": {
-      "planned_days": 5,
+      "planned_days": 4,
       "completed_days": 6,
-      "matched_days": 3,
+      "matched_days": 2,
       "planned_dates": [
         "2026-04-24",
         "2026-04-29",
         "2026-04-30",
-        "2026-05-02",
-        "2026-05-03"
+        "2026-05-02"
       ],
       "completed_dates": [
         "2026-04-22",
@@ -642,13 +641,13 @@
           "weeks_available": 4
         },
         "stream_2": {
-          "planned_tss_delta": 0.67,
+          "planned_tss_delta": null,
           "hard_sessions_planned": 0,
           "current_week_hard_days_completed": 2,
           "current_week_hard_days_total": 2,
           "race_proximity": 6,
           "next_week_load": 0.15,
-          "plan_coverage_current_week": 0.25,
+          "plan_coverage_current_week": 0.0,
           "plan_coverage_next_week": 0.75
         },
         "data_quality": "good",
@@ -684,13 +683,13 @@
     "p_max": 669,
     "power_model_source": "wellness.sportInfo",
     "vo2max": 50.0,
-    "calculation_timestamp": "2026-05-03T11:53:36.150187",
+    "calculation_timestamp": "2026-05-03T13:23:19.266712",
     "data_quality": {
       "hrv_data_points": 14,
       "rhr_data_points": 14,
       "activities_7d": 7,
       "activities_28d": 15,
-      "planned_workouts_7d": 5,
+      "planned_workouts_7d": 4,
       "ftp_history_days": {
         "indoor": 5,
         "outdoor": 5
@@ -3838,19 +3837,6 @@
   ],
   "planned_workouts": [
     {
-      "id": 107061314,
-      "date": "2026-05-03",
-      "name": "Z1",
-      "type": "WORKOUT",
-      "sport_type": "Ride",
-      "planned_tss": 42,
-      "duration_hours": 1.0,
-      "duration_formatted": "1h",
-      "workout_summary": null,
-      "has_terrain": false,
-      "description": "Main Set\n- Endurance a\u00e9robie Z1 60m 65% 88rpm"
-    },
-    {
       "id": 103443366,
       "date": "2026-05-06",
       "name": "3 x 10 min @ 165W - 170W. Cadence : 60-65 rpm.",
@@ -3994,12 +3980,12 @@
     }
   ],
   "workout_summary_stats": {
-    "attempted": 9,
+    "attempted": 8,
     "success": 3,
     "patternA": 3,
     "patternB": 0,
     "bail_no_workout_doc": 1,
-    "bail_no_match": 6
+    "bail_no_match": 5
   },
   "weekly_summary": {
     "total_training_hours": 16.8,
@@ -4083,18 +4069,18 @@
       "event_moving_time_seconds": null,
       "days_until_event": 6,
       "current_day": "D-6",
-      "ctl_baseline": 66.7,
-      "normal_weekly_tss": 467.0,
+      "ctl_baseline": 65.7,
+      "normal_weekly_tss": 460.2,
       "race_week_tss_budget": {
-        "min": 234,
-        "max": 304
+        "min": 230,
+        "max": 299
       },
       "race_week_tss_spent": 245,
       "race_week_tss_remaining": {
         "min": 0,
-        "max": 59
+        "max": 54
       },
-      "projected_race_day_tsb": 19.0,
+      "projected_race_day_tsb": 20.5,
       "tsb_target_range": {
         "min": 5,
         "max": 15
