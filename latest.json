@@ -70,7 +70,7 @@
   },
   "metadata": {
     "athlete_id": "REDACTED",
-    "last_updated": "2026-05-09T07:11:36.316023",
+    "last_updated": "2026-05-09T08:54:03.096740",
     "data_range_days": 14,
     "extended_range_days": 28,
     "version": "3.109"
@@ -100,26 +100,7 @@
     "years_on_platform": 5
   },
   "athlete_notes": "1er semaine mars\nfaire remonter le CV% au-dessus de **15%**.",
-  "alerts": [
-    {
-      "metric": "race_week",
-      "value": 0,
-      "severity": "info",
-      "threshold": "RACE_B within 7 days",
-      "context": "Race week D-0 of 'Aindinoise 2026'. Today: Race day, 0-0 TSS. Race effort",
-      "persistence_days": null,
-      "tier": 1
-    },
-    {
-      "metric": "race_week_tsb",
-      "value": -9.8,
-      "severity": "warning",
-      "threshold": "TSB target 5-15",
-      "context": "Projected race-day TSB -9.8 is below target range 5-15. Consider additional rest to reach target.",
-      "persistence_days": null,
-      "tier": 1
-    }
-  ],
+  "alerts": [],
   "readiness_decision": {
     "recommendation": "go",
     "priority": 3,
@@ -162,14 +143,14 @@
       "unavailable": 0
     },
     "phase_context": {
-      "phase": "Taper",
+      "phase": "Base",
       "phase_week": 1,
-      "amber_threshold": 1,
-      "modifier_applied": "race_week_tightened"
+      "amber_threshold": 2,
+      "modifier_applied": "default"
     },
     "race_week_defers": false,
     "modification": null,
-    "reason": "P3 green light. 6 green, 0 amber (threshold 1), 0 red.",
+    "reason": "P3 green light. 6 green, 0 amber (threshold 2), 0 red.",
     "alarm_refs": []
   },
   "history": {
@@ -228,8 +209,8 @@
       "ctl": 64.52,
       "atl": 74.3,
       "tsb": -9.78,
-      "ramp_rate": 3.1,
-      "fitness_source": "Decayed from yesterday (today's planned workouts not yet completed)"
+      "ramp_rate": 2.96,
+      "fitness_source": "From Intervals.icu API (reflects completed workouts)"
     },
     "thresholds": {
       "eftp": 209.6,
@@ -294,7 +275,7 @@
       "respiration": null,
       "body_fat_pct": null,
       "abdomen_cm": null,
-      "steps": 394,
+      "steps": 1627,
       "hydration_volume_l": null,
       "kcal_consumed": null,
       "carbohydrates_g": null,
@@ -627,11 +608,9 @@
       ]
     },
     "phase_detection": {
-      "phase": "Taper",
+      "phase": "Base",
       "confidence": "medium",
-      "reason_codes": [
-        "RACE_IMMINENT"
-      ],
+      "reason_codes": [],
       "basis": {
         "stream_1": {
           "ctl_slope": -0.25,
@@ -641,12 +620,12 @@
         },
         "stream_2": {
           "planned_tss_delta": null,
-          "hard_sessions_planned": 1,
+          "hard_sessions_planned": 0,
           "current_week_hard_days_completed": 1,
-          "current_week_hard_days_total": 2,
-          "race_proximity": 0,
+          "current_week_hard_days_total": 1,
+          "race_proximity": 29,
           "next_week_load": 0.34,
-          "plan_coverage_current_week": 0.25,
+          "plan_coverage_current_week": 0.0,
           "plan_coverage_next_week": 0.75
         },
         "data_quality": "good",
@@ -657,10 +636,8 @@
       "dossier_declared": null,
       "dossier_agreement": null
     },
-    "phase_detected": "Taper",
-    "phase_triggers": [
-      "RACE_IMMINENT"
-    ],
+    "phase_detected": "Base",
+    "phase_triggers": [],
     "seasonal_context": "Build / Early Race Season",
     "benchmark_indoor": {
       "current_ftp": 205,
@@ -682,13 +659,13 @@
     "p_max": 667,
     "power_model_source": "wellness.sportInfo",
     "vo2max": null,
-    "calculation_timestamp": "2026-05-09T07:11:36.314703",
+    "calculation_timestamp": "2026-05-09T08:54:03.095541",
     "data_quality": {
       "hrv_data_points": 14,
       "rhr_data_points": 14,
       "activities_7d": 6,
       "activities_28d": 14,
-      "planned_workouts_7d": 5,
+      "planned_workouts_7d": 4,
       "ftp_history_days": {
         "indoor": 11,
         "outdoor": 11
@@ -3949,7 +3926,7 @@
       "respiration": null,
       "body_fat_pct": null,
       "abdomen_cm": null,
-      "steps": 394,
+      "steps": 1627,
       "hydration_volume_l": null,
       "kcal_consumed": null,
       "carbohydrates_g": null,
@@ -3961,19 +3938,6 @@
     }
   ],
   "planned_workouts": [
-    {
-      "id": 103440606,
-      "date": "2026-05-09",
-      "name": "Aindinoise 2026",
-      "type": "RACE_B",
-      "sport_type": "Ride",
-      "planned_tss": null,
-      "duration_hours": 0.0,
-      "duration_formatted": "0s",
-      "workout_summary": null,
-      "has_terrain": false,
-      "description": ""
-    },
     {
       "id": 103445319,
       "date": "2026-05-13",
@@ -4109,11 +4073,11 @@
   },
   "race_calendar": {
     "next_race": {
-      "name": "Aindinoise 2026",
-      "date": "2026-05-09",
+      "name": "GALIBIER CHALLENGE",
+      "date": "2026-06-07",
       "category": "RACE_B",
       "type": "Ride",
-      "days_until": 0,
+      "days_until": 29,
       "moving_time_seconds": null,
       "distance_meters": null,
       "display": {
@@ -4122,19 +4086,6 @@
       "has_terrain": false
     },
     "all_races": [
-      {
-        "name": "Aindinoise 2026",
-        "date": "2026-05-09",
-        "category": "RACE_B",
-        "type": "Ride",
-        "days_until": 0,
-        "moving_time_seconds": null,
-        "distance_meters": null,
-        "display": {
-          "distance": null
-        },
-        "has_terrain": false
-      },
       {
         "name": "GALIBIER CHALLENGE",
         "date": "2026-06-07",
@@ -4185,58 +4136,7 @@
       "active": false
     },
     "race_week": {
-      "active": true,
-      "event_name": "Aindinoise 2026",
-      "event_date": "2026-05-09",
-      "event_category": "RACE_B",
-      "event_type": "Ride",
-      "event_duration_class": "medium",
-      "event_moving_time_seconds": null,
-      "days_until_event": 0,
-      "current_day": "D-0",
-      "ctl_baseline": 64.5,
-      "normal_weekly_tss": 451.6,
-      "race_week_tss_budget": {
-        "min": 226,
-        "max": 294
-      },
-      "race_week_tss_spent": 573,
-      "race_week_tss_remaining": {
-        "min": 0,
-        "max": 0
-      },
-      "projected_race_day_tsb": -9.8,
-      "tsb_target_range": {
-        "min": 5,
-        "max": 15
-      },
-      "today": {
-        "label": "Race day",
-        "load_target_tss": {
-          "min": 0,
-          "max": 0
-        },
-        "zones": "Race effort",
-        "purpose": "Go/no-go assessment. Execute race plan."
-      },
-      "carb_loading": {
-        "applicable": false,
-        "active": false,
-        "starts": "D-4",
-        "start_date": "2026-05-05",
-        "note": null
-      },
-      "opener": {
-        "day": "D-2",
-        "date": "2026-05-07",
-        "intensity": "standard"
-      },
-      "go_no_go": {
-        "tsb_status": "flag",
-        "notes": [
-          "Projected race-day TSB -9.8 is significantly below target range 5-15. Fatigue may impact performance."
-        ]
-      }
+      "active": false
     }
   }
 }
