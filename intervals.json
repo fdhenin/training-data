@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-11T14:10:13.690249",
+  "generated_at": "2026-05-11T16:48:42.202516",
   "version": "3.109",
   "script_hash": "f54c8dd00126",
   "scan_hours": 72,
@@ -1357,6 +1357,27 @@
           "zone": 1,
           "training_load": 76.55651,
           "decoupling": -11.056812
+        }
+      ]
+    },
+    {
+      "activity_id": "i147272809",
+      "date": "2026-05-11",
+      "type": "VirtualRide",
+      "name": "Zwift - Triple Flat Loops in Watopia",
+      "interval_summary": null,
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 4266,
+          "avg_power": 102,
+          "max_power": 290,
+          "avg_hr": 108,
+          "max_hr": 128,
+          "avg_cadence": 85.89217,
+          "zone": 1,
+          "training_load": 34.74214,
+          "decoupling": 0.22900905
         }
       ]
     }
