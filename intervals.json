@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-18T12:38:16.475385",
+  "generated_at": "2026-05-18T16:13:43.885385",
   "version": "3.109",
   "script_hash": "f54c8dd00126",
   "scan_hours": 72,
@@ -568,6 +568,54 @@
           "zone": 1,
           "training_load": 34.74214,
           "decoupling": 0.22900905
+        }
+      ]
+    },
+    {
+      "activity_id": "i149414963",
+      "date": "2026-05-18",
+      "type": "VirtualRide",
+      "name": "Zwift - Volcano Climb in Watopia",
+      "interval_summary": [
+        "1x 3m7s 155w"
+      ],
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 1665,
+          "avg_power": 99,
+          "max_power": 261,
+          "avg_hr": 106,
+          "max_hr": 121,
+          "avg_cadence": 81.71892,
+          "zone": 1,
+          "training_load": 12.133403,
+          "decoupling": -8.009473
+        },
+        {
+          "type": "WORK",
+          "label": "187s@155w81rpm",
+          "duration_secs": 187,
+          "avg_power": 155,
+          "max_power": 232,
+          "avg_hr": 124,
+          "max_hr": 132,
+          "avg_cadence": 81.06952,
+          "zone": 3,
+          "training_load": 2.8934383,
+          "decoupling": 7.3303394
+        },
+        {
+          "type": "RECOVERY",
+          "duration_secs": 2283,
+          "avg_power": 106,
+          "max_power": 289,
+          "avg_hr": 118,
+          "max_hr": 144,
+          "avg_cadence": 88.0495,
+          "zone": 1,
+          "training_load": 23.915264,
+          "decoupling": 9.483974
         }
       ]
     }
