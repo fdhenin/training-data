@@ -70,7 +70,7 @@
   },
   "metadata": {
     "athlete_id": "REDACTED",
-    "last_updated": "2026-05-30T00:12:39.593008",
+    "last_updated": "2026-05-30T04:28:49.872730",
     "data_range_days": 14,
     "extended_range_days": 28,
     "version": "3.109"
@@ -112,10 +112,10 @@
         "delta_pct": null
       },
       "rhr": {
-        "status": "unavailable",
-        "value": null,
+        "status": "green",
+        "value": 57,
         "baseline_7d": 57.3,
-        "delta_bpm": null
+        "delta_bpm": -0.3
       },
       "sleep": {
         "status": "unavailable",
@@ -137,10 +137,10 @@
       }
     },
     "signal_summary": {
-      "green": 2,
+      "green": 3,
       "amber": 0,
       "red": 0,
-      "unavailable": 4
+      "unavailable": 3
     },
     "phase_context": {
       "phase": "Taper",
@@ -150,7 +150,7 @@
     },
     "race_week_defers": false,
     "modification": null,
-    "reason": "P3 green light. 2 green, 0 amber (threshold 1), 0 red. Note: 4 signals unavailable \u2014 limited data.",
+    "reason": "P3 green light. 3 green, 0 amber (threshold 1), 0 red.",
     "alarm_refs": []
   },
   "history": {
@@ -241,7 +241,7 @@
           "unit": "kg"
         }
       },
-      "resting_hr": 54,
+      "resting_hr": 57,
       "hrv": null,
       "sleep_quality": null,
       "sleep_hours": null,
@@ -282,7 +282,7 @@
     "hrv_baseline_28d": 35.4,
     "rhr_baseline_28d": 57.2,
     "latest_hrv": null,
-    "latest_rhr": null,
+    "latest_rhr": 57,
     "acwr": 1.16,
     "acwr_interpretation": "optimal",
     "monotony": 0.63,
@@ -652,10 +652,10 @@
     "p_max": 657,
     "power_model_source": "wellness.sportInfo",
     "vo2max": null,
-    "calculation_timestamp": "2026-05-30T00:12:39.591709",
+    "calculation_timestamp": "2026-05-30T04:28:49.871532",
     "data_quality": {
       "hrv_data_points": 13,
-      "rhr_data_points": 13,
+      "rhr_data_points": 14,
       "activities_7d": 7,
       "activities_28d": 11,
       "planned_workouts_7d": 3,
@@ -3052,7 +3052,7 @@
       "display": {
         "weight": null
       },
-      "resting_hr": null,
+      "resting_hr": 57,
       "hrv_rmssd": null,
       "hrv_sdnn": null,
       "sleep_hours": null,
