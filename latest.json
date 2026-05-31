@@ -70,7 +70,7 @@
   },
   "metadata": {
     "athlete_id": "REDACTED",
-    "last_updated": "2026-05-31T14:52:44.772129",
+    "last_updated": "2026-05-31T16:15:34.622201",
     "data_range_days": 14,
     "extended_range_days": 28,
     "version": "3.109"
@@ -670,7 +670,7 @@
     "p_max": 695,
     "power_model_source": "wellness.sportInfo",
     "vo2max": 49.0,
-    "calculation_timestamp": "2026-05-31T14:52:44.770843",
+    "calculation_timestamp": "2026-05-31T16:15:34.620984",
     "data_quality": {
       "hrv_data_points": 14,
       "rhr_data_points": 14,
@@ -688,7 +688,7 @@
       "id": "i152925590",
       "date": "2026-05-31T09:00:30",
       "type": "Ride",
-      "name": "Lagnieu Cyclisme sur route",
+      "name": "Col de portes et mont\u00e9e D32",
       "duration_hours": 4.6,
       "distance_km": 87.68,
       "tss": 254,
@@ -1108,7 +1108,7 @@
         "rain": 0.0,
         "snow": 0.0
       },
-      "description": "\ud83c\udfaf LeCoach.app Workout Score: Different than planned\n\u23f1 Duration: 276m / 240m planned\n\ud83d\udca7 Intensity: 74% / 63% planned\n\ud83c\udfcb\ufe0f Load: 254 / 160 planned\n\ud83d\udcc8 Fitness improving"
+      "description": "Elle monte plus vite que moi \ud83d\ude1b"
     },
     {
       "id": "i152701890",
