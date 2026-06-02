@@ -70,7 +70,7 @@
   },
   "metadata": {
     "athlete_id": "REDACTED",
-    "last_updated": "2026-06-02T05:12:09.696829",
+    "last_updated": "2026-06-02T09:18:58.463298",
     "data_range_days": 14,
     "extended_range_days": 28,
     "version": "3.109"
@@ -125,10 +125,10 @@
     "priority": 1,
     "signals": {
       "hrv": {
-        "status": "unavailable",
-        "value": null,
-        "baseline_7d": 37.2,
-        "delta_pct": null
+        "status": "green",
+        "value": 61.0,
+        "baseline_7d": 38.9,
+        "delta_pct": 56.8
       },
       "rhr": {
         "status": "green",
@@ -137,25 +137,25 @@
         "delta_bpm": -2
       },
       "sleep": {
-        "status": "unavailable",
-        "hours": null,
-        "quality": null
+        "status": "green",
+        "hours": 7.58,
+        "quality": 2
       },
       "acwr": {
         "status": "red",
         "value": 1.5
       },
       "ri": {
-        "status": "unavailable",
-        "value": null,
-        "value_yesterday": 1.53
+        "status": "green",
+        "value": 1.63,
+        "value_yesterday": 1.47
       }
     },
     "signal_summary": {
-      "green": 1,
+      "green": 4,
       "amber": 0,
       "red": 1,
-      "unavailable": 3
+      "unavailable": 0
     },
     "phase_context": {
       "phase": "Taper",
@@ -257,11 +257,11 @@
         }
       },
       "resting_hr": 55,
-      "hrv": null,
-      "sleep_quality": null,
-      "sleep_hours": null,
-      "sleep_formatted": null,
-      "sleep_score": null,
+      "hrv": 61.0,
+      "sleep_quality": 2,
+      "sleep_hours": 7.58,
+      "sleep_formatted": "7h35m",
+      "sleep_score": 86.0,
       "fatigue": null,
       "soreness": null,
       "stress": null,
@@ -278,7 +278,7 @@
       "respiration": null,
       "body_fat_pct": null,
       "abdomen_cm": null,
-      "steps": 10,
+      "steps": 697,
       "hydration_volume_l": null,
       "kcal_consumed": null,
       "carbohydrates_g": null,
@@ -290,13 +290,13 @@
     }
   },
   "derived_metrics": {
-    "recovery_index": null,
-    "recovery_index_yesterday": 1.53,
-    "hrv_baseline_7d": 37.2,
+    "recovery_index": 1.63,
+    "recovery_index_yesterday": 1.47,
+    "hrv_baseline_7d": 38.9,
     "rhr_baseline_7d": 57,
-    "hrv_baseline_28d": 36.3,
+    "hrv_baseline_28d": 37.1,
     "rhr_baseline_28d": 57.0,
-    "latest_hrv": null,
+    "latest_hrv": 61.0,
     "latest_rhr": 55,
     "acwr": 1.5,
     "acwr_interpretation": "danger",
@@ -309,7 +309,7 @@
     "multi_sport_detected": false,
     "strain": 442.0,
     "stress_tolerance": 5.4,
-    "load_recovery_ratio": null,
+    "load_recovery_ratio": 3.3,
     "tss_7d_total": 539.0,
     "tss_28d_total": 1436.0,
     "zone_distribution_7d": {
@@ -669,9 +669,9 @@
     "p_max": 695,
     "power_model_source": "wellness.sportInfo",
     "vo2max": null,
-    "calculation_timestamp": "2026-06-02T05:12:09.695620",
+    "calculation_timestamp": "2026-06-02T09:18:58.461837",
     "data_quality": {
-      "hrv_data_points": 13,
+      "hrv_data_points": 14,
       "rhr_data_points": 14,
       "activities_7d": 8,
       "activities_28d": 12,
@@ -3587,12 +3587,12 @@
         "weight": null
       },
       "resting_hr": 55,
-      "hrv_rmssd": null,
+      "hrv_rmssd": 61.0,
       "hrv_sdnn": null,
-      "sleep_hours": null,
-      "sleep_formatted": null,
-      "sleep_quality": null,
-      "sleep_score": null,
+      "sleep_hours": 7.58,
+      "sleep_formatted": "7h35m",
+      "sleep_quality": 2,
+      "sleep_score": 86.0,
       "mental_energy": null,
       "avg_sleeping_hr": null,
       "vo2max": null,
@@ -3612,7 +3612,7 @@
       "respiration": null,
       "body_fat_pct": null,
       "abdomen_cm": null,
-      "steps": 10,
+      "steps": 697,
       "hydration_volume_l": null,
       "kcal_consumed": null,
       "carbohydrates_g": null,
@@ -3651,7 +3651,7 @@
     "total_training_formatted": "20h",
     "total_tss": 1031,
     "activities_count": 8,
-    "avg_hrv": 37.2,
+    "avg_hrv": 38.9,
     "avg_resting_hr": 57.0
   },
   "race_calendar": {
