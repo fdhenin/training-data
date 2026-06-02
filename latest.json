@@ -70,7 +70,7 @@
   },
   "metadata": {
     "athlete_id": "REDACTED",
-    "last_updated": "2026-06-02T12:56:48.979653",
+    "last_updated": "2026-06-02T17:46:39.284170",
     "data_range_days": 14,
     "extended_range_days": 28,
     "version": "3.109"
@@ -171,7 +171,7 @@
   "history": {
     "available": true,
     "last_generated": "2026-04-28",
-    "age_days": 34,
+    "age_days": 35,
     "total_months": 35,
     "history_confidence": "high"
   },
@@ -278,7 +278,7 @@
       "respiration": null,
       "body_fat_pct": null,
       "abdomen_cm": null,
-      "steps": 697,
+      "steps": 2912,
       "hydration_volume_l": null,
       "kcal_consumed": null,
       "carbohydrates_g": null,
@@ -628,14 +628,14 @@
           "weeks_available": 4
         },
         "stream_2": {
-          "planned_tss_delta": null,
-          "hard_sessions_planned": 0,
+          "planned_tss_delta": 1.85,
+          "hard_sessions_planned": 2,
           "current_week_hard_days_completed": 0,
-          "current_week_hard_days_total": 0,
+          "current_week_hard_days_total": 2,
           "race_proximity": 12,
-          "next_week_load": null,
-          "plan_coverage_current_week": 0.0,
-          "plan_coverage_next_week": 0.25
+          "next_week_load": 1.08,
+          "plan_coverage_current_week": 1.25,
+          "plan_coverage_next_week": 0.75
         },
         "data_quality": "good",
         "stream_agreement": null
@@ -670,7 +670,7 @@
     "p_max": 695,
     "power_model_source": "wellness.sportInfo",
     "vo2max": null,
-    "calculation_timestamp": "2026-06-02T12:56:48.978323",
+    "calculation_timestamp": "2026-06-02T17:46:39.282926",
     "data_quality": {
       "hrv_data_points": 14,
       "rhr_data_points": 14,
@@ -3689,7 +3689,7 @@
       "respiration": null,
       "body_fat_pct": null,
       "abdomen_cm": null,
-      "steps": 697,
+      "steps": 2912,
       "hydration_volume_l": null,
       "kcal_consumed": null,
       "carbohydrates_g": null,
@@ -3702,6 +3702,84 @@
   ],
   "planned_workouts": [
     {
+      "id": 113842073,
+      "date": "2026-06-03",
+      "name": "Sweet Spot",
+      "type": "WORKOUT",
+      "sport_type": "Ride",
+      "planned_tss": 36,
+      "duration_hours": 0.68,
+      "duration_formatted": "41m",
+      "workout_summary": null,
+      "has_terrain": false,
+      "description": "-15m Z2\n3x\n- 12m 90%\n- 4m 55%\n\n-10m Z1"
+    },
+    {
+      "id": 113842248,
+      "date": "2026-06-04",
+      "name": "Endurance",
+      "type": "WORKOUT",
+      "sport_type": "Ride",
+      "planned_tss": 84,
+      "duration_hours": 1.5,
+      "duration_formatted": "1h30m",
+      "workout_summary": null,
+      "has_terrain": false,
+      "description": "- 1h30m 75%"
+    },
+    {
+      "id": 113842806,
+      "date": "2026-06-05",
+      "name": "Seuil",
+      "type": "WORKOUT",
+      "sport_type": "Ride",
+      "planned_tss": 67,
+      "duration_hours": 1.02,
+      "duration_formatted": "1h1m",
+      "workout_summary": "15m | 2\u00d712m @205W / 6m rec | 10m",
+      "has_terrain": false,
+      "description": "- 15m Z2\n\n2x\n- 12m 98%\n- 6m 55%\n\n- 10m z1"
+    },
+    {
+      "id": 113838702,
+      "date": "2026-06-06",
+      "name": "Bugey",
+      "type": "WORKOUT",
+      "sport_type": "Ride",
+      "planned_tss": 252,
+      "duration_hours": 4.5,
+      "duration_formatted": "4h30m",
+      "workout_summary": null,
+      "has_terrain": false,
+      "description": "- 4h30m 75% cadence=85rpm"
+    },
+    {
+      "id": 113839132,
+      "date": "2026-06-07",
+      "name": "Agn\u00e9s",
+      "type": "WORKOUT",
+      "sport_type": "Ride",
+      "planned_tss": 147,
+      "duration_hours": 3.0,
+      "duration_formatted": "3h",
+      "workout_summary": null,
+      "has_terrain": false,
+      "description": "- 3h 70% cadence=80rpm"
+    },
+    {
+      "id": 113839067,
+      "date": "2026-06-13",
+      "name": "Bugey",
+      "type": "WORKOUT",
+      "sport_type": "Ride",
+      "planned_tss": 252,
+      "duration_hours": 4.5,
+      "duration_formatted": "4h30m",
+      "workout_summary": null,
+      "has_terrain": false,
+      "description_preview": "- 4h30m 75% cadence=85rpm"
+    },
+    {
       "id": 103440908,
       "date": "2026-06-14",
       "name": "BRO \u2014 Brevet de Randonneur de l'Oisans",
@@ -3713,15 +3791,80 @@
       "workout_summary": null,
       "has_terrain": false,
       "description_preview": "3300 D+"
+    },
+    {
+      "id": 113839177,
+      "date": "2026-06-14",
+      "name": "Agn\u00e9s",
+      "type": "WORKOUT",
+      "sport_type": "Ride",
+      "planned_tss": 147,
+      "duration_hours": 3.0,
+      "duration_formatted": "3h",
+      "workout_summary": null,
+      "has_terrain": false,
+      "description_preview": "- 3h 70% cadence=80rpm"
+    },
+    {
+      "id": 113839068,
+      "date": "2026-06-16",
+      "name": "Bugey",
+      "type": "WORKOUT",
+      "sport_type": "Ride",
+      "planned_tss": 252,
+      "duration_hours": 4.5,
+      "duration_formatted": "4h30m",
+      "workout_summary": null,
+      "has_terrain": false,
+      "description_preview": "- 4h30m 75% cadence=85rpm"
+    },
+    {
+      "id": 113839178,
+      "date": "2026-06-17",
+      "name": "Agn\u00e9s",
+      "type": "WORKOUT",
+      "sport_type": "Ride",
+      "planned_tss": 147,
+      "duration_hours": 3.0,
+      "duration_formatted": "3h",
+      "workout_summary": null,
+      "has_terrain": false,
+      "description_preview": "- 3h 70% cadence=80rpm"
+    },
+    {
+      "id": 113843411,
+      "date": "2026-06-20",
+      "name": "Mariage",
+      "type": "HOLIDAY",
+      "sport_type": null,
+      "planned_tss": null,
+      "duration_hours": 0.0,
+      "duration_formatted": "0s",
+      "workout_summary": null,
+      "has_terrain": false,
+      "description_preview": null
+    },
+    {
+      "id": 113843645,
+      "date": "2026-06-22",
+      "name": "Seclin",
+      "type": "HOLIDAY",
+      "sport_type": null,
+      "planned_tss": null,
+      "duration_hours": 0.0,
+      "duration_formatted": "0s",
+      "workout_summary": null,
+      "has_terrain": false,
+      "description_preview": null
     }
   ],
   "workout_summary_stats": {
-    "attempted": 0,
-    "success": 0,
-    "patternA": 0,
+    "attempted": 9,
+    "success": 1,
+    "patternA": 1,
     "patternB": 0,
     "bail_no_workout_doc": 1,
-    "bail_no_match": 0
+    "bail_no_match": 8
   },
   "weekly_summary": {
     "total_training_hours": 21.14,
