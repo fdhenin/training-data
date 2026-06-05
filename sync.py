@@ -4,6 +4,72 @@ Intervals.icu → GitHub/Local JSON Export
 Exports training data for LLM access.
 Supports both automated GitHub sync and manual local export.
 
+Version 3.112 - Body weight signal block (current_status.weight): gated fields
+  for block-level W/kg and weekly weight trend, all surfaced via a single
+  _build_weight_signal helper. Failed-gate fields are absent from the JSON;
+  AI layer omits the corresponding report section silently (no boilerplate).
+  Display blocks ship for narrated weights per Display Unit Semantics; W/kg
+  stays unit-universal.
+  Fields:
+    weight_latest_kg / weight_latest_date — gate: latest weigh-in age <=14d
+    wkg_current + wkg_ftp_source [+ ftp_setting_date] — gate: weight_latest
+      present + FTP source. Tested cycling FTP from sportSettings preferred,
+      eFTP fallback. eFTP is not suppressed for stale tested FTP — the
+      source tag plus ftp_setting_date carry the staleness signal. Date
+      reflects the FTP setting change recorded in ftp_history.json (not a
+      formal test date — Intervals does not expose one).
+    wkg_block_start / wkg_block_end / wkg_block_delta — gate: >=1 weigh-in
+      within the FIRST 4 days of the trailing 28d window AND >=1 weigh-in
+      within the LAST 4 days (v1 block proxy; protocol does not yet track
+      explicit block boundaries). Both endpoints use current FTP, so delta
+      reflects weight change only.
+    weight_7d_avg_kg — gate: >=4 weigh-ins in trailing 7d
+    weight_28d_slope_kg_per_week — gate: >=14 weigh-ins in trailing 28d
+    display.{weight_latest, weight_7d_avg, weight_28d_slope_per_week} —
+      _to_display style {value, unit} pairs respecting athlete weight pref;
+      slope built manually to preserve 3dp and append "/week" to unit code.
+  Pairs with SECTION_11.md v11.43 (new Body Weight Handling section incl.
+  Deliberately Deferred subsection) and weight rows in BLOCK / WEEKLY
+  report templates. Pre-workout and post-workout templates intentionally
+  untouched in v1.
+
+Version 3.111 - latest.history.last_generated freshness fix: auto-history
+  generation block (should_generate_history → generate_history → write/publish)
+  moved in main() from after collect_training_data to before it.
+  _get_history_confidence() inside collect_training_data now reads the
+  just-written history.json, so latest.history.last_generated reflects the same
+  generated_at as the on-disk history. Previously, runs that triggered a
+  history rebuild published latest.json with stale last_generated because the
+  freshness read happened during data dict construction, before the rebuild
+  step. Local and GitHub modes share a single guarded block — args.output picks
+  the write target. try/except resilience preserved: failed history regen still
+  permits latest.json publish. Routes/intervals generation unchanged (still
+  runs after collect_training_data, which populates _intervals_data and
+  _routes_data). No schema change.
+
+Version 3.110 - Weekly capability rollup + monthly phase alignment + decoupling 0.0 fix:
+  (1) weekly_180d rows now carry six per-week capability fields: durability_mean /
+  durability_qualifying (VI<=1.05, VI>0, mt>=5400, decoupling not None), ef_mean /
+  ef_qualifying (cycling types, VI<=1.05, VI>0, mt>=1200, EF not None), hrrc_mean /
+  hrrc_qualifying (icu_hrr>0). N>=1 emits a mean; qualifying count signals confidence.
+  Trajectory layer for Season Report v2 — no alert or trend logic at this layer.
+  (2) monthly_*y[].dominant_phase now derives from modal aggregation of already-computed
+  weekly_180d[].phase_detected values rather than the previous standalone CTL-trend +
+  qi_pct inline rule. Overlap test: week_start < next_month AND week_end >= current_month
+  (catches boundary weeks straddling month edges). Most-frequent label wins; TSS is
+  tie-break only. Null when no overlapping weekly rows (month outside 180d window).
+  Vocabulary now matches _detect_phase_v2 output.
+  (3) _calculate_durability: replaced `or`-chain fallback (`get("icu_hr_decoupling") or
+  get("decoupling")`) with explicit is-None check — prevents silent drop of 0.0 values.
+  (4) Same is-None pattern applied to all three HRRc dict-extraction sites
+  (_calculate_hrrc_trend qualifying filter, weekly capability rollup, activity formatter
+  raw_hrrc): explicit `value is None` check before falling through to `hrr`. If API ever
+  returns `{"value": 0, ...}`, 0 is now treated as authoritative (then filtered by the
+  >0 gate) rather than falling through to a sibling key. SEASON_REPORT_TEMPLATE.md Notes
+  section updated: phase-narrative bullet now describes modal-from-_detect_phase_v2
+  derivation and the structural null-for-older-months behavior; capability-absent bullet
+  replaced with per-week trajectory field documentation.
+
 Version 3.109 - Display Unit Semantics: every narrative-bearing field that ships in
   canonical metric (distance_km, elevation_m, weight_kg, height_m, avg_speed/max_speed
   as KPH, position_km, total_distance_km, total_elevation_m, elevation_per_km,
@@ -188,7 +254,7 @@ class IntervalsSync:
     HISTORY_FILE = "history.json"
     UPSTREAM_REPO = "CrankAddict/section-11"
     CHANGELOG_FILE = "changelog.json"
-    VERSION = "3.109"
+    VERSION = "3.112"
     INTERVALS_FILE = "intervals.json"
     ROUTES_FILE = "routes.json"
 
@@ -2676,7 +2742,15 @@ class IntervalsSync:
             "weekly_summary": self._compute_weekly_summary(activities_display, wellness),
             "race_calendar": race_calendar
         }
-        
+
+        # Body weight signal (v3.112) — gated W/kg + weekly weight trend.
+        # None when no field qualifies; AI omits the report section silently.
+        weight_signal = self._build_weight_signal(
+            wellness_extended, sport_settings, power_model, athlete_units
+        )
+        if weight_signal:
+            data["current_status"]["weight"] = weight_signal
+
         return data
 
     def _build_sport_thresholds(self, athlete: dict) -> dict:
@@ -2712,7 +2786,194 @@ class IntervalsSync:
                     candidates[family] = (entry, populated, sport_type)
 
         return {family: data for family, (data, _, _) in candidates.items()}
-    
+
+    def _build_weight_signal(self, wellness_extended: List[Dict],
+                              sport_settings: Dict, power_model: Dict,
+                              athlete_units: Optional[Dict[str, str]] = None) -> Optional[Dict]:
+        """
+        Build current_status.weight block — gated weight signals for block
+        (W/kg) and weekly (trend) reports. (v3.112)
+
+        Architecture: every metric below is computed here; the AI layer
+        interprets only. Failed-gate fields are ABSENT from the dict (not
+        null) so the AI can treat absence as the "omit section" signal —
+        no "insufficient data" boilerplate.
+
+        Display fields (per Display Unit Semantics): narrated weights ship
+        with a `display` sub-dict carrying {value, unit} pairs in the
+        athlete's preferred unit. W/kg stays unit-universal — no display
+        block on wkg_* fields. Slope display preserves 3dp precision and
+        emits a unit code suffixed with "/week".
+
+        Gates:
+          - weight_latest_kg / weight_latest_date:
+              latest weigh-in age <= 14 days
+          - wkg_current + wkg_ftp_source [+ ftp_setting_date]:
+              weight_latest present + FTP source available.
+              Tested cycling FTP from sportSettings preferred, eFTP fallback.
+              eFTP is not suppressed for stale tested FTP — staleness rides
+              on the source tag via ftp_setting_date. The date reflects the
+              FTP setting change recorded in ftp_history.json (Intervals
+              does not expose a formal test date).
+          - wkg_block_start / wkg_block_end / wkg_block_delta:
+              >=1 weigh-in within the FIRST 4 days of the trailing 28d
+              window (days [today-27, today-24]) AND >=1 weigh-in within
+              the LAST 4 days (days [today-3, today]). v1 block-window
+              proxy — Section 11 does not yet track explicit block
+              boundaries. Both endpoints use the current FTP, so the delta
+              reflects weight change across the window only.
+          - weight_7d_avg_kg:
+              >= 4 weigh-ins in trailing 7d
+          - weight_28d_slope_kg_per_week:
+              >= 14 weigh-ins in trailing 28d (linear slope)
+
+        Returns None when no field qualifies — caller omits the `weight`
+        key from current_status entirely.
+        """
+        BLOCK_WINDOW_DAYS = 28
+        BOUNDARY_WIDTH_DAYS = 4
+        today = datetime.now().date()
+        block: Dict = {}
+        display: Dict = {}
+
+        # --- Collect dated weight entries (newest-first) ---
+        entries: List[Tuple] = []
+        for w in (wellness_extended or []):
+            wt = w.get("weight")
+            if wt is None or wt == 0:
+                continue
+            date_str = w.get("id", "")
+            if not date_str:
+                continue
+            try:
+                d = datetime.strptime(date_str[:10], "%Y-%m-%d").date()
+            except Exception:
+                continue
+            entries.append((d, float(wt)))
+
+        if not entries:
+            return None
+
+        entries.sort(key=lambda x: x[0], reverse=True)
+
+        # --- weight_latest_kg / weight_latest_date (gate: <=14d age) ---
+        latest_date, latest_weight = entries[0]
+        latest_age_days = (today - latest_date).days
+        if 0 <= latest_age_days <= 14:
+            block["weight_latest_kg"] = round(latest_weight, 1)
+            block["weight_latest_date"] = latest_date.isoformat()
+            display["weight_latest"] = self._to_display(
+                latest_weight, "weight", athlete_units
+            )
+
+        # --- Resolve FTP source (tested preferred, eFTP fallback) ---
+        cycling = (sport_settings or {}).get("cycling", {})
+        tested_ftp = cycling.get("ftp")
+        eftp = (power_model or {}).get("eftp")
+
+        ftp_used: Optional[float] = None
+        ftp_source: Optional[str] = None
+        ftp_setting_date: Optional[str] = None
+
+        if tested_ftp:
+            ftp_used = float(tested_ftp)
+            ftp_source = "tested"
+            try:
+                ftp_history = self._load_ftp_history()
+                outdoor_dates = sorted(ftp_history.get("outdoor", {}).keys(), reverse=True)
+                indoor_dates = sorted(ftp_history.get("indoor", {}).keys(), reverse=True)
+                if outdoor_dates:
+                    ftp_setting_date = outdoor_dates[0]
+                elif indoor_dates:
+                    ftp_setting_date = indoor_dates[0]
+            except Exception:
+                ftp_setting_date = None
+        elif eftp:
+            ftp_used = float(eftp)
+            ftp_source = "eftp"
+
+        # --- wkg_current (depends on weight_latest_kg + FTP source) ---
+        if "weight_latest_kg" in block and ftp_used and block["weight_latest_kg"] > 0:
+            block["wkg_current"] = round(ftp_used / block["weight_latest_kg"], 2)
+            block["wkg_ftp_source"] = ftp_source
+            if ftp_setting_date:
+                block["ftp_setting_date"] = ftp_setting_date
+
+        # --- Block trajectory: first-4 / last-4 boundary windows ---
+        # First 4 days of trailing 28d window: [today-27, today-24]
+        # Last 4 days of trailing 28d window:  [today-3,  today]
+        first4_high = today - timedelta(days=BLOCK_WINDOW_DAYS - BOUNDARY_WIDTH_DAYS)  # today-24
+        first4_low = today - timedelta(days=BLOCK_WINDOW_DAYS - 1)                     # today-27
+        last4_low = today - timedelta(days=BOUNDARY_WIDTH_DAYS - 1)                    # today-3
+        last4_high = today                                                              # today
+
+        def _nearest_in_range(low, high, anchor):
+            """Pick the weigh-in within [low, high] closest to anchor."""
+            best = None
+            best_dist = None
+            for d, w in entries:
+                if low <= d <= high:
+                    dist = abs((d - anchor).days)
+                    if best_dist is None or dist < best_dist:
+                        best = w
+                        best_dist = dist
+            return best
+
+        block_start_anchor = first4_low                # day -27
+        block_end_anchor = today                       # day 0
+        weight_at_start = _nearest_in_range(first4_low, first4_high, block_start_anchor)
+        weight_at_end = _nearest_in_range(last4_low, last4_high, block_end_anchor)
+
+        if weight_at_start and weight_at_end and ftp_used:
+            block["wkg_block_start"] = round(ftp_used / weight_at_start, 2)
+            block["wkg_block_end"] = round(ftp_used / weight_at_end, 2)
+            block["wkg_block_delta"] = round(
+                block["wkg_block_end"] - block["wkg_block_start"], 2
+            )
+
+        # --- weight_7d_avg_kg (gate: >=4 entries in trailing 7d) ---
+        seven_d_cutoff = today - timedelta(days=6)
+        seven_d_weights = [w for d, w in entries if d >= seven_d_cutoff]
+        if len(seven_d_weights) >= 4:
+            avg_kg = sum(seven_d_weights) / len(seven_d_weights)
+            block["weight_7d_avg_kg"] = round(avg_kg, 1)
+            display["weight_7d_avg"] = self._to_display(avg_kg, "weight", athlete_units)
+
+        # --- weight_28d_slope_kg_per_week (gate: >=14 entries in trailing 28d) ---
+        twenty_eight_d_cutoff = today - timedelta(days=BLOCK_WINDOW_DAYS - 1)
+        slope_pairs = [(d, w) for d, w in entries if d >= twenty_eight_d_cutoff]
+        if len(slope_pairs) >= 14:
+            xs = [(d - twenty_eight_d_cutoff).days for d, _ in slope_pairs]
+            ys = [w for _, w in slope_pairs]
+            n = len(xs)
+            mean_x = sum(xs) / n
+            mean_y = sum(ys) / n
+            num = sum((xs[i] - mean_x) * (ys[i] - mean_y) for i in range(n))
+            den = sum((xs[i] - mean_x) ** 2 for i in range(n))
+            if den > 0:
+                slope_kg_per_week = (num / den) * 7
+                block["weight_28d_slope_kg_per_week"] = round(slope_kg_per_week, 3)
+                # Manual display build: preserves 3dp + appends "/week" to unit code.
+                # _to_display rounds to 1dp (correct for absolute weights, too coarse
+                # for slopes) — we mirror its conversion logic here instead.
+                weight_pref = (athlete_units or {}).get("weight")
+                if weight_pref == "lb":
+                    slope_display_value = round(slope_kg_per_week * 2.20462, 3)
+                    slope_display_unit = "lb/week"
+                else:
+                    slope_display_value = round(slope_kg_per_week, 3)
+                    slope_display_unit = "kg/week"
+                display["weight_28d_slope_per_week"] = {
+                    "value": slope_display_value,
+                    "unit": slope_display_unit,
+                }
+
+        if not block:
+            return None
+        if display:
+            block["display"] = display
+        return block
+
     def _calculate_derived_metrics(self, activities_7d: List[Dict], activities_28d: List[Dict],
                                     wellness_7d: List[Dict], wellness_extended: List[Dict],
                                     current_ctl: float, current_atl: float, current_tsb: float,
@@ -3802,7 +4063,9 @@ class IntervalsSync:
             qualifying = []
             for act in activities:
                 # Raw API field names (before _format_activities)
-                dec = act.get("icu_hr_decoupling") or act.get("decoupling")
+                dec = act.get("icu_hr_decoupling")
+                if dec is None:
+                    dec = act.get("decoupling")
                 vi = act.get("icu_variability_index")
                 mt = act.get("moving_time", 0) or 0
 
@@ -3985,7 +4248,10 @@ class IntervalsSync:
                     continue
                 # API may return a dict (e.g. {"value": 34}) or a plain number
                 if isinstance(hrrc, dict):
-                    hrrc = hrrc.get("value") or hrrc.get("hrr")
+                    _v = hrrc.get("value")
+                    if _v is None:
+                        _v = hrrc.get("hrr")
+                    hrrc = _v
                 if isinstance(hrrc, (int, float)) and hrrc > 0:
                     qualifying.append(float(hrrc))
             return qualifying
@@ -6604,7 +6870,7 @@ class IntervalsSync:
                 print(f"  Building {label} monthly tier...")
                 monthly_tiers[f"monthly_{label}"] = self._build_monthly_tier(
                     activities_by_date, wellness_by_date, days=days_back,
-                    athlete_units=athlete_units
+                    athlete_units=athlete_units, weekly_180d=weekly_180d
                 )
             else:
                 monthly_tiers[f"monthly_{label}"] = []
@@ -6865,7 +7131,61 @@ class IntervalsSync:
             
             week_primary_sport = max(sport_tss, key=sport_tss.get) if sport_tss else None
             week_primary_sport_tss = round(sport_tss[week_primary_sport], 0) if week_primary_sport else None
-            
+
+            # Weekly capability rollup (v3.110) — trajectory layer for Season Report v2.
+            # Mirrors gating rules from _calculate_durability / _calculate_efficiency_factor /
+            # _calculate_hrrc_trend but operates on the week's activities without the trend
+            # or alert layer. N>=1 is sufficient; qualifying count lets the report calibrate.
+            # Durability: explicit is not None check (avoids silent drop of 0.0 values).
+            _week_acts = [
+                a for d in range(7)
+                for a in activities_by_date.get(
+                    (current + timedelta(days=d)).strftime("%Y-%m-%d"), []
+                )
+                if (current + timedelta(days=d)) <= now
+            ]
+            _CYCLING_EF_TYPES = {"Ride", "VirtualRide", "MountainBikeRide", "GravelRide"}
+
+            # Durability (VI<=1.05, VI>0, mt>=5400, decoupling not None)
+            _dur_vals = []
+            for _a in _week_acts:
+                _dec = _a.get("icu_hr_decoupling")
+                if _dec is None:
+                    _dec = _a.get("decoupling")
+                _vi = _a.get("icu_variability_index")
+                _mt = _a.get("moving_time", 0) or 0
+                if (_dec is not None and _vi is not None
+                        and _vi > 0 and _vi <= 1.05 and _mt >= 5400):
+                    _dur_vals.append(_dec)
+            week_durability_mean = round(statistics.mean(_dur_vals), 2) if _dur_vals else None
+            week_durability_qualifying = len(_dur_vals)
+
+            # EF (cycling only, VI<=1.05, VI>0, mt>=1200, EF not None)
+            _ef_vals = []
+            for _a in _week_acts:
+                _ef = _a.get("icu_efficiency_factor")
+                _vi = _a.get("icu_variability_index")
+                _mt = _a.get("moving_time", 0) or 0
+                if (_ef is not None and _a.get("type", "") in _CYCLING_EF_TYPES
+                        and _vi is not None and _vi > 0 and _vi <= 1.05 and _mt >= 1200):
+                    _ef_vals.append(_ef)
+            week_ef_mean = round(statistics.mean(_ef_vals), 2) if _ef_vals else None
+            week_ef_qualifying = len(_ef_vals)
+
+            # HRRc (icu_hrr not None, >0)
+            _hrrc_vals = []
+            for _a in _week_acts:
+                _hrrc = _a.get("icu_hrr")
+                if isinstance(_hrrc, dict):
+                    _v = _hrrc.get("value")
+                    if _v is None:
+                        _v = _hrrc.get("hrr")
+                    _hrrc = _v
+                if isinstance(_hrrc, (int, float)) and _hrrc > 0:
+                    _hrrc_vals.append(float(_hrrc))
+            week_hrrc_mean = round(statistics.mean(_hrrc_vals), 1) if _hrrc_vals else None
+            week_hrrc_qualifying = len(_hrrc_vals)
+
             rows.append({
                 "week_start": current.strftime("%Y-%m-%d"),
                 "total_hours": round(week_seconds / 3600, 2),
@@ -6900,7 +7220,13 @@ class IntervalsSync:
                 "monotony": week_monotony,
                 "intensity_basis_breakdown": intensity_basis_counts if hard_days > 0 else None,
                 "acwr": None,  # computed in post-pass below
-                "phase_detected": None  # populated by _detect_phase_v2
+                "phase_detected": None,  # populated by _detect_phase_v2
+                "durability_mean": week_durability_mean,
+                "durability_qualifying": week_durability_qualifying,
+                "ef_mean": week_ef_mean,
+                "ef_qualifying": week_ef_qualifying,
+                "hrrc_mean": week_hrrc_mean,
+                "hrrc_qualifying": week_hrrc_qualifying,
             })
             
             current += timedelta(days=7)
@@ -6921,12 +7247,19 @@ class IntervalsSync:
     
     def _build_monthly_tier(self, activities_by_date: Dict, wellness_by_date: Dict,
                             days: int,
-                            athlete_units: Optional[Dict[str, str]] = None) -> List[Dict]:
+                            athlete_units: Optional[Dict[str, str]] = None,
+                            weekly_180d: Optional[List[Dict]] = None) -> List[Dict]:
         """Build monthly aggregate rows for 1/2/3-year tiers.
-        
+
         athlete_units (v3.109): when provided, each row gets a `display` block
         with avg_weight (display.avg_weight) alongside canonical avg_weight_kg.
         Aggregate naming preserved — point-in-time rows expose `display.weight`.
+
+        weekly_180d (v3.110): when provided, dominant_phase is derived via modal
+        aggregation of already-computed phase_detected values from weekly rows
+        whose span overlaps the month (overlap: week_start < next_month AND
+        week_end >= current_month). TSS-weighted tie-break. None when no
+        overlapping weekly rows exist (month outside 180d window).
         """
         rows = []
         now = datetime.now()
@@ -7022,20 +7355,37 @@ class IntervalsSync:
             # Calculate weeks in this month for per-week averages
             weeks_in_period = max(1, total_days_in_month / 7)
             
-            # Determine dominant phase (simplified: based on CTL trend and zone distribution)
-            dominant_phase = "Unknown"
-            if ctl_values and len(ctl_values) >= 2:
-                ctl_trend = ctl_values[-1] - ctl_values[0]
-                qi_pct = (z4_plus_time / total_zone_time * 100) if total_zone_time > 0 else 0
-                
-                if ctl_trend > 3 and qi_pct > 15:
-                    dominant_phase = "Build"
-                elif ctl_trend > 1:
-                    dominant_phase = "Base"
-                elif ctl_trend < -3:
-                    dominant_phase = "Recovery"
-                else:
-                    dominant_phase = "Maintenance"
+            # Determine dominant phase via modal aggregation of weekly_180d phase_detected
+            # values whose week span overlaps this month (v3.110). Overlap test:
+            #   week_start < next_month AND week_end >= current_month
+            # Catches boundary weeks that straddle month edges.
+            # Rule: most-frequent label wins. TSS is tie-break only (not primary weight).
+            # Falls back to None when no overlapping rows exist (month outside 180d window).
+            dominant_phase = None
+            if weekly_180d:
+                phase_counts: Dict[str, int] = {}
+                phase_tss_tb: Dict[str, float] = {}  # TSS tie-break accumulator
+                for wrow in weekly_180d:
+                    phase = wrow.get("phase_detected")
+                    if not phase:
+                        continue
+                    try:
+                        ws = datetime.strptime(wrow["week_start"], "%Y-%m-%d")
+                    except (KeyError, ValueError):
+                        continue
+                    we = ws + timedelta(days=6)
+                    if ws < next_month and we >= current_month:
+                        phase_counts[phase] = phase_counts.get(phase, 0) + 1
+                        phase_tss_tb[phase] = phase_tss_tb.get(phase, 0.0) + (wrow.get("total_tss") or 0.0)
+                if phase_counts:
+                    max_count = max(phase_counts.values())
+                    candidates = [p for p, c in phase_counts.items() if c == max_count]
+                    # Single winner — no tie-break needed
+                    if len(candidates) == 1:
+                        dominant_phase = candidates[0]
+                    else:
+                        # Tie: pick candidate with highest accumulated TSS
+                        dominant_phase = max(candidates, key=lambda p: phase_tss_tb.get(p, 0.0))
             
             rows.append({
                 "month": month_str,
@@ -7449,7 +7799,10 @@ class IntervalsSync:
             
             raw_hrrc = act.get("icu_hrr")
             if isinstance(raw_hrrc, dict):
-                raw_hrrc = raw_hrrc.get("value") or raw_hrrc.get("hrr")
+                _v = raw_hrrc.get("value")
+                if _v is None:
+                    _v = raw_hrrc.get("hrr")
+                raw_hrrc = _v
             
             distance_km = round((act.get("distance") or 0) / 1000, 2)
             elevation_m = act.get("total_elevation_gain")
@@ -9498,6 +9851,23 @@ def main():
     
     print(f"\n🔄 Fetching {args.days} days of data (extended 28 days for ACWR)...")
     
+    # === AUTO HISTORY GENERATION (must precede collect_training_data so latest.json reads fresh history metadata) ===
+    if sync.should_generate_history():
+        try:
+            print("\n📊 Auto-generating history.json...")
+            history = sync.generate_history()
+            if args.output:
+                history_path = sync.data_dir / sync.HISTORY_FILE
+                with open(history_path, 'w') as f:
+                    json.dump(history, f, indent=2, default=str)
+                print(f"   ✅ history.json saved to {history_path}")
+            else:
+                sync.publish_to_github(history, filepath="history.json",
+                                       commit_message=f"Auto-generate history.json - {datetime.now().strftime('%Y-%m-%d')}")
+                print("   ✅ history.json auto-generated and pushed to GitHub")
+        except Exception as e:
+            print(f"   ⚠️ History generation failed (non-critical): {e}")
+    
     data = sync.collect_training_data(days_back=args.days)
     
     # Extract derived metrics for display
@@ -9569,18 +9939,6 @@ def main():
             with open(routes_path, 'w') as f:
                 json.dump(routes_data, f, indent=2, default=str)
             print(f"   🗺️  routes.json saved ({len(routes_data.get('events', []))} event(s))")
-        
-        # === AUTO HISTORY GENERATION (local mode) ===
-        if sync.should_generate_history():
-            try:
-                print("\n📊 Auto-generating history.json...")
-                history = sync.generate_history()
-                history_path = sync.data_dir / sync.HISTORY_FILE
-                with open(history_path, 'w') as f:
-                    json.dump(history, f, indent=2, default=str)
-                print(f"   ✅ history.json saved to {history_path}")
-            except Exception as e:
-                print(f"   ⚠️ History generation failed (non-critical): {e}")
     else:
         raw_url = sync.publish_to_github(data)
         
@@ -9619,17 +9977,6 @@ def main():
                 print(f"   🗺️  routes.json pushed ({len(routes_data.get('events', []))} event(s))")
             except Exception as e:
                 print(f"   ⚠️ routes.json push failed (non-critical): {e}")
-        
-        # === AUTO HISTORY GENERATION (Sundays/Mondays, first two runs after midnight) ===
-        if sync.should_generate_history():
-            try:
-                print("\n📊 Auto-generating history.json...")
-                history = sync.generate_history()
-                sync.publish_to_github(history, filepath="history.json",
-                                       commit_message=f"Auto-generate history.json - {datetime.now().strftime('%Y-%m-%d')}")
-                print("   ✅ history.json auto-generated and pushed to GitHub")
-            except Exception as e:
-                print(f"   ⚠️ History generation failed (non-critical): {e}")
         
         # === UPDATE NOTIFICATIONS ===
         try:
