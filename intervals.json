@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-14T11:16:44.028009",
+  "generated_at": "2026-06-14T13:14:46.983666",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
@@ -1726,6 +1726,26 @@
           "zone": 1,
           "training_load": 11.764959,
           "decoupling": -28.084837
+        }
+      ]
+    },
+    {
+      "activity_id": "i157169596",
+      "date": "2026-06-14",
+      "type": "Ride",
+      "name": "Genas Cyclisme sur route",
+      "interval_summary": null,
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 13705,
+          "avg_power": 97,
+          "max_power": 324,
+          "avg_hr": 113,
+          "max_hr": 134,
+          "avg_cadence": 72.33062,
+          "zone": 1,
+          "training_load": 105.46342
         }
       ]
     }
