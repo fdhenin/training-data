@@ -1,58 +1,10 @@
 {
-  "generated_at": "2026-06-17T22:59:16.836708",
+  "generated_at": "2026-06-18T00:24:03.545926",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
   "retention_days": 14,
   "activities": [
-    {
-      "activity_id": "i154004083",
-      "date": "2026-06-03",
-      "type": "VirtualRide",
-      "name": "Zwift - SST (Short)",
-      "interval_summary": [
-        "1x 38m59s 187w"
-      ],
-      "intervals": [
-        {
-          "type": "RECOVERY",
-          "duration_secs": 303,
-          "avg_power": 120,
-          "max_power": 171,
-          "avg_hr": 105,
-          "max_hr": 121,
-          "avg_cadence": 65.84158,
-          "zone": 2,
-          "training_load": 3.1796074,
-          "decoupling": -27.039015
-        },
-        {
-          "type": "WORK",
-          "label": "2339s@187w82rpm",
-          "duration_secs": 2339,
-          "avg_power": 187,
-          "max_power": 197,
-          "avg_hr": 139,
-          "max_hr": 151,
-          "avg_cadence": 82.43309,
-          "zone": 4,
-          "training_load": 54.643147,
-          "decoupling": 6.4108443
-        },
-        {
-          "type": "RECOVERY",
-          "duration_secs": 372,
-          "avg_power": 131,
-          "max_power": 353,
-          "avg_hr": 138,
-          "max_hr": 148,
-          "avg_cadence": 70.65323,
-          "zone": 2,
-          "training_load": 4.8193536,
-          "decoupling": 12.114039
-        }
-      ]
-    },
     {
       "activity_id": "i154809753",
       "date": "2026-06-06",
