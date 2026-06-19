@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-19T11:54:39.502655",
+  "generated_at": "2026-06-19T15:25:59.692661",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
@@ -1570,6 +1570,27 @@
           "zone": 1,
           "training_load": 47.382153,
           "decoupling": 0.8965457
+        }
+      ]
+    },
+    {
+      "activity_id": "i158609382",
+      "date": "2026-06-19",
+      "type": "Ride",
+      "name": "Albon",
+      "interval_summary": null,
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 13892,
+          "avg_power": 79,
+          "max_power": 409,
+          "avg_hr": 105,
+          "max_hr": 138,
+          "avg_cadence": 61.50165,
+          "zone": 1,
+          "training_load": 82.51778,
+          "decoupling": 27.012093
         }
       ]
     }
