@@ -1,10 +1,17 @@
 # Section 11 — AI Coach Protocol
 
-**Protocol Version:** 11.43  
-**Last Updated:** 2026-04-30
+**Protocol Version:** 11.44  
+**Last Updated:** 2026-07-04
 **License:** [MIT](https://opensource.org/licenses/MIT)
 
 ### Changelog
+
+**v11.44 — DFA a1 crossing integrity (contiguous dwell + per-threshold gating):**
+- LT1/LT2 crossing estimates now require a **sustained contiguous crossing**, not scattered in-band time. Each `lt1_crossing` / `lt2_crossing` block gains `contiguous_secs`, `n_qualifying_segments`, and a `reason` (`ok` / `no_samples_in_band` / `insufficient_total_dwell` / `no_contiguous_dwell`); `avg_hr` / `avg_watts` populate only at `reason == "ok"`. Fixes smeared threshold estimates from warmup/cooldown/descent scatter on sub-threshold rides
+- `trailing_by_sport.{sport}.lt1_estimate` / `lt2_estimate` are now gated **independently** on per-threshold qualifying-session count (≥3). Eliminates the hollow all-null block that appeared when one threshold's crossings made the shared `confidence` truthy for the other
+- New `lt1_reason` / `lt2_reason` on each sport block explain a null estimate (`insufficient_sessions`, or the modal sub-threshold blocker) — a null estimate means the threshold was not sustained, not missing sensor data. `confidence` is retained as a coarse max-across-thresholds signal for section gating; per-threshold estimate presence + reason are authoritative
+- `capability_metrics_note` in `latest.json` updated to teach the new reason-code behavior. `BLOCK_REPORT_TEMPLATE.md` now omits the LT1 line independently when `lt1_estimate` is null (previously only LT2)
+- Pairs with `sync.py` v3.113
 
 **v11.43 — Body Weight Handling (block W/kg + weekly trend):**
 - New `current_status.weight` block in `latest.json` carrying gated weight signals: `weight_latest_kg`, `weight_latest_date`, `wkg_current`, `wkg_ftp_source` (+ optional `ftp_setting_date`), `wkg_block_start` / `wkg_block_end` / `wkg_block_delta`, `weight_7d_avg_kg`, `weight_28d_slope_kg_per_week`, plus `display.{weight_latest, weight_7d_avg, weight_28d_slope_per_week}` ({value, unit} pairs in the athlete's preferred weight unit). Each field emits only when its data-density gate is satisfied; failed-gate fields are absent from the JSON, and the AI layer omits the corresponding report section silently with no "insufficient data" boilerplate
@@ -483,8 +490,8 @@ Null fields are stripped from output — only populated fields appear per segmen
 | `tiz_transition_lt2` | object/null | 0.5 ≤ DFA a1 < 0.75 (sweet spot / threshold) |
 | `tiz_above_lt2` | object/null | DFA a1 < 0.5 (above LT2, supra-threshold) |
 | `drift` | object/null | First-third vs last-third comparison: `first_third_avg`, `last_third_avg`, `delta`, `interpretable` (false when >15% time above LT2 — structural noise) |
-| `lt1_crossing` | object | HR/watts in 0.95–1.05 band: `secs_in_band`, `avg_hr`, `avg_watts` (null when secs_in_band < 60) |
-| `lt2_crossing` | object | HR/watts in 0.45–0.55 band: same shape |
+| `lt1_crossing` | object | HR/watts during a **sustained contiguous crossing** of the 0.95–1.05 band (v3.113): `secs_in_band` (total, diagnostic), `contiguous_secs` (best qualifying segment), `n_qualifying_segments`, `reason` (`ok` / `no_samples_in_band` / `insufficient_total_dwell` / `no_contiguous_dwell`), `avg_hr`, `avg_watts` (populated only when `reason == "ok"` — i.e. a ≥60 s segment bridging ≤5 s gaps in ride-time). Scattered in-band time no longer yields an estimate |
+| `lt2_crossing` | object | Same shape for the 0.45–0.55 band |
 | `quality` | object | `valid_secs`, `total_secs`, `valid_pct`, `artifact_rate_avg`, `sufficient` |
 
 **See DFA a1 Protocol section for interpretation rules.**
@@ -1895,9 +1902,11 @@ The AI does not compute DFA a1 statistics — `sync.py` does. The AI reads pre-c
 
 **`latest.json` `derived_metrics.capability.dfa_a1_profile`**:
 - `latest_session` — most recent activity with a sufficient dfa block: avg, tiz_split_pct, drift_delta, drift_interpretable, quality_pct, sufficient flag. If no recent session is sufficient, surfaces the most recent insufficient one with `sufficient: false` so the AI can see "AlphaHRV ran but data unusable".
-- `trailing_by_sport` — keyed by sport family. Per sport: n_sessions (up to 7 most recent sufficient), date_range, avg_dfa_a1, drift_delta_mean, lt1_crossing_sessions / lt2_crossing_sessions (diagnostic: how many of n_sessions had ≥60s dwell in each crossing band — reveals whether low confidence is due to athlete rarely crossing a band vs other causes), lt1_estimate, lt2_estimate, quality_avg_pct, validated flag, confidence (`low` / `moderate` / `high` / null based on N sessions contributing to crossing-band estimates: 3 → low, 4–5 → moderate, ≥6 → high).
+- `trailing_by_sport` — keyed by sport family. Per sport: n_sessions (up to 7 most recent sufficient), date_range, avg_dfa_a1, drift_delta_mean, lt1_crossing_sessions / lt2_crossing_sessions (diagnostic: how many of n_sessions had a **qualifying contiguous crossing** — `reason == "ok"` — in each band; reveals whether low confidence is "athlete rarely sustains a band" vs other causes), lt1_estimate, lt2_estimate, **lt1_reason / lt2_reason** (v3.113), quality_avg_pct, validated flag, confidence.
+  - **Per-threshold gating (v3.113):** `lt1_estimate` and `lt2_estimate` are gated **independently** — each is `null` when that threshold has fewer than 3 qualifying-crossing sessions. A one-threshold-carries-the-other hollow block can no longer occur. `lt1_reason` / `lt2_reason` explain the state per threshold: `ok` (estimate present) / `insufficient_sessions` (1–2 qualifying) / a sub-threshold blocker (`no_contiguous_dwell` / `insufficient_total_dwell` / `no_samples_in_band`, modal across the window). **A null estimate + reason means the athlete did not sustain that threshold — not missing sensor data.**
+  - **`confidence`** (`low` / `moderate` / `high` / null) is a **coarse, max-across-thresholds** signal (3 → low, 4–5 → moderate, ≥6 → high) kept for backward compatibility and section gating. It is NOT per-threshold — a `moderate` confidence can coexist with one threshold's estimate being null. Per-threshold `lt*_estimate` presence + `lt*_reason` are authoritative.
 
-**Estimate shape — cycling:** `{hr, watts_outdoor, watts_indoor, n_sessions, n_sessions_outdoor, n_sessions_indoor}`. HR is pooled across all sessions (physiology signal). Watts are split by environment because the power-DFA relationship differs meaningfully between indoor (VirtualRide) and outdoor cycling — pooling would produce a blended estimate that is not actionable in either context. `watts_outdoor` / `watts_indoor` are always present; null when no qualifying sessions exist in that environment.
+**Estimate shape — cycling:** `{hr, watts_outdoor, watts_indoor, n_sessions, n_sessions_outdoor, n_sessions_indoor}` — **or `null` for the whole block** when the threshold has fewer than 3 qualifying-crossing sessions (v3.113; check `lt*_reason`). Within a present block, HR is pooled across all sessions (physiology signal); watts are split by environment because the power-DFA relationship differs meaningfully between indoor (VirtualRide) and outdoor cycling — pooling would blend them unactionably. `watts_outdoor` / `watts_indoor` are null when that environment has no qualifying session.
 
 **Estimate shape — non-cycling:** `{hr, watts, n_sessions}`. No indoor/outdoor distinction.
 
