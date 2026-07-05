@@ -11,6 +11,9 @@
 - `trailing_by_sport.{sport}.lt1_estimate` / `lt2_estimate` are now gated **independently** on per-threshold qualifying-session count (≥3). Eliminates the hollow all-null block that appeared when one threshold's crossings made the shared `confidence` truthy for the other
 - New `lt1_reason` / `lt2_reason` on each sport block explain a null estimate (`insufficient_sessions`, or the modal sub-threshold blocker) — a null estimate means the threshold was not sustained, not missing sensor data. `confidence` is retained as a coarse max-across-thresholds signal for section gating; per-threshold estimate presence + reason are authoritative
 - `capability_metrics_note` in `latest.json` updated to teach the new reason-code behavior. `BLOCK_REPORT_TEMPLATE.md` now omits the LT1 line independently when `lt1_estimate` is null (previously only LT2)
+- `_generate_intervals` now receives the 28-day extended activity set, so first-run backfill reaches the full 14-day retention window (previously truncated to the 7-day display set, silently shrinking the DFA window on every code change); cached entries whose `activity_id` is no longer present are pruned — deleted/re-uploaded rides that could otherwise win the `latest_session` pointer (`sync.py` v3.113)
+- Completed `recent_activities` now carry `duration_formatted` (XhYm) beside `duration_hours`, so reports read the pre-formatted field instead of converting decimals in the AI layer
+- DFA interval entries carry `start_datetime`; `latest_session` and the trailing window sort on it (day-granular `date` fallback), resolving same-day double DFA rides by actual time rather than cache order
 - Pairs with `sync.py` v3.113
 
 **v11.43 — Body Weight Handling (block W/kg + weekly trend):**
