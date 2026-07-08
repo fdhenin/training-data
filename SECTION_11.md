@@ -1,10 +1,19 @@
 # Section 11 — AI Coach Protocol
 
-**Protocol Version:** 11.46  
-**Last Updated:** 2026-07-06
+**Protocol Version:** 11.48  
+**Last Updated:** 2026-07-08
 **License:** [MIT](https://opensource.org/licenses/MIT)
 
 ### Changelog
+
+**v11.48 — P1 readiness-skip severity gate (Commit B):**
+- `sync.py` v3.116: the P1 persistent-alert skip branch now requires `severity in ("warning", "alarm")` in addition to `tier == 1` and `persistence_days ≥ 2`. Inert on current data (`race_taper` / `race_week` are the only tier-1 `info` alerts and carry `persistence_days: null`, already excluded); prevents a future tier-1 `info` alert with a real persistence value from silently forcing a P1 skip
+- P1 priority-ladder line and the `alerts[].severity` / `alerts[].persistence_days` schema rows updated to state the `warning`/`alarm` requirement (P1 alert branch also gated on RI < 0.7), closing the doc/code gap that Commit A deliberately left open
+
+**v11.47 — Alert tier semantics clarified (doc-only):**
+- Defines **Alert Tier 1** (`alerts[].tier == 1`) and **tier-1 alarm** (`tier: 1` + `severity: "alarm"`) in the Readiness Decision section, resolving the terminology collision raised in forum #133. Tier 1 spans primary readiness signals (`hrv` / `rhr` / `recovery_index`) **and** race-calendar alerts (`race_taper` / `race_week` / `race_week_tsb`); only a tier-1 alarm fires P0. Disambiguated from the unrelated Tier-1 verified data mirror and Tier 1 heat-stress band (no renames)
+- Documents the full `alerts[]` object schema (`metric`, `value`, `severity`, `tier`, `persistence_days`, `threshold`, `context`) in the JSON field reference — previously only `readiness_decision.alarm_refs` was documented, not the objects it points to
+- P0/P1 priority-ladder lines rewritten to name the alert axis explicitly and to match current `sync.py`: P0 keys on `severity: "alarm"`; P1 keys on `persistence_days ≥ 2` (persistence only — no severity filter, matching the current P1 branch in `sync.py`). No behavior change; the P1 severity filter lands separately in Commit B
 
 **v11.46 — DFA a1 TIZ band rename (marker-consistent names):**
 - The four time-in-zone bands are renamed to match the corrected three-marker semantics — **values and boundaries are unchanged, keys only**. Per-session `dfa` block: `tiz_below_lt1` → **`tiz_recovery`** (α1 > 1.0), `tiz_lt1_transition` → **`tiz_endurance`** (0.75–1.0, between easy_guard and LT1), `tiz_transition_lt2` → **`tiz_tempo`** (0.5–0.75), `tiz_above_lt2` → **`tiz_supra`** (α1 < 0.5). Pairs with `sync.py` v3.115
@@ -1081,11 +1090,20 @@ AI systems must only consider caloric-reduction or weight-optimization phases du
 
 | Priority | Condition | Result |
 |----------|-----------|--------|
-| **P0 — Safety stop** | RI < 0.6, OR any tier-1 alarm active | **Skip** (non-negotiable) |
-| **P1 — Acute overload** | ACWR ≥ 1.5, OR (TSB < -30 + HRV ↓>10%), OR (RI < 0.7 + tier-1 alert persisting ≥2 days) | **Skip** |
+| **P0 — Safety stop** | RI < 0.6, OR any active **Alert Tier 1** item with `severity: "alarm"` | **Skip** (non-negotiable) |
+| **P1 — Acute overload** | ACWR ≥ 1.5, OR (TSB < -30 + HRV ↓>10%), OR (RI < 0.7 + any **Alert Tier 1** item of `warning`/`alarm` severity with `persistence_days` ≥ 2) | **Skip** |
 | **P1 — Acute overload (modify)** | ACWR ≥ 1.3, OR (TSB < -25 + HRV ↓>10%) | **Modify** |
 | **P2 — Accumulated fatigue** | Red signal count ≥ 2, OR (1 red in tightened phase), OR amber count ≥ phase threshold | **Modify** (or Skip if 2+ red) |
 | **P3 — Green light** | None of the above | **Go** |
+
+**Alert Tiers.** Every item in the top-level `alerts[]` array (see JSON field reference) carries a `tier` (1 / 2 / 3) on a shared alert-priority scale; only Alert Tier 1 is eligible for the alert-based P0/P1 branches. For readiness and load metrics this scale maps to *Metric Evaluation Hierarchy* (Tier 1 primary readiness, Tier 2 secondary load, Tier 3 tertiary diagnostics); race-calendar alerts are the exception — surfaced at tier 1 for visibility but outside that hierarchy.
+
+*Active* means present in the current `alerts[]` snapshot: `sync.py` emits an alert object only while its triggering condition holds, so membership in the array is itself the active state.
+
+- **Alert Tier 1** — an `alerts[]` item with `tier: 1`; the highest-priority alert class. Two distinct kinds carry `tier: 1`: (a) **primary readiness signals** (`hrv`, `rhr`, `recovery_index`) — the Tier-1 primary signals of *Metric Evaluation Hierarchy*; and (b) **race-calendar alerts** (`race_taper`, `race_week`, `race_week_tsb`) — surfaced at tier 1 for visibility, with `persistence_days: null`, not part of the readiness hierarchy. Tier 2 (`acwr`, `monotony`, `strain`) and Tier 3 (`durability`, `tid_distribution`) are not referenced by the alert-based P0/P1 branches.
+- **tier-1 alarm** — an Alert Tier 1 item that also carries `severity: "alarm"`; the P0 safety-stop trigger. In practice only readiness signals reach `alarm` (race-calendar alerts are `info` / `warning`), so they never fire P0.
+
+*Not to be confused with:* the **Tier-1 verified data mirror** (*Data Mirror Integration*) or the **Tier 1** heat-stress band (*Heat Stress Assessment*) — both share the word "tier" but are unrelated axes, unchanged here.
 
 **Signal Classification:**
 
@@ -3112,7 +3130,15 @@ This subsection defines the formal self-validation and audit metadata structure 
 | `readiness_decision.race_week_defers` | boolean | When true, modification guidance defers to race-week protocol day-by-day targets. |
 | `readiness_decision.modification` | object/null | When recommendation is "modify": `triggers` (signal names), `suggested_adjustments` (`intensity`, `volume`, `cap_zone`). Null for "go" and "skip". |
 | `readiness_decision.reason`    | string   | Audit-grade factual reason. E.g., "P2 signal count. 2 amber (rhr, sleep) >= threshold 2." Not coaching prose. |
-| `readiness_decision.alarm_refs` | array   | Alert metric names that triggered P0/P1. Empty array for P2/P3. |
+| `readiness_decision.alarm_refs` | array   | Alert metric names that triggered P0/P1. Empty array for P2/P3. Each name resolves to an object in the top-level `alerts[]` array below (matched by `metric`). |
+| `alerts`                       | array    | Top-level array of currently-active alert objects emitted by `sync.py`. `readiness_decision.alarm_refs` references these by `metric`. See *Alert Tiers* under Readiness Decision. |
+| `alerts[].metric`              | string   | Signal name, e.g. `hrv`, `rhr`, `recovery_index`, `acwr`, `monotony`, `strain`, `durability`, `tid_distribution`, `race_taper`, `race_week`, `race_week_tsb`. |
+| `alerts[].value`               | number/string | Raw metric value at evaluation — numeric for most signals; a classification label (string) for `tid_distribution` shift alerts. |
+| `alerts[].severity`            | string   | `"info"` / `"warning"` / `"alarm"`. At `tier: 1`: `"alarm"` triggers a P0 skip; `"warning"`/`"alarm"` with `persistence_days` ≥ 2 is eligible for the alert-based P1 branch when RI < 0.7; `"info"` never forces a skip. |
+| `alerts[].tier`                | number   | `1` / `2` / `3`. Tier 1 = primary readiness signals + race-calendar; Tier 2 = load (`acwr` / `monotony` / `strain`); Tier 3 = quality (`durability` / `tid_distribution`). Only Alert Tier 1 is eligible for the alert-based P0/P1 branches. See *Alert Tiers*. |
+| `alerts[].persistence_days`    | number/null | Consecutive days the signal has held. Integer when persistence is computed; `null` for single-day/immediate alerts (e.g. the RI < 0.6 alarm) and alerts without a persistence axis, including race-calendar alerts. P1 persistent branch requires `≥ 2`, `warning`/`alarm` severity, and RI < 0.7. |
+| `alerts[].threshold`           | number/string | The threshold that was crossed — numeric for some branches (RI `0.6`/`0.7`, monotony/strain), a string for others (HRV/RHR/race/TID/durability). |
+| `alerts[].context`             | string   | Human-readable one-line explanation for the AI layer. |
 | `seasonal_context`             | string   | Current position in annual training cycle                                           |
 | `consistency_index`            | number   | 7-day plan adherence ratio (0–1)                                                    |
 | `stress_tolerance`             | number   | Current load absorption capacity                                                    |
