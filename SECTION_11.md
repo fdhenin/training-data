@@ -1,10 +1,15 @@
 # Section 11 — AI Coach Protocol
 
-**Protocol Version:** 11.48  
+**Protocol Version:** 11.49  
 **Last Updated:** 2026-07-08
 **License:** [MIT](https://opensource.org/licenses/MIT)
 
 ### Changelog
+
+**v11.49 — P1 `alarm_refs` per-branch attribution (`sync.py` v3.117, changelog-only):**
+- `sync.py` v3.117: the P1 skip return previously set `alarm_refs` to every `tier1_persistent` ref whenever any P1 reason fired. When P1 fired from ACWR (≥ 1.5) or the TSB+HRV composite while RI ≥ 0.7 (persistent branch inactive) and unrelated persistent tier-1 alerts happened to be active, `alarm_refs` named alerts that did not trigger the decision. Now built per firing branch: ACWR contributes the `acwr` alert ref (present only if the object exists — guaranteed at ≥ 1.5, above the ≥ 1.35 alert threshold), the TSB+HRV composite contributes none (no discrete alert object to resolve to), the RI < 0.7 persistent branch contributes its tier-1 metrics only when it fires
+- No doc-body change: this brings the code in line with the v11.47 contract already documented at `readiness_decision.alarm_refs` ("alert metric names that triggered P0/P1 … each name resolves to an object in the top-level `alerts[]` array"). P0 was already correct; P2/P3/modify returns already emit `[]`
+- Output change in the edge case only (verified inert on current live data — no P1 skip active); resolves TODO #12
 
 **v11.48 — P1 readiness-skip severity gate (Commit B):**
 - `sync.py` v3.116: the P1 persistent-alert skip branch now requires `severity in ("warning", "alarm")` in addition to `tier == 1` and `persistence_days ≥ 2`. Inert on current data (`race_taper` / `race_week` are the only tier-1 `info` alerts and carry `persistence_days: null`, already excluded); prevents a future tier-1 `info` alert with a real persistence value from silently forcing a P1 skip
