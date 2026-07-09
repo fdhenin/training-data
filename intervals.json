@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-09T11:19:28.375216",
+  "generated_at": "2026-07-09T12:14:26.365475",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
@@ -2059,6 +2059,54 @@
           "zone": 1,
           "training_load": 4.593651,
           "decoupling": 11.453613
+        }
+      ]
+    },
+    {
+      "activity_id": "i164155944",
+      "date": "2026-07-09",
+      "type": "Ride",
+      "name": "Acclimatation \u00e0 la chaleur",
+      "interval_summary": [
+        "1x 1m55s 221w"
+      ],
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 3050,
+          "avg_power": 130,
+          "max_power": 460,
+          "avg_hr": 130,
+          "max_hr": 152,
+          "avg_cadence": 78.032455,
+          "zone": 2,
+          "training_load": 44.914497,
+          "decoupling": 7.6637125
+        },
+        {
+          "type": "WORK",
+          "label": "115s@221w88rpm",
+          "duration_secs": 115,
+          "avg_power": 221,
+          "max_power": 288,
+          "avg_hr": 149,
+          "max_hr": 156,
+          "avg_cadence": 88.04348,
+          "zone": 4,
+          "training_load": 3.344751,
+          "decoupling": 16.301437
+        },
+        {
+          "type": "RECOVERY",
+          "duration_secs": 2189,
+          "avg_power": 126,
+          "max_power": 313,
+          "avg_hr": 138,
+          "max_hr": 154,
+          "avg_cadence": 78.628876,
+          "zone": 2,
+          "training_load": 25.15991,
+          "decoupling": 3.082224
         }
       ]
     }
