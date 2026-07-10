@@ -1,84 +1,10 @@
 {
-  "generated_at": "2026-07-09T23:21:51.356507",
+  "generated_at": "2026-07-10T01:10:08.579236",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
   "retention_days": 14,
   "activities": [
-    {
-      "activity_id": "i160306685",
-      "date": "2026-06-25",
-      "type": "VirtualRide",
-      "name": "Tour aeroport",
-      "interval_summary": [
-        "1x 58s 224w",
-        "1x 4m29s 183w"
-      ],
-      "intervals": [
-        {
-          "type": "RECOVERY",
-          "duration_secs": 423,
-          "avg_power": 117,
-          "max_power": 151,
-          "avg_hr": 108,
-          "max_hr": 121,
-          "avg_cadence": 74.36407,
-          "zone": 2,
-          "training_load": 4.026175,
-          "decoupling": -10.052282
-        },
-        {
-          "type": "WORK",
-          "label": "58s@224w83rpm",
-          "duration_secs": 58,
-          "avg_power": 224,
-          "max_power": 226,
-          "avg_hr": 122,
-          "max_hr": 134,
-          "avg_cadence": 82.72414,
-          "zone": 5,
-          "training_load": 1.5954313,
-          "decoupling": 10.070964
-        },
-        {
-          "type": "RECOVERY",
-          "duration_secs": 272,
-          "avg_power": 121,
-          "max_power": 226,
-          "avg_hr": 118,
-          "max_hr": 135,
-          "avg_cadence": 89.838234,
-          "zone": 2,
-          "training_load": 3.2282584,
-          "decoupling": -29.412987
-        },
-        {
-          "type": "WORK",
-          "label": "269s@183w83rpm",
-          "duration_secs": 269,
-          "avg_power": 183,
-          "max_power": 187,
-          "avg_hr": 133,
-          "max_hr": 139,
-          "avg_cadence": 83.237915,
-          "zone": 3,
-          "training_load": 5.9544854,
-          "decoupling": 2.856429
-        },
-        {
-          "type": "RECOVERY",
-          "duration_secs": 2741,
-          "avg_power": 134,
-          "max_power": 315,
-          "avg_hr": 128,
-          "max_hr": 145,
-          "avg_cadence": 83.60708,
-          "zone": 2,
-          "training_load": 36.019447,
-          "decoupling": -0.2214249
-        }
-      ]
-    },
     {
       "activity_id": "i160476886",
       "date": "2026-06-26",
