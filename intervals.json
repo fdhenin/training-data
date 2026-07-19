@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-19T18:27:49.972654",
+  "generated_at": "2026-07-19T19:44:14.564892",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
@@ -1524,6 +1524,27 @@
           "zone": 2,
           "training_load": 78.64263,
           "decoupling": -2.6472714
+        }
+      ]
+    },
+    {
+      "activity_id": "i167245639",
+      "date": "2026-07-19",
+      "type": "Ride",
+      "name": "Huez Cyclisme sur route",
+      "interval_summary": null,
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 2182,
+          "avg_power": 7,
+          "max_power": 205,
+          "avg_hr": 104,
+          "max_hr": 122,
+          "avg_cadence": 9.171531,
+          "zone": 1,
+          "training_load": 2.6576781,
+          "decoupling": -5.6526318
         }
       ]
     }
