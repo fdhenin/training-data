@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-02T08:59:58.359989",
+  "generated_at": "2026-08-02T10:46:45.308280",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
@@ -1250,6 +1250,27 @@
           "zone": 1,
           "training_load": 18.808977,
           "decoupling": 1.943456
+        }
+      ]
+    },
+    {
+      "activity_id": "i171640126",
+      "date": "2026-08-02",
+      "type": "Run",
+      "name": "Reprise CAP apr\u00e8s 5 mois sans courir (24 f\u00e9vrier)",
+      "interval_summary": null,
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 3114,
+          "avg_power": 240,
+          "max_power": 321,
+          "avg_hr": 127,
+          "max_hr": 139,
+          "avg_cadence": 80.667,
+          "zone": 1,
+          "training_load": 47.593895,
+          "decoupling": 10.992257
         }
       ]
     }
