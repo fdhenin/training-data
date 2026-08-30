@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-30T07:28:21.987730",
+  "generated_at": "2026-08-30T13:13:06.119881",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
@@ -475,6 +475,54 @@
           "zone": 2,
           "training_load": 8.551876,
           "decoupling": 7.9503894
+        }
+      ]
+    },
+    {
+      "activity_id": "i181314181",
+      "date": "2026-08-30",
+      "type": "Ride",
+      "name": "Genas Cyclisme sur route",
+      "interval_summary": [
+        "1x 5m15s 179w"
+      ],
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 2999,
+          "avg_power": 90,
+          "max_power": 288,
+          "avg_hr": 113,
+          "max_hr": 143,
+          "avg_cadence": 66.06627,
+          "zone": 1,
+          "training_load": 24.886967,
+          "decoupling": 9.416419
+        },
+        {
+          "type": "WORK",
+          "label": "315s@179w71rpm",
+          "duration_secs": 315,
+          "avg_power": 179,
+          "max_power": 224,
+          "avg_hr": 138,
+          "max_hr": 146,
+          "avg_cadence": 71.1619,
+          "zone": 3,
+          "training_load": 5.863494,
+          "decoupling": 1.0978025
+        },
+        {
+          "type": "RECOVERY",
+          "duration_secs": 9642,
+          "avg_power": 96,
+          "max_power": 353,
+          "avg_hr": 127,
+          "max_hr": 154,
+          "avg_cadence": 59.185577,
+          "zone": 1,
+          "training_load": 80.57095,
+          "decoupling": -3.0273056
         }
       ]
     }
