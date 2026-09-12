@@ -1,58 +1,10 @@
 {
-  "generated_at": "2026-09-11T21:58:09.806172",
+  "generated_at": "2026-09-12T00:06:56.723240",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
   "retention_days": 14,
   "activities": [
-    {
-      "activity_id": "i180654049",
-      "date": "2026-08-28",
-      "type": "VirtualRide",
-      "name": "Zwift - Power Punches in Watopia",
-      "interval_summary": [
-        "1x 53s 228w"
-      ],
-      "intervals": [
-        {
-          "type": "RECOVERY",
-          "duration_secs": 2470,
-          "avg_power": 119,
-          "max_power": 339,
-          "avg_hr": 119,
-          "max_hr": 149,
-          "avg_cadence": 93.69069,
-          "zone": 2,
-          "training_load": 30.197052,
-          "decoupling": -2.9979808
-        },
-        {
-          "type": "WORK",
-          "label": "53s@228w99rpm",
-          "duration_secs": 53,
-          "avg_power": 228,
-          "max_power": 303,
-          "avg_hr": 151,
-          "max_hr": 156,
-          "avg_cadence": 99.01887,
-          "zone": 5,
-          "training_load": 1.6496246,
-          "decoupling": -15.504683
-        },
-        {
-          "type": "RECOVERY",
-          "duration_secs": 453,
-          "avg_power": 139,
-          "max_power": 314,
-          "avg_hr": 144,
-          "max_hr": 160,
-          "avg_cadence": 89.10817,
-          "zone": 2,
-          "training_load": 8.551876,
-          "decoupling": 7.9503894
-        }
-      ]
-    },
     {
       "activity_id": "i181314181",
       "date": "2026-08-30",
