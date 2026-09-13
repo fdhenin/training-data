@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-13T14:34:50.157502",
+  "generated_at": "2026-09-13T17:41:46.251835",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
@@ -474,6 +474,54 @@
           "zone": 2,
           "training_load": 7.893582,
           "decoupling": 8.057117
+        }
+      ]
+    },
+    {
+      "activity_id": "i186312387",
+      "date": "2026-09-13",
+      "type": "Ride",
+      "name": "Sortie v\u00e9lo dans l'apr\u00e8s-midi",
+      "interval_summary": [
+        "1x 54s 291w"
+      ],
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 9493,
+          "avg_power": 102,
+          "max_power": 322,
+          "avg_hr": 130,
+          "max_hr": 156,
+          "avg_cadence": 71.027596,
+          "zone": 1,
+          "training_load": 76.34645,
+          "decoupling": -0.3789585
+        },
+        {
+          "type": "WORK",
+          "label": "54s@291w96rpm",
+          "duration_secs": 54,
+          "avg_power": 291,
+          "max_power": 365,
+          "avg_hr": 157,
+          "max_hr": 166,
+          "avg_cadence": 96.31481,
+          "zone": 6,
+          "training_load": 2.3831584,
+          "decoupling": 6.357669
+        },
+        {
+          "type": "RECOVERY",
+          "duration_secs": 3079,
+          "avg_power": 107,
+          "max_power": 313,
+          "avg_hr": 140,
+          "max_hr": 168,
+          "avg_cadence": 72.7415,
+          "zone": 1,
+          "training_load": 27.89,
+          "decoupling": -3.8020802
         }
       ]
     }
