@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-16T06:35:14.116260",
+  "generated_at": "2026-09-16T12:06:40.032623",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
@@ -270,6 +270,80 @@
           "zone": 1,
           "training_load": 27.89,
           "decoupling": -3.8020802
+        }
+      ]
+    },
+    {
+      "activity_id": "i187281455",
+      "date": "2026-09-16",
+      "type": "Ride",
+      "name": "Genas Cyclisme sur route",
+      "interval_summary": [
+        "1x 2m21s 207w",
+        "1x 3m52s 182w"
+      ],
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 3080,
+          "avg_power": 134,
+          "max_power": 478,
+          "avg_hr": 135,
+          "max_hr": 158,
+          "avg_cadence": 72.85377,
+          "zone": 2,
+          "training_load": 49.996754,
+          "decoupling": 10.692409
+        },
+        {
+          "type": "WORK",
+          "label": "141s@207w84rpm",
+          "duration_secs": 141,
+          "avg_power": 207,
+          "max_power": 275,
+          "avg_hr": 154,
+          "max_hr": 161,
+          "avg_cadence": 83.87234,
+          "zone": 4,
+          "training_load": 3.5607986,
+          "decoupling": 12.255089
+        },
+        {
+          "type": "RECOVERY",
+          "duration_secs": 542,
+          "avg_power": 139,
+          "max_power": 532,
+          "avg_hr": 148,
+          "max_hr": 160,
+          "avg_cadence": 73.33395,
+          "zone": 2,
+          "training_load": 8.33796,
+          "decoupling": 5.1427875
+        },
+        {
+          "type": "WORK",
+          "label": "232s@182w96rpm",
+          "duration_secs": 232,
+          "avg_power": 182,
+          "max_power": 263,
+          "avg_hr": 155,
+          "max_hr": 159,
+          "avg_cadence": 95.74569,
+          "zone": 3,
+          "training_load": 4.6179724,
+          "decoupling": 5.5599556
+        },
+        {
+          "type": "RECOVERY",
+          "duration_secs": 1373,
+          "avg_power": 146,
+          "max_power": 497,
+          "avg_hr": 149,
+          "max_hr": 159,
+          "avg_cadence": 77.77606,
+          "zone": 2,
+          "training_load": 22.397106,
+          "decoupling": 0.5694596
         }
       ]
     }
