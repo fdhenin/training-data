@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-30T15:21:10.482461",
+  "generated_at": "2026-09-30T20:13:51.162313",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
@@ -419,6 +419,27 @@
           "avg_cadence": 42.0,
           "zone": 1,
           "decoupling": 23.089148
+        }
+      ]
+    },
+    {
+      "activity_id": "i191965959",
+      "date": "2026-09-30",
+      "type": "VirtualRide",
+      "name": "Zwift - Red Zone Repeats",
+      "interval_summary": null,
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 2453,
+          "avg_power": 124,
+          "max_power": 516,
+          "avg_hr": 122,
+          "max_hr": 141,
+          "avg_cadence": 77.51936,
+          "zone": 2,
+          "training_load": 28.25109,
+          "decoupling": 16.36145
         }
       ]
     }
