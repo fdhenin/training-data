@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-01T05:12:18.521889",
+  "generated_at": "2026-10-01T11:39:00.162050",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
@@ -366,6 +366,127 @@
           "zone": 2,
           "training_load": 28.25109,
           "decoupling": 16.36145
+        }
+      ]
+    },
+    {
+      "activity_id": "i192175365",
+      "date": "2026-10-01",
+      "type": "VirtualRide",
+      "name": "Zwift - Climb Portal: Col du Rosier at 100% Elevation in France",
+      "interval_summary": [
+        "1x 1m57s 206w",
+        "1x 2m35s 189w",
+        "1x 3m1s 175w"
+      ],
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 252,
+          "avg_power": 96,
+          "max_power": 169,
+          "avg_hr": 123,
+          "max_hr": 129,
+          "avg_cadence": 97.96032,
+          "zone": 1,
+          "training_load": 1.5350863,
+          "decoupling": -2.9776695
+        },
+        {
+          "type": "WORK",
+          "label": "117s@206w89rpm",
+          "duration_secs": 117,
+          "avg_power": 206,
+          "max_power": 310,
+          "avg_hr": 145,
+          "max_hr": 154,
+          "avg_cadence": 88.726494,
+          "zone": 4,
+          "training_load": 3.155574,
+          "decoupling": 19.294266
+        },
+        {
+          "type": "RECOVERY",
+          "duration_secs": 357,
+          "avg_power": 144,
+          "max_power": 262,
+          "avg_hr": 141,
+          "max_hr": 153,
+          "avg_cadence": 90.7591,
+          "zone": 2,
+          "training_load": 5.380367,
+          "decoupling": -20.11734
+        },
+        {
+          "type": "WORK",
+          "label": "155s@189w87rpm",
+          "duration_secs": 155,
+          "avg_power": 189,
+          "max_power": 283,
+          "avg_hr": 152,
+          "max_hr": 159,
+          "avg_cadence": 87.425804,
+          "zone": 4,
+          "training_load": 3.621072,
+          "decoupling": -1.5184369
+        },
+        {
+          "type": "RECOVERY",
+          "duration_secs": 120,
+          "avg_power": 148,
+          "max_power": 230,
+          "avg_hr": 150,
+          "max_hr": 158,
+          "avg_cadence": 86.99167,
+          "zone": 2,
+          "training_load": 1.8567519,
+          "decoupling": -5.725568
+        },
+        {
+          "type": "WORK",
+          "label": "181s@175w89rpm",
+          "duration_secs": 181,
+          "avg_power": 175,
+          "max_power": 269,
+          "avg_hr": 153,
+          "max_hr": 158,
+          "avg_cadence": 88.67956,
+          "zone": 3,
+          "training_load": 3.748132,
+          "decoupling": 10.237414
+        },
+        {
+          "type": "RECOVERY",
+          "duration_secs": 271,
+          "avg_power": 130,
+          "max_power": 268,
+          "avg_hr": 146,
+          "max_hr": 152,
+          "avg_cadence": 84.12546,
+          "zone": 2,
+          "training_load": 3.6119003,
+          "decoupling": 2.3505235
+        }
+      ]
+    },
+    {
+      "activity_id": "i192166090",
+      "date": "2026-10-01",
+      "type": "VirtualRide",
+      "name": "Zwift - Beach Island Loop in Watopia",
+      "interval_summary": null,
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 1504,
+          "avg_power": 138,
+          "max_power": 285,
+          "avg_hr": 121,
+          "max_hr": 145,
+          "avg_cadence": 82.364365,
+          "zone": 2,
+          "training_load": 20.614016,
+          "decoupling": 6.1356673
         }
       ]
     }
