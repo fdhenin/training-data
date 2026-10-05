@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-05T06:15:26.226590",
+  "generated_at": "2026-10-05T15:09:16.749660",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
@@ -392,6 +392,27 @@
           "zone": 2,
           "training_load": 20.614016,
           "decoupling": 6.1356673
+        }
+      ]
+    },
+    {
+      "activity_id": "i193775664",
+      "date": "2026-10-05",
+      "type": "Run",
+      "name": "Genas Course \u00e0 pied",
+      "interval_summary": null,
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 2736,
+          "avg_power": 262,
+          "max_power": 361,
+          "avg_hr": 139,
+          "max_hr": 152,
+          "avg_cadence": 83.33297,
+          "zone": 2,
+          "training_load": 49.144035,
+          "decoupling": 14.224759
         }
       ]
     }
