@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-09T05:12:18.972203",
+  "generated_at": "2026-10-09T11:56:15.046594",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
@@ -413,6 +413,27 @@
           "zone": 2,
           "training_load": 49.144035,
           "decoupling": 14.224759
+        }
+      ]
+    },
+    {
+      "activity_id": "i195397421",
+      "date": "2026-10-09",
+      "type": "VirtualRide",
+      "name": "Zwift - Southern Coast Cruise in Watopia",
+      "interval_summary": null,
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 3447,
+          "avg_power": 81,
+          "max_power": 231,
+          "avg_hr": 102,
+          "max_hr": 126,
+          "avg_cadence": 87.562225,
+          "zone": 1,
+          "training_load": 19.284426,
+          "decoupling": 1.9845865
         }
       ]
     }
