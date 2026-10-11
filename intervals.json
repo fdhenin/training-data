@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-11T14:07:13.342277",
+  "generated_at": "2026-10-11T18:56:05.738396",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
@@ -186,6 +186,54 @@
           "zone": 1,
           "training_load": 19.284426,
           "decoupling": 1.9845865
+        }
+      ]
+    },
+    {
+      "activity_id": "i196140211",
+      "date": "2026-10-11",
+      "type": "VirtualRide",
+      "name": "Zwift - Sand And Sequoias in Watopia",
+      "interval_summary": [
+        "1x 1m45s 214w"
+      ],
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 2075,
+          "avg_power": 92,
+          "max_power": 249,
+          "avg_hr": 103,
+          "max_hr": 137,
+          "avg_cadence": 92.62843,
+          "zone": 1,
+          "training_load": 16.20886,
+          "decoupling": -35.80697
+        },
+        {
+          "type": "WORK",
+          "label": "105s@214w92rpm",
+          "duration_secs": 105,
+          "avg_power": 214,
+          "max_power": 293,
+          "avg_hr": 145,
+          "max_hr": 151,
+          "avg_cadence": 91.64762,
+          "zone": 4,
+          "training_load": 3.089897,
+          "decoupling": 3.4536028
+        },
+        {
+          "type": "RECOVERY",
+          "duration_secs": 1448,
+          "avg_power": 88,
+          "max_power": 252,
+          "avg_hr": 116,
+          "max_hr": 152,
+          "avg_cadence": 79.27969,
+          "zone": 1,
+          "training_load": 10.153898,
+          "decoupling": 25.519241
         }
       ]
     }
