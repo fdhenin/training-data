@@ -42,7 +42,7 @@
       "hash": "4905524df58a6aa59db4ed0321d51f212cc3eb0f5a2c6b715ec0b04e0acba126"
     },
     "examples/agentic/README.md": {
-      "hash": "180154d09507772fc6ae0b69da3cc82a98af7aa852717bea023035d2abe9f650"
+      "hash": "a010532fa063d20b0044b295798224d9a8dec6f711b726bdef7fdc164e6a9dae"
     },
     "examples/agentic/fit-file-and-merger/ARCHITECTURE.md": {
       "hash": "e439d040fdcad87e556bd2a08975667d1726840b8c295670c0a397788f74de10"
@@ -150,7 +150,7 @@
       "hash": "8d7982c04b764b445ac384c4a1ef465d86ec0be92d69562c8cb524170686bb99"
     },
     "examples/sync.py": {
-      "hash": "225d4308be9627bb882ef17a2f3c50afcdc672ba9b2207e93f9363612a96ffca"
+      "hash": "643c6e9c8b36fdeca973bba6d1b88e77707debc7b8a8c260251332e0958fd377"
     },
     "examples/workout-library/README.md": {
       "hash": "303c3bf9abf52c50eaaeff637884812c01220975bb7f9adb080e0130fbddb31c"
