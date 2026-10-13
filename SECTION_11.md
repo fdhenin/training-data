@@ -1,10 +1,15 @@
 # Section 11 - AI Coach Protocol
 
-**Protocol Version:** 11.70  
-**Last Updated:** 2026-10-01
+**Protocol Version:** 11.71  
+**Last Updated:** 2026-10-13
 **License:** [MIT](https://opensource.org/licenses/MIT)
 
 ### Changelog
+
+**v11.71 - Workout Reference Library role clarified (doc-only):**
+- Section 11 B §8 and the library described its role differently. §8 makes the library the binding design source: no invented session structures, gaps flagged, `session_template` recorded. `WORKOUT_REFERENCE.md` called its templates "inspiration, not prescription" and invited adapting, extending or replacing them, so an AI could read either behaviour into the documents
+- §8's opening sentence now says the AI must base a structured session on a library template and adapt its prescription within that template's permitted variants and constraints, replacing "must select from". The no-invention rule, gap rule, selection rules, Saved Workouts Mirror rules and audit requirements are unchanged
+- The library (v0.7.1) and its READMEs now state the same contract: the structure comes from the library; interval count, duration, intensity and recovery are adapted to the athlete within the template; progression only where readiness and progression rules permit. Extending or replacing templates is a human library-maintenance decision, and the AI flags gaps instead. A human-added template must be part of the library in use and carry the §1 YAML metadata
 
 **v11.70 - `history.json` catch-up, retention and a GitHub Actions refresh budget (`sync.py` v3.137):**
 - **A stale `history.json` could stay stale for a week or more.** `sync.py` refreshed an existing file older than 28 days only on Sunday or Monday shortly after midnight, so a delayed, skipped or sleeping run missed the window. The age rule is unchanged, but the weekday and time-of-day window is removed: outside GitHub Actions a stale file is refreshed on the first sync after it becomes due.
@@ -3273,7 +3278,7 @@ Human-review override requires athlete confirmation and metadata flag "override"
 
 ### 8 - Workout Reference Interface
 
-When a plan requires a structured session (per Section 4), the AI must select from the **Workout Reference Library** (`examples/workout-library/WORKOUT_REFERENCE.md`). The Reference Library is equally the design source when a structured session is prescribed outside a generated plan, including a familiar workout the athlete names or a saved workout proposed for reuse: identify the template it implements, and flag a gap rather than improvise. Audit metadata remains governed by Section 6.
+When a plan requires a structured session (per Section 4), the AI must base it on a template in the **Workout Reference Library** (`examples/workout-library/WORKOUT_REFERENCE.md`) and adapt its prescription within that template's permitted variants and constraints. The Reference Library is equally the design source when a structured session is prescribed outside a generated plan, including a familiar workout the athlete names or a saved workout proposed for reuse: identify the template it implements, and flag a gap rather than improvise. Audit metadata remains governed by Section 6.
 
 **Selection rules:**
 - Match target adaptation (Sweet Spot, VO₂max, Endurance, etc.) to the session slot identified by the plan.
