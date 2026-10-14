@@ -1,10 +1,14 @@
 # Section 11 - AI Coach Protocol
 
-**Protocol Version:** 11.71  
+**Protocol Version:** 11.72  
 **Last Updated:** 2026-10-13
 **License:** [MIT](https://opensource.org/licenses/MIT)
 
 ### Changelog
+
+**v11.72 - DFA a1 refusal reports the failed quality gates (doc-only):**
+- The insufficient-data notice now identifies each failed session-quality gate: fewer than 1200 valid samples (20 nominal valid minutes at 1 Hz), valid coverage below 70%, or both. The post-workout template follows the same rule and reports an unresolved reason when the supplied quality data cannot establish it
+- Known artifact values above 5% are filtered before those gates; there is no separate session-average artifact or artifact-coverage sufficiency gate. Producer calculations, emitted fields and the refusal to interpret insufficient data are unchanged
 
 **v11.71 - Workout Reference Library role clarified (doc-only):**
 - Section 11 B §8 and the library described its role differently. §8 makes the library the binding design source: no invented session structures, gaps flagged, `session_template` recorded. `WORKOUT_REFERENCE.md` called its templates "inspiration, not prescription" and invited adapting, extending or replacing them, so an AI could read either behaviour into the documents
@@ -2258,11 +2262,13 @@ For each completed session with a sufficient `dfa` block, the AI may apply the f
 
 #### Quality Gates
 
-The AI must check the quality block before any DFA-based statement:
+The AI must check the quality block before any DFA-based statement. Session sufficiency requires both `quality.valid_secs >= 1200` (20 nominal valid minutes at 1 Hz) and the emitted `quality.valid_pct >= 70`. These counts represent samples at nominal 1 Hz, not independently measured elapsed time; use the emitted percentage rather than recomputing or rounding it again.
+
+Known artifact values above 5% exclude the corresponding samples before these two gates are evaluated. Neither the session-average artifact rate nor artifact coverage is a separate `quality.sufficient` gate; unknown artifact values do not themselves exclude samples. A sufficient flag is not proof of complete artifact data.
 
 | Condition | AI behavior |
 |---|---|
-| `quality.sufficient: false` | Refuse to interpret. Note "DFA a1 data exists but did not meet quality threshold (X% valid, Y minutes; minimum 20 min required)". Do not invent or infer values. |
+| `quality.sufficient: false` | Refuse to interpret. Report the available `quality.valid_secs` and `quality.valid_pct`, naming each failed gate: fewer than 1200 valid samples (20 nominal valid minutes at 1 Hz), valid coverage below 70%, or both. If fields are missing, report only established failures and state what cannot be resolved; if the values contradict the flag, flag the inconsistency and continue to refuse. Do not invent or infer DFA readings. |
 | `quality.sufficient: true`, `quality.valid_pct < 80` | Interpret with reduced confidence; mention quality limitation in the report |
 | `quality.sufficient: true`, `quality.valid_pct ≥ 80` | Standard interpretation |
 | `lt2_estimate` absent, or `lt2_estimate.n_sessions` < 4 | Do not surface an LT2 calibration delta for pooled HR. Use only for descriptive reporting. |
