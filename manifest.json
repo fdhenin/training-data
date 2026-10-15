@@ -20,7 +20,7 @@
       "hash": "07a9f6c42b2437c5c6e21d38d62206c9ca7a3a527ea17c50c81aca98a28e0be8"
     },
     "SECTION_11.md": {
-      "hash": "38ae10f5a2d3531f658bcc832686a06844fb3ff8ecf4193c69032d86293fae41",
+      "hash": "ea8fd05afbbf5792f892a67120466f130a5e59372866926b9dc457bdd7d60fb5",
       "description": "Coaching protocol"
     },
     "SECURITY.md": {
@@ -30,7 +30,7 @@
       "hash": "ab6fdc2649d50752f8770650893db59980355086834ca544a2a4fa6aa40ef91f"
     },
     "SKILL.md": {
-      "hash": "1a9e4ed255feb004d186e78dc2888c622ee2b054e015922c8f931f5be846b7e1"
+      "hash": "25a7e7727b6bbe2439b495909c6af981edfbf09bed68d0940d59df972ae2bdcd"
     },
     "changelog.json": {
       "hash": "8768f879e311c3f6aff56331e62b17c1bd637ef70673468d8e35a69e9a0dd348"
@@ -84,7 +84,7 @@
       "hash": "e435fea4884aaff41ce3cdbcac379e5b470dadd1e6de181d4c24dbe1b2368d1e"
     },
     "examples/json-examples/README.md": {
-      "hash": "4fb6091034e8259f3162b5f10a280ea361b50d5e95234c7e414e10ff2a70291b"
+      "hash": "0046a6a89dd09032b1d4b0947a5d480a85bd3b45b0338a3ef079f2aca39f98ea"
     },
     "examples/json-examples/ftp_history.example.json": {
       "hash": "b2f2d569327c7b030c02969efdadd224bcc6d3df4c63857c3f4e614a75cfcb75"
@@ -114,16 +114,16 @@
       "hash": "4452683bb7311a02d93d5473f8803dfd3e786ecc1f0bc1175728af105e860fef"
     },
     "examples/reports/BLOCK_REPORT_EXAMPLES.md": {
-      "hash": "8766eba6fbad4441872c857df14e92450e49e4d62238677066e7892dadff4f3c"
+      "hash": "a36ac9dc95841eeac824bf2edb3058664d0023c39c7acbca6cda5a543a8e4eb9"
     },
     "examples/reports/BLOCK_REPORT_TEMPLATE.md": {
-      "hash": "b2c050d8d5d5c5945cb61c17cd5b219dd958c295603a9cc54ab3a045ef5b24ee"
+      "hash": "1d37bb80d37566277a0ba74dee0508a5489b131f5cda8a78ad871d99fd97f82f"
     },
     "examples/reports/POST_WORKOUT_REPORT_EXAMPLES.md": {
-      "hash": "26ecb082e85c361342f6b0e2a40fbaad2c2bf983056dfe0c95a45b5554b4316c"
+      "hash": "fc47eb39701a6adf28a3a0931cf6229366013cb06ffd6fd517a1a2285c26f158"
     },
     "examples/reports/POST_WORKOUT_REPORT_TEMPLATE.md": {
-      "hash": "8e7e7ac8227babf12c3fb2d2b69c7156ac4109d067466b123c60c741e7b4c6e6"
+      "hash": "7f464f5cc9e280c9a0adc12cd957970ed094795315619621a7339ae8228c81e4"
     },
     "examples/reports/PRE_WORKOUT_REPORT_EXAMPLES.md": {
       "hash": "9cfa993c5795d49078c86c7ae40a60a27d18397095ae40a26b7eca3e7cf1bb45"
@@ -150,7 +150,7 @@
       "hash": "8d7982c04b764b445ac384c4a1ef465d86ec0be92d69562c8cb524170686bb99"
     },
     "examples/sync.py": {
-      "hash": "643c6e9c8b36fdeca973bba6d1b88e77707debc7b8a8c260251332e0958fd377"
+      "hash": "b2361238a8fb4ff21a094a3071b13e07b55ec4c49561e4ce1d6959fdf226f4e3"
     },
     "examples/workout-library/README.md": {
       "hash": "4d6f5ee1d7b87c8306d4dcbf9ea80bd305ff827f7d3b3c6629b9dd665a811208"
