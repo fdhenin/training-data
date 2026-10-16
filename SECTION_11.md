@@ -1,10 +1,17 @@
 # Section 11 - AI Coach Protocol
 
-**Protocol Version:** 11.73  
-**Last Updated:** 2026-10-14
+**Protocol Version:** 11.74  
+**Last Updated:** 2026-10-16
 **License:** [MIT](https://opensource.org/licenses/MIT)
 
 ### Changelog
+
+**v11.74 - Report validity and post-workout field-list alignment (doc-only):**
+- The post-workout field list no longer asks for a decoupling assessment label on every session, and now lists EF. Decoupling is labelled only when the session passes the existing per-session gate under *Evidence handling* (≥ 90 min with `variability_index` ≤ 1.05 and > 0); EF is interpreted only at ≥ 20 min with the same VI limit. Otherwise the value is shown without interpretation.
+- The post-workout, weekly and block report templates and both project instruction files apply the same gates. The post-workout template's "Sessions ≥ 1 hour" decoupling rule is removed. Post-workout examples 2, 3 and 8 no longer interpret decoupling or session EF at VI 1.13–1.15.
+- The protocol's session field list now includes the template's existing conditional fields, both project instruction files point to the complete template field set, and VI assessment labels follow the template's steady-state-only rule.
+- The weekly totals lists in the protocol and both project instruction files now include Phase, weekly EF, weekly HRRc and Recovery Index, matching the post-workout template.
+- Gates, thresholds, aggregate durability and EF rules, and producer output are unchanged.
 
 **v11.73 - DFA drift on fixed recording thirds (`sync.py` v3.140, intervals schema 2):**
 - Drift now compares the first and last thirds of the original recording index, preserving gaps instead of compacting retained samples. `drift_quality` distinguishes unavailable, descriptive-only and eligible contrasts; summaries and profiles carry the status, reasons and coverage evidence. Trailing drift uses eligible sessions only and reports `drift_sessions`.
@@ -1036,25 +1043,34 @@ Reports use a structured line-by-line format per session, not bullet-point summa
 1. **Data timestamp:** `Data (last_updated UTC: [timestamp])`
 2. **One-line summary:** What was completed, key observation
 3. **Session block(s)** (one per activity, line-by-line):
+   - Outdoor context (optional line at the top of an outdoor activity block; follow the inclusion and omission rules under *Outdoor context synthesis line*)
    - Activity type & name
    - Start time
    - Duration (actual vs planned)
    - Distance (cycling/running only)
    - Power: Avg / NP
+   - IF (session-level intensity factor; omit when null; render as specified in the post-workout template)
    - Power zones (% breakdown)
    - Grey Zone (Z3): X%
    - Quality (Z4+): X%
+   - Session profile (activities with zone data; classify the executed session as specified in the post-workout template)
    - HR: Avg / Max
    - HR zones (% breakdown)
    - Cadence (avg)
-   - Decoupling (with assessment label)
-   - Variability Index (with assessment label)
+   - Decoupling (assessment label only when the session passes the per-session gate under *Evidence handling*: ≥ 90 min with VI ≤ 1.05 and > 0; otherwise the value without drift interpretation)
+   - EF (when power and HR available; interpret only when the session passes the per-session gate under *Evidence handling*: ≥ 20 min with VI ≤ 1.05 and > 0)
+   - HRRc (bpm; omit when null)
+   - Variability Index (cycling with power; assessment labels apply to steady-state only; omit the label for interval sessions where high VI is expected)
+   - DFA a1 (when a session-level `dfa` block is present; follow the post-workout template's quality and drift-state rules, including a quality notice without readings for insufficient data)
    - Calories (kcal)
    - Carbs used (g)
    - TSS (actual vs planned)
+   - Feel (omit when null; use the post-workout template's labels)
+   - RPE (omit when null)
+   - Effort response (omit when null; interpret as specified in the post-workout template; does not change readiness)
    - Note (athlete text or coach notes, if present on the activity)
-   Omit fields only if data unavailable for that activity type.
-4. **Weekly totals (rolling 7d) block:** Polarization, Durability (7d/28d + trend), TID 28d (+ drift), TSB, CTL, ATL, Ramp rate, ACWR, Hours, TSS
+   Apply the activity-specific inclusion, omission and label rules in examples/reports/POST_WORKOUT_REPORT_TEMPLATE.md, including its null-value and insufficient-DFA branches.
+4. **Weekly totals (rolling 7d) block:** Phase, Polarization, Durability (7d/28d + trend), EF (7d/28d + trend), HRRc (7d/28d + trend; partial or omitted when data is insufficient, per the post-workout template), TID 28d (+ drift), TSB, CTL, ATL, Ramp rate, ACWR, Recovery Index, Hours, TSS
 5. **Overall:** Coach note (2–4 sentences: compliance, key quality observations, load context, recovery note if applicable)
 
 See **Output Format Guidelines** for full field reference, assessment labels, and report templates.
