@@ -1,6 +1,6 @@
 ---
 name: section-11
-description: Evidence-based endurance coaching protocol (v11.74). Use when analyzing training data, reviewing sessions, generating pre/post-workout reports, planning workouts, answering training questions, or giving endurance coaching advice. Always read or fetch athlete JSON data before responding to any training question.
+description: Evidence-based endurance coaching protocol (v11.75). Use when analyzing training data, reviewing sessions, generating pre/post-workout reports, planning workouts, answering training questions, or giving endurance coaching advice. Always read or fetch athlete JSON data before responding to any training question.
 ---
 
 # Section 11 - AI Coaching Protocol
@@ -44,7 +44,7 @@ On first use:
    - **URL fetch:** Athlete creates a repository for training data with automated sync. If the repository is public it carries JSON only; the private dossier never goes there. Record the raw URLs in the project instructions or, when a dossier is used, in its source configuration.
    - `latest.json`: current 7-day snapshot + 28-day derived metrics
    - `history.json`: longitudinal data (daily 90d, weekly 180d, monthly 3y)
-   - `intervals.json`: per-interval segment data for recent structured sessions, plus DFA a1 session rollups when AlphaHRV recorded (14-day retention)
+   - `intervals.json`: per-interval segment data, DFA a1 rollups and completed-session structure detail (14-day retention)
    - `ftp_history.json`: dated FTP changes (indoor/outdoor), used for staleness tracking and benchmark comparison
    - `routes.json`: route/terrain data for events with GPX/TCX attachments (when present)
    - `saved_workouts.json`: read-only mirror of the athlete's saved workouts from Intervals.icu (Saved Workouts Mirror)
@@ -75,7 +75,7 @@ Load the coaching protocol using this precedence:
 
 If both root and `section11/` copies exist, prefer the root copy.
 
-**Current version:** 11.74
+**Current version:** 11.75
 
 ## External Sources
 
@@ -95,11 +95,13 @@ Each source answers its own domain; the order is not a ranking across domains. S
 
 ## Required Actions
 
+- Whole-session average power and NP never establish main-set power, in reports, comparison or prescription. Read `recent_activities[].structure_summary`: compare the same identified windows and keep targets separate from actuals. Check method/status and issues. Load `intervals.json` for detailed analysis when `has_structure: true`; its `session_structure` carries window metrics. An expired full block leaves a last-captured summary, not a fresh verification. Thirds/WORK efforts are descriptive; broad window agreement is not formal adherence. If the required structure or role is unavailable, say so and obtain it.
+
 - Read or fetch latest.json before any training question. Check the data directory first, then the connected repo (if a connector is available), then uploaded or attached files, then the configured raw URLs (in the project instructions or, when a dossier is used, its source configuration).
 - Read or fetch history.json when trend analysis, phase context, or longitudinal comparison is needed. Same precedence.
-- Load `intervals.json` when analyzing a specific activity where `has_intervals: true` OR `has_dfa: true`. For block reports, load when any session in the block has either flag. Use for: interval compliance, pacing analysis, cardiac drift per set, recovery quality, DFA a1 session-level interpretation. Do not load for readiness, load management, or weekly summaries.
+- Load `intervals.json` when analyzing a specific activity where `has_intervals: true` OR `has_dfa: true` OR `has_structure: true`. For block reports, load when any session in the block has one of these flags and detail is needed. Use for: interval compliance, pacing analysis, cardiac drift per set, recovery quality, DFA a1 session-level interpretation and completed-session detail. For pre-workout/everyday comparisons use structure_summary in latest.json; load detail only when needed, not merely for readiness, load management or weekly aggregate totals.
 - Load `routes.json` when a planned event has `has_terrain: true`. Use for: route analysis, terrain-adjusted pacing, pre-ride briefing, race preparation. Same precedence as other JSON files.
-- Load `saved_workouts.json` when selecting or reusing a saved workout, or when the athlete asks about their saved workouts. Do not load it for every training question or report. It is the preferred read path for saved workouts on every platform, because it avoids repeated API retrieval and is faster and cheaper to consume. On API-connected platforms, use the Intervals.icu API for edits, and as a read fallback when the mirror is missing, unavailable, stale, inconsistent, or lacks required data. The mirror is read-only and never grants write authority. Check `refresh.status` before use: `ok` means the snapshot was verified at `refresh.last_success_at`, `stale` means a retained older snapshot after a failed refresh, `unavailable` means no snapshot has ever succeeded. `consistency: endpoints_disagree` means the two upstream endpoints did not agree; treat folder membership as indicative. A saved workout may be prescribed only after verifying that its structure implements an applicable Workout Reference Library template or permitted variant. `saved_workouts.json` is never evidence of what was prescribed for a completed activity: historical compliance requires a verified Intervals.icu activity/event pairing or an authoritative prescription supplied in context, and the local JSON mirrors do not carry the prescription.
+- Load `saved_workouts.json` when selecting or reusing a saved workout, or when the athlete asks about their saved workouts. Do not load it for every training question or report. It is the preferred read path for saved workouts on every platform, because it avoids repeated API retrieval and is faster and cheaper to consume. On API-connected platforms, use the Intervals.icu API for edits, and as a read fallback when the mirror is missing, unavailable, stale, inconsistent, or lacks required data. The mirror is read-only and never grants write authority. Check `refresh.status` before use: `ok` means the snapshot was verified at `refresh.last_success_at`, `stale` means a retained older snapshot after a failed refresh, `unavailable` means no snapshot has ever succeeded. `consistency: endpoints_disagree` means the two upstream endpoints did not agree; treat folder membership as indicative. A saved workout may be prescribed only after verifying that its structure implements an applicable Workout Reference Library template or permitted variant. `saved_workouts.json` is never evidence of what was prescribed for a completed activity: historical compliance requires a verified Intervals.icu activity/event pairing or an authoritative prescription supplied in context, while latest.json's structure_summary and intervals.json's session_structure provide bounded comparison data only. They do not retain the complete prescription or satisfy formal role/mapping/completion gates.
 - Before prescribing a structured session, including a familiar workout the athlete names or a saved workout proposed for reuse, identify the Workout Reference Library template it implements (Section 11 B §8). Load `WORKOUT_REFERENCE.md` from `section11/examples/workout-library/`, then the connected repo, then uploaded or attached files, then https://raw.githubusercontent.com/CrankAddict/section-11/main/examples/workout-library/WORKOUT_REFERENCE.md. If it cannot be loaded, say so rather than improvising a structure.
 - For all files (JSON data, protocol, dossier, templates): data directory → connected repo → uploaded/attached files → URL fetch. For the dossier this order only locates copies: authority belongs to the current official copy named by its `Official dossier location`, and conflicting copies go to the athlete.
 - No virtual math on pre-computed metrics. Use values from the JSON for CTL, ATL, TSB, ACWR, RI, zones, etc. Custom analysis from raw data is fine when pre-computed values don't cover the question.
