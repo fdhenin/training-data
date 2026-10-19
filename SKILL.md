@@ -1,6 +1,6 @@
 ---
 name: section-11
-description: Evidence-based endurance coaching protocol (v11.77). Use when analyzing training data, reviewing sessions, generating pre/post-workout reports, planning workouts, answering training questions, or giving endurance coaching advice. Always read or fetch athlete JSON data before responding to any training question.
+description: Evidence-based endurance coaching protocol (v11.79). Use when analyzing training data, reviewing sessions, generating pre/post-workout reports, planning workouts, answering training questions, or giving endurance coaching advice. Always read or fetch athlete JSON data before responding to any training question.
 ---
 
 # Section 11 - AI Coaching Protocol
@@ -75,7 +75,7 @@ Load the coaching protocol using this precedence:
 
 If both root and `section11/` copies exist, prefer the root copy.
 
-**Current version:** 11.77
+**Current version:** 11.79
 
 ## External Sources
 
@@ -101,6 +101,7 @@ Each source answers its own domain; the order is not a ranking across domains. S
 - Read or fetch history.json when trend analysis, phase context, or longitudinal comparison is needed. Same precedence.
 - Load `intervals.json` when analyzing a specific activity where `has_intervals: true` OR `has_dfa: true` OR `has_structure: true`. For block reports, load when any session in the block has one of these flags and detail is needed. Use for: interval compliance, pacing analysis, cardiac drift per set, recovery quality, DFA a1 session-level interpretation and completed-session detail. For pre-workout/everyday comparisons use structure_summary in latest.json; load detail only when needed, not merely for readiness, load management or weekly aggregate totals.
 - Load `routes.json` when a planned event has `has_terrain: true`. Use for: route analysis, terrain-adjusted pacing, pre-ride briefing, race preparation. Same precedence as other JSON files.
+  `route_weather_summary` must match the detailed brief's event, full route_ref, departure, cache_key and brief_id. Follow SECTION_11's status, forecast/outlook tier, freshness, ETA uncertainty and linked provider-attribution rules, including upcoming-ride questions. Route weather is on by default; see README for off switches and privacy. A completed-activity weather_summary is not a forecast.
 - Load `saved_workouts.json` when selecting or reusing a saved workout, or when the athlete asks about their saved workouts. Do not load it for every training question or report. It is the preferred read path for saved workouts on every platform, because it avoids repeated API retrieval and is faster and cheaper to consume. On API-connected platforms, use the Intervals.icu API for edits, and as a read fallback when the mirror is missing, unavailable, stale, inconsistent, or lacks required data. The mirror is read-only and never grants write authority. Check `refresh.status` before use: `ok` means the snapshot was verified at `refresh.last_success_at`, `stale` means a retained older snapshot after a failed refresh, `unavailable` means no snapshot has ever succeeded. `consistency: endpoints_disagree` means the two upstream endpoints did not agree; treat folder membership as indicative. A saved workout may be prescribed only after verifying that its structure implements an applicable Workout Reference Library template or permitted variant. `saved_workouts.json` is never evidence of what was prescribed for a completed activity: historical compliance requires a verified Intervals.icu activity/event pairing or an authoritative prescription supplied in context, while latest.json's structure_summary and intervals.json's session_structure provide bounded comparison data only. They do not retain the complete prescription or satisfy formal role/mapping/completion gates.
 - Before prescribing a structured session, including a familiar workout the athlete names or a saved workout proposed for reuse, identify the Workout Reference Library template it implements (Section 11 B §8). Load `WORKOUT_REFERENCE.md` from `section11/examples/workout-library/`, then the connected repo, then uploaded or attached files, then https://raw.githubusercontent.com/CrankAddict/section-11/main/examples/workout-library/WORKOUT_REFERENCE.md. If it cannot be loaded, say so rather than improvising a structure.
 - For all files (JSON data, protocol, dossier, templates): data directory → connected repo → uploaded/attached files → URL fetch. For the dossier this order only locates copies: authority belongs to the current official copy named by its `Official dossier location`, and conflicting copies go to the athlete.
