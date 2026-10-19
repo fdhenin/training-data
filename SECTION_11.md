@@ -1,10 +1,19 @@
 # Section 11 - AI Coach Protocol
 
-**Protocol Version:** 11.75  
-**Last Updated:** 2026-10-16
+**Protocol Version:** 11.77  
+**Last Updated:** 2026-10-19
 **License:** [MIT](https://opensource.org/licenses/MIT)
 
 ### Changelog
+
+**v11.77 - Planned route validity and identity (2026-10-19, sync.py v3.143):**
+- Planned routes have explicit status, one deterministic attachment selection and a content-bound `route_ref`. Errors and unsupported FIT files never set `has_terrain`; missing or incomplete altitude preserves GPS geometry without inferring flatness or zero ascent.
+- XML root dispatch handles both GPX and TCX declarations. Unchanged validated attachments reuse analysis without network requests and keep their original `analyzed_at`; failed reads retry no more often than every 15 minutes. Race-calendar IDs match planned workouts, and explicit midnight is retained separately from a missing time.
+- Valid complete-elevation terrain calculations and completed-activity behavior are unchanged.
+
+**v11.76 - Native terrain segmentation (2026-10-17, sync.py v3.142):**
+- Climb and descent boundaries use native segmentation with valley splits: relative-dip parents, positive excess cores, persistent valley splits and bounded exit extension. The independent 50 m gain floor is removed; raw distance/gradient gates, rounded terrain-noise admission, categories and display are retained.
+- Starts, ends, lengths, gradients, admissions and assigned categories can change. Planned-route cache invalidates on script change; successful completed-activity terrain is copied forward without historical reanalysis.
 
 **v11.75 - Completed-session structure and report context (2026-10-16, sync.py v3.141):**
 - `latest.json` carries compact completed-step summaries through 28 days; `has_structure` locates detailed plan-window or fallback metrics in `intervals.json` within its 14-day retention. Plan match is separate from unchanged compliance rules. DFA is independent; cache bookkeeping stays with the full block.
@@ -1874,7 +1883,24 @@ Route intelligence applies to any coaching conversation where terrain is known: 
 
 #### Route Analysis
 
-**`routes.json` structure:** Each event with a GPX/TCX attachment produces a `terrain_summary` containing: `total_distance_km`, `total_elevation_m`, `elevation_per_km`, `course_character`, `climbs` array, `descents` array, and `polyline` (GPS track downsampled at 500m intervals with elevation).
+**`routes.json` structure:** Each event with a recognized route attachment has one selected entry. Only `route_status: "ok"` supplies `terrain_summary`: `total_distance_km`, `total_elevation_m`, `elevation_per_km`, `course_character`, `climbs`, `descents`, and `polyline`. `planned_workouts[]` and `race_calendar.all_races[]` / `next_race` carry the same source event `id`, `route_status`, `has_terrain` and selected `route_ref`. Match `routes.json.events[].event_id` and the complete `route_ref` before using terrain. Missing source IDs stay null, never an order-dependent invented identity.
+
+| Planned `route_status` | Meaning and permitted use |
+|---|---|
+| `ok` | Parsed GPS with complete usable elevation and a terrain summary; `has_terrain: true` |
+| `no_elevation` | GPS geometry is available, but altitude is missing, incomplete or non-finite; `has_terrain: false`. Use `route_geometry` for distance/location only, never infer climbs, flatness or zero ascent |
+| `no_gps` | Fewer than two usable GPS points; terrain and geometry unavailable |
+| `failed` | Download, identity or parse/analysis failure; terrain unavailable. `route_error` explains the failure; retries wait at least 15 minutes. `missing_identity` waits for an attachment/identity change |
+| `unsupported_format` | FIT is not parsed, or the XML root is unsupported; terrain unavailable |
+| `absent` | No recognized route attachment; emitted on the compact event, with no route entry or reference |
+
+`route_geometry` contains `total_distance_km`, `display.total_distance`, `start_coords` and a distance-sampled `polyline` of `[km, lat, lon]`, including endpoints. It deliberately omits ascent, gradients, course character and climb/descent claims. These unavailable-elevation semantics match completed-activity `terrain_status: "no_elevation"`; retryable planned-route failures use the bounded cache policy below.
+
+**Selection and identity:** Select GPX before TCX before FIT, then sort lexically by attachment ID converted to text, filename and URL. Selection does not depend on attachment list order or parse success: a failed selected GPX does not silently switch to another route. Non-route attachments are ignored. `route_ref` contains `route_id` (`intervals:{event_id}:attachment:{attachment_id}`), `attachment_id`, `revision` (SHA256 of the exact downloaded bytes, including point order/direction), and `terrain_version` (the route producer version). The cache assumes an Intervals attachment ID identifies immutable content and that a replaced file appears as a new attachment. A changed attachment ID or filename is treated as a new route and downloaded/analyzed; `attachment_source_hash` records a SHA256 of the filename metadata. URLs are excluded from cache identity and routes.json because they may rotate. The content revision is calculated when analyzed and retained on cache hits. A replacement or reversal changes that revision when new bytes are analyzed; equivalent geometry serialized differently also changes it. An in-place byte change with unchanged attachment ID and filename cannot be detected under this assumption. When bytes were not obtained, revision is null and cannot bind a route analysis.
+
+**Cache and time:** A validated `ok` or `no_elevation` entry for the same event ID, attachment ID, filename, terrain producer version and sync script hash is reused before any HTTP call, even when the URL changes. Cache hits make zero network requests, retain `route_ref.revision` and never replace valid terrain with a transient download failure. Display blocks refresh for current unit preferences. `ROUTE_RETRY_BACKOFF_SECONDS = 900` limits `failed` and `no_gps` retries to a later sync at least 15 minutes after `last_attempt_at`; each actual retry restarts the interval, and skipped syncs do not move it. `unsupported_format` and `missing_identity` are retained without another request while the attachment is unchanged (within the same producer/script version). Error states never become terrain. `last_attempt_at` and `checked_at` record the last attempt to process the attachment, which may stop locally for FIT or missing identity; `analyzed_at` records the original successful parse. All stay unchanged when a cached entry is retained (`cache_hit: true`), including during backoff. Top-level `generated_at` dates assembly of routes.json, not a new check or analysis. A changed attachment bypasses the old attachment's backoff; a changed producer/script version invalidates its cache.
+
+**Event start time:** An explicit ISO local timestamp retains `start_time`, including `00:00`, with `start_time_status: "provided"`. A date-only, missing or invalid timestamp has `start_time_status: "missing"` and no `start_time`. This records supplied time precision; it cannot resolve an upstream placeholder midnight that is indistinguishable from a real midnight in the supplied event. Do not invent a departure time from a date-only event.
 
 **Course character** classifies the overall route profile using elevation density (m/km). Total elevation alone is distance-blind: 2000m over 300 km is rolling, not hilly. Section 11 convention:
 
@@ -1897,7 +1923,13 @@ Climb category presence upgrades classification: a route with a Cat 1 climb is `
 | Cat 1 | 650–1000m | Major climb |
 | HC | 1000m+ | Extreme climb |
 
-These are elevation-based conventions, not gradient-based. A 150m gain at 10% average is physiologically harder than 200m at 4%. The category captures scale, not intensity. The AI should communicate both category and gradient when briefing climbs. Climbs below 100m elevation gain with <3% average gradient are filtered out as terrain noise.
+These are elevation-based conventions, not gradient-based. A 150m gain at 10% average is physiologically harder than 200m at 4%. The category captures scale, not intensity. The AI should communicate both category and gradient when briefing climbs.
+
+**Segment detection and admission:** Segmentation uses native GPS-distance samples and the existing 50 m-smoothed elevation. Directional entry is at 1.5%; a parent ends when its reverse drop exceeds the greater of 2.5 m or 5% of its rise so far. Positive maximum-excess spans above the 1.5% reference line are extracted, including unused prefixes and suffixes; ties retain the earliest sample. A profile exactly at the reference has no positive excess.
+
+A centered 200 m native-sample gradient guides refinement. For spans with raw directional gain below 100 m, the earliest minimum gradient at least 200 m from both ends splits at a shared saddle only when strictly below one quarter of the weaker flanking peak and sustained for at least 50 m. Children are considered in turn; raw gain of at least 100 m protects against this second split stage only. Each end can extend through support strictly above one eighth of its core peak gradient, by at most 100 m and no farther than the first native sample at or after the fixed midpoint to the next core's start. Starts do not move; no interpolated points or minimum-length padding are added.
+
+Admission then requires raw distance at least 500 m and raw directional average at least 1.5%, followed by rounded absolute gain at least 100 m OR rounded absolute average at least 3%. There is no independent 50 m gain floor. All measurements use the original smoothed profile; descents use the same rule with elevation negated for detection. Categories, rounding and display remain unchanged. The major-gain guard does not reconnect parents already split by a reverse drop, and long flat connections can remain inside a large climb.
 
 **Climb detail fields:** Each climb entry includes `position_km` (distance from start), `distance_km`, `elevation_m`, `avg_gradient_pct`, `max_gradient_pct` (steepest 200m subsection), `category`, and `start_coords`/`end_coords`. Use `max_gradient_pct` to warn about steep sections within an otherwise moderate climb: "averages 5.8% but kicks to 11.2% in the final kilometer."
 
@@ -2110,7 +2142,7 @@ When route data is available, the AI can produce a structured pre-ride briefing 
 
 6. **Nutrition skeleton**: fueling timing anchored to terrain features. Pre-climb fueling windows, safe, non-technical descent fueling opportunities, flat-section backstops. Connects kJ expenditure estimates to the route profile.
 
-**Conditional inclusion in pre-workout reports:** When `has_terrain: true` on a planned event and `routes.json` contains the corresponding terrain data, the pre-workout report should include a condensed terrain context block after the planned workout section: course character, key climbs (condensed), and a pacing note. The full briefing is available on request. Do not include terrain context when `has_terrain` is false or absent; the data doesn't exist.
+**Conditional inclusion in pre-workout reports:** When `has_terrain: true`, `route_status: "ok"` and the event ID and complete `route_ref` match the routes.json entry, include a condensed terrain context block after the planned workout: course character, key climbs (condensed), and a pacing note. The full briefing is available on request. Otherwise omit the terrain context block. For `no_elevation`, GPS geometry may still support distance/location, but never infer flatness, zero ascent or terrain-adjusted pacing. For the other unavailable states, state the route limitation when route advice is requested.
 
 #### Completed-Activity Terrain & Weather
 
