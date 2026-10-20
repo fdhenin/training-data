@@ -11,16 +11,16 @@
       "hash": "0683b6ae3ded5701305dae4114d317d4346c175824d8db87a22d18e05a61ff77"
     },
     "PROJECT_INSTRUCTIONS_AGENTIC.md": {
-      "hash": "6e39e49d314ab35c67262140e5f77cf1d8093d6ab60178fcb33c90e74d2d3bba"
+      "hash": "02eb4005eed2dcf3546b9d70873c663120ab8c11f58f49e5874ce807bdf1aebf"
     },
     "PROJECT_INSTRUCTIONS_WEB.md": {
-      "hash": "506f4c98fab07451557d962b9dff5976954e2579522045a629e7037e0e2d7536"
+      "hash": "7e42e1c975ee5625fdd57fe15e87afbeb7697c5295c245a62ae4156e2ffcdbd5"
     },
     "README.md": {
-      "hash": "79fdccdf6d7ffe24e4858b083fb6fed4d5b1cc53b5564a19bf3c7045cba9133a"
+      "hash": "35d459ba53b88fa588af408bf3e59b7d8327b33d48b909325cc8ff9215ef0c60"
     },
     "SECTION_11.md": {
-      "hash": "6e1f96d2dad39bc6fb9a6a7de488ac52bd6bff2cb1fd005b29c769f59466d561",
+      "hash": "acb9860afd193a41ddbe28e25960d20f62b998ec59d73d79f370600def33ecb2",
       "description": "Coaching protocol"
     },
     "SECURITY.md": {
@@ -30,7 +30,7 @@
       "hash": "ab6fdc2649d50752f8770650893db59980355086834ca544a2a4fa6aa40ef91f"
     },
     "SKILL.md": {
-      "hash": "5ba0718c37c48a7316e344bc71de624caffde8bfa1d2bfbee80bbb6f5c906fdb"
+      "hash": "ba1b2ae7ee84c0e591ac0d365fdaa9d828005fae678ebbcf91bb5251bc25c639"
     },
     "THIRD_PARTY_NOTICES.md": {
       "hash": "2d9fa3fc0fe1477ab66d63f9edebe758f329fcda3f439702bbe5a8ff78b9b53e"
@@ -39,7 +39,7 @@
       "hash": "8768f879e311c3f6aff56331e62b17c1bd637ef70673468d8e35a69e9a0dd348"
     },
     "examples/README.md": {
-      "hash": "001c386ceaeb9a7e61fbb795ff48e8d26827ea5a78c975c606056ce04c5b8f00"
+      "hash": "25a90b9959074c895263696746e6a69e47adcabff3acec9055bc806e6fb01177"
     },
     "examples/agentic/EXTERNAL_APIS.md": {
       "hash": "6511399734d3a7a95a4147079d8c0e72efed5e9a55f1a557a78791e2be079710"
@@ -87,7 +87,7 @@
       "hash": "e8c5cea9f3db433727e6528f703dd7f1239545d6a569a7a001a390654aa354ad"
     },
     "examples/json-examples/README.md": {
-      "hash": "3abd85c07598d6091d17ce6eabceea5d198531dbabc530eccfd489e72eee59a4"
+      "hash": "02bb1e38829b4377d1b17cad1b0f1459f2b38bc46dfd8b790ad0b4a7161a4758"
     },
     "examples/json-examples/ftp_history.example.json": {
       "hash": "b2f2d569327c7b030c02969efdadd224bcc6d3df4c63857c3f4e614a75cfcb75"
@@ -126,10 +126,10 @@
       "hash": "7f2cfc5e63532498f83aebfd26c0260b8a7439836c8b8a27d947556dffd86f1b"
     },
     "examples/reports/POST_WORKOUT_REPORT_EXAMPLES.md": {
-      "hash": "3005b75f28edf88fa630b7a487ecf47653fb6ec87096b0e574b083c10531487d"
+      "hash": "b541200bd5994481a49d23cfe2d301a1e9265726fba584f212342f5e4b853c5d"
     },
     "examples/reports/POST_WORKOUT_REPORT_TEMPLATE.md": {
-      "hash": "dbcf318b6f58363be3faa6b2c3aff6a8186590b95f77c0433d8be92a5c8dd125"
+      "hash": "4c85f39833ee33ef1e7ec7fc1ff0dca27b74e4a8353bb813fb13489b6f38aeb8"
     },
     "examples/reports/PRE_WORKOUT_REPORT_EXAMPLES.md": {
       "hash": "12ab816863fe0e1f16c93a7187fdf8b1cb93e28eba1a739c36695b093d7ca655"
@@ -138,7 +138,7 @@
       "hash": "eeb92f23c98c75e6771390ffcdad3763a4abf69e8208428a305435fd3b41908e"
     },
     "examples/reports/README.md": {
-      "hash": "3ba655a2506da5285743298b2b646dc82dfd8df2508cd7c197687062509afc15"
+      "hash": "7506d07bc5549b4022457b1da8287a3e610d3b70f101a2652e8040ba079f67c2"
     },
     "examples/reports/REPORT_HIERARCHY.md": {
       "hash": "5d99a2742f15ca9111786176ddd4eff1a6262f24198ec61b8d2a6f51f7da45f0"
@@ -150,7 +150,7 @@
       "hash": "7b94bb7d3dc38762a85f6f2ead34aac2651cca8b760ba14bec082818005d679a"
     },
     "examples/reports/WEATHER_REPORT_EXAMPLES.md": {
-      "hash": "0f9c101ddfb97594ad828ca1ada9bdcf41f2a95ab0a7fff8c034c3cbcbbf4986"
+      "hash": "eb1a3c0a1d25d015fc2bfedc8db21b61cd367cff21398b41675e5b67fab7c3cb"
     },
     "examples/reports/WEATHER_REPORT_TEMPLATE.md": {
       "hash": "69a05b75855e74ac26ab92220640f54dcecd4a630360e0ae5f4055df440b3a6e"
@@ -161,8 +161,11 @@
     "examples/reports/WEEKLY_REPORT_TEMPLATE.md": {
       "hash": "35b5397465e5544925265b22381a4da87476401b876437c907368d6044622c4f"
     },
+    "examples/reports/example-route-weather-map.png": {
+      "hash": "a98f5016805afce75433b5815630c62a4ca3d5bdef57c1b79b2a88b51c194300"
+    },
     "examples/sync.py": {
-      "hash": "b5fe8f6ad211036f6e651aeb96782dd1a98f7ccf41a993a09af7b7d618185913"
+      "hash": "f7f0c74d612030d10a3483443c113808aa005a2787ef619759a5e59f9799c8c0"
     },
     "examples/workout-library/README.md": {
       "hash": "4d6f5ee1d7b87c8306d4dcbf9ea80bd305ff827f7d3b3c6629b9dd665a811208"

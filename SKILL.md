@@ -1,6 +1,6 @@
 ---
 name: section-11
-description: Evidence-based endurance coaching protocol (v11.80). Use when analyzing training data, reviewing sessions, generating pre/post-workout or requested weather reports, planning workouts, answering training questions, or giving endurance coaching advice. Always read or fetch athlete JSON data before responding to any training question.
+description: Evidence-based endurance coaching protocol (v11.81). Use when analyzing training data, reviewing sessions, generating pre/post-workout or requested weather reports, planning workouts, answering training questions, or giving endurance coaching advice. Always read or fetch athlete JSON data before responding to any training question.
 ---
 
 # Section 11 - AI Coaching Protocol
@@ -76,7 +76,7 @@ Load the coaching protocol using this precedence:
 
 If both root and `section11/` copies exist, prefer the root copy.
 
-**Current version:** 11.80
+**Current version:** 11.81
 
 ## External Sources
 
@@ -147,7 +147,7 @@ Use standardized report formats. Load templates using this precedence:
 Templates:
 - **Weather (on request):** Five-day planned-route forecasts/outlooks, preparation and supported comparison: `WEATHER_REPORT_TEMPLATE.md`
 - **Pre-workout:** Grouped status summary, a Today block per session in calendar order, weather directly under outdoor rides and runs only, and a Go/Modify/Skip recommendation followed immediately by interpretation: `PRE_WORKOUT_REPORT_TEMPLATE.md`
-- **Post-workout:** Session metrics, plan compliance, weekly totals: `POST_WORKOUT_REPORT_TEMPLATE.md`
+- **Post-workout:** Dated header, one activity block with blank-separated time/context/climbs/power/HR/energy groups, grouped weekly totals, Interpretation and one Tomorrow session per line: `POST_WORKOUT_REPORT_TEMPLATE.md`. Quote the new display fields; activity peaks are descriptive only and never establish FTP, zones or readiness. Keep all existing structure, validity and missing-data rules
 - **Weekly:** Week summary, compliance, phase context: `WEEKLY_REPORT_TEMPLATE.md`
 - **Block:** Mesocycle review, phase progression: `BLOCK_REPORT_TEMPLATE.md`
 - **Brevity rule:** Brief when metrics are normal. Detailed when thresholds are breached or athlete asks "why."

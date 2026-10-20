@@ -1,10 +1,13 @@
 # Section 11 - AI Coach Protocol
 
-**Protocol Version:** 11.80  
+**Protocol Version:** 11.81  
 **Last Updated:** 2026-10-20
 **License:** [MIT](https://opensource.org/licenses/MIT)
 
 ### Changelog
+
+**v11.81 - Readable post-workout reports (2026-10-20, sync.py v3.147):**
+Post-workout reports use a dated header, one activity block with blank-separated fact groups, individual terrain/temperature/wind lines, climbs, descriptive activity peaks and one Tomorrow session per line. Sync adds elapsed time, minute-rounded duration displays, same-source temperature ranges, guarded activity-weight W/kg and sport-aware pace. Exact power-curve points are bounded and cached; no FTP, zone or readiness inference is permitted. Existing activity values, push.py 0.8, route weather/ETA, maps and history behavior remain unchanged. A supplied real-route map example is included in the repository only.
 
 **v11.80 - Weather maps, reports and assumed starts (2026-10-20, sync.py v3.146):**
 PNG maps carry detail; the readable report layout groups readiness and keeps weather under each outdoor session. On-request weather reports share routes.json A–F bands. No-route reports offer optional labelled home forecasts. Passed starts roll as assumed until completion or local-day expiry (missed). Point weather uses chat > Intervals.icu profile > dossier Home region, replacing heartbeat Location. data_overview includes routed rides ahead and unrouted rides within 120 h; every setup retains maps/weather/ and ETA history. Exact-midnight starts assume labelled 10:00; push.py 0.8 supports time edits. The documentation sweep aligns local time, 16-point compass directions and display decimals.
@@ -482,6 +485,8 @@ These fields are informational context for AI coaching. They do NOT enter readin
 | `current_status.current_metrics` | `weight_kg` | `display.weight` |
 | `current_status.weight` | `weight_latest_kg`, `weight_7d_avg_kg`, `weight_28d_slope_kg_per_week` | `display.{weight_latest, weight_7d_avg, weight_28d_slope_per_week}` (W/kg fields stay unit-universal; no display block on `wkg_*`) |
 | `recent_activities[]` | `distance_km`, `elevation_m`, `avg_speed`, `max_speed` | `display.{distance, elevation, avg_speed, max_speed}` |
+| `recent_activities[]` (3.147) | `power_weight_kg`; `avg_speed`; same-source `min_temp`, `avg_temp`, `max_temp` | `display.power_weight` (kg/lb); `display.pace` (m:ss with /km or /mi); `display.{min_temp, avg_temp, max_temp}` (account °C/°F, no second conversion) |
+| `recent_activities[]` durations (3.147) | Existing exact `duration_formatted`; new `elapsed_hours` | `display.moving_time`, `display.elapsed_time` are duration strings rounded to whole minutes; `elapsed_formatted` equals display.elapsed_time |
 | `recent_activities[].terrain_summary` + `routes.json` events | `total_distance_km`, `total_elevation_m`, `elevation_per_km`; `climbs[]`/`descents[]` `position_km`, `distance_km`, `elevation_m` (signed for descents) | `display.{total_distance, total_elevation, elevation_per_distance}` on container; `display.{position, distance, elevation}` on each climb/descent |
 | `summary.by_activity_type[]` | `distance_km` | `display.distance` |
 | `wellness_data[]` | `weight_kg` | `display.weight` |
@@ -492,6 +497,25 @@ These fields are informational context for AI coaching. They do NOT enter readin
 **Cache behavior:** Terrain summaries copied forward from a previous sync (recent_activities terrain copy-forward and the routes.json attachment-id cache) refresh their display blocks against current preferences each sync. A change to the athlete's Intervals.icu unit preference picks up on the next sync without invalidating the (expensive) GPX/streams analysis cache; the canonical metric fields are preserved verbatim.
 
 **Null handling:** `display` sub-objects may be `null` when the corresponding canonical value is `null` (e.g., a wellness row with no weight reported produces `weight_kg: null` and `display.weight: null`). The AI treats `null` display blocks identically to null canonical fields; surface "no data" rather than guessing.
+
+#### Post-workout Activity Fields
+
+Sync 3.147 adds the following fields to `latest.json.recent_activities[]`. Every pre-existing field keeps its name, value and meaning, including the exact-to-the-second `duration_formatted`, legacy `avg_temp` fallbacks and `avg_pace`. Unknown scalar/display fields are null; power-curve fields are conditional.
+
+| Field | Source and contract |
+|---|---|
+| `elapsed_hours`, `elapsed_formatted` | Activity-list `elapsed_time` seconds; hours rounded to two decimals, formatted duration rounded to the nearest minute, with 30 seconds rounding up. Null if unavailable/invalid. Elapsed includes stops; no inferred stop duration |
+| `display.moving_time`, `display.elapsed_time` | Duration strings such as `2h21m` or `0m`, rounded from raw moving/elapsed seconds. Unlike numeric unit blocks these are formatted strings. For post-workout presentation only; use exact duration_formatted for eligibility gates |
+| `min_temp`, `max_temp`, `temp_source` | Choose weather when average_weather_temp is non-null, including zero: min_weather_temp/average_weather_temp/max_weather_temp. Otherwise choose device when average_temp is non-null: min_temp/average_temp/max_temp. Source is `weather` or `device`; missing endpoints stay null, never mixed across sources. Unknown legacy-average provenance leaves all three new fields null |
+| `display.min_temp`, `display.avg_temp`, `display.max_temp` | `{value, unit}` for the selected single source; unit is °C or °F from avg_temp_unit. API temperatures already use account units, so no conversion is applied. Legacy-only averages remain available in the unchanged avg_temp field but do not supply a labelled range |
+| `power_weight_kg`, `avg_power_wkg` | Activity-list icu_weight, inclusive 30–200 kg and finite positive existing avg_power required; W/kg is avg_power / power_weight_kg to two decimals. Both null otherwise. Never substitute current wellness weight or the curve's model weight. `display.power_weight` supplies kg/lb; W/kg is unit-universal |
+| `power_curve` | Object mapping exact second strings `"1"`, `"5"`, `"60"`, `"300"`, `"1200"`, `"3600"` to watts. Read only parallel secs/watts arrays from `/activity/{id}/power-curve.json`; never interpolate or use values, watts_per_kg or icu_pm_p_max. Points beyond known moving_time are omitted. Empty object is a successful curve without usable requested points |
+| `power_curve_status`, `power_curve_error` | Conditional terminal result: `"failed"` with `"http_404"` or `"http_410"`. Other HTTP statuses, timeouts, transport, parse/shape errors and request-budget skips emit no curve/status and retry on a later sync |
+| `display.pace` | Runs (Run/TrailRun/VirtualRun), walks and hikes with positive finite avg_speed: `{value: "m:ss", unit: "/km" or "/mi"}`. Derived from canonical avg_speed using athlete distance preference before display-speed rounding; seconds round to nearest integer. Null for other sports or missing/zero speed. Existing display.avg_speed remains available, including for runs |
+
+Only activities with positive average/normalized power or a watts stream request a curve. Successful curves and terminal results copy forward from the previous latest.json, including across unit changes; neither is re-fetched. Same-run results, including failures, are memoized by activity ID. Up to eight new curves are admitted per sync instance, using existing Basic auth, (5, 30) connect/read timeouts and the shared safe-read retry policy. With the shared four-extra-attempt budget, these add at most twelve HTTP attempts per sync; cache hits cost none. New curve reads run after existing activity enrichments. No separate cache file or history mutation is introduced.
+
+The Max power line uses power_curve["1"]; Peaks uses the five longer durations that exist. These are descriptive values for this activity only, never tests, bests or capability, and never a basis for FTP, zone or readiness changes. Work continues to use work_kj. Reports do not add Carbs eaten.
 
 #### Completed Session Structure
 
@@ -585,7 +609,7 @@ N≥1 emits a mean for all three capability fields. Use `*_qualifying` to calibr
 
 Per-interval segment data for recent structured sessions, plus optional DFA a1 session-level rollups when AlphaHRV recorded. Completed-session detail is also stored here as optional `session_structure`, with the independent `has_structure` flag described above. The existing interval/DFA booleans in `latest.json` remain: `has_intervals: true` (structured segments present) and `has_dfa: true` (AlphaHRV recorded). Either flag indicates a corresponding entry in `intervals.json`. Sessions with `has_dfa: true` and sufficient data quality also carry a compact `dfa_summary` block on the activity in `latest.json` (avg, dominant_band, tiz_pct, valid_pct, sufficient, plus optional drift_delta/drift_interpretable and lt1/lt2 watts/hr when crossings dwelled long enough). `has_dfa: true` without a `dfa_summary` means AlphaHRV recorded but data quality was insufficient to interpret; do not cite DFA numbers. `dominant_band` is selected from raw band `secs`; an exact-second tie resolves by descending intensity: `supra` → `tempo` → `endurance` → `easy`.
 
-**Scope:** 14-day retention, incrementally cached (72h scan window on subsequent runs, 14-day backfill on first run). Interval/DFA payloads cover whitelisted sport families (cycling, run, ski, rowing, swim) with **either** detected interval structure (`intervals` array populated) **or** an AlphaHRV-recorded `dfa_a1` stream (`dfa` block present). Pure endurance rides without structured intervals appear in this file when they have a DFA block. That's by design, since steady-state rides are exactly where DFA a1 drift detection is most useful. A structure-only entry may belong to any activity type, including a walk, and does not set either interval/DFA flag.
+**Scope:** 14-day retention, incrementally cached (72h scan window on subsequent runs, 14-day backfill on first run). Interval/DFA payloads cover whitelisted sport families (cycling, run, ski, rowing, swim) with **either** detected interval structure (`intervals` array populated) **or** an AlphaHRV-recorded `dfa_a1` stream (`dfa` block present). Pure endurance rides without structured intervals appear in this file when they have a DFA block. That's by design, since steady-state rides are exactly where DFA a1 drift detection is most useful. A structure-only entry may belong to any activity type except Walk or Hike, and does not set either interval/DFA flag.
 
 **Presence of an entry is not evidence of structure.** Intervals.icu emits a single whole-session `RECOVERY` placeholder on many unstructured activities, and that placeholder populates the `intervals` array. Such an entry has **neither** `has_intervals` nor `has_dfa` set on the corresponding activity in `latest.json`, and is reachable for structure detail only if the independent `has_structure` flag is true, but it is still written to the file, and its `duration_secs`, `training_load` and HR values describe the whole session rather than any recovery. **Follow the flags, never the presence of an entry.** Placeholder normalization is not addressed in v11.53 and remains deferred: it depends on evidence that repeated efforts reliably share a `group_id`, without which normalization could empty a genuine unpaired session.
 
@@ -1110,31 +1134,31 @@ When uncertain, the AI must ask, not assume.
 
 Reports use a structured line-by-line format per session, not bullet-point summaries. Each report follows this flow:
 
-1. **Data timestamp:** `Data (last_updated UTC: [timestamp])`
+1. **Header:** `**Post-workout: [Weekday D Month]**`, then `Data updated: [local date time]`. Add a zone only when different from the athlete's timezone or a UTC fallback.
 2. **One-line summary:** What was completed, key observation
 3. **Session block(s)** (one per activity, line-by-line):
-   - Outdoor context (optional line at the top of an outdoor activity block; follow the inclusion and omission rules under *Outdoor context synthesis line*)
-   - Activity type & name
-   - Start time
-   - Duration (actual vs planned)
+   - Bold activity name with short sport prefix only when not already in the name; Outdoor ride / Indoor ride on its own line for cycling
+   - Start (HH:MM), Moving time, Total time (elapsed, omit when equal after rounding), Planned (exact paired duration when present), each on its own line; round durations to whole minutes
    - Distance (cycling, running and walking)
    - Ascent (walks, runs and rides, indoors and outdoors): recorded `display.elevation.value` and unit; omit when unavailable, retain zero. Source-dependent and descriptive only; never compare barometric, GPS and virtual ascent or substitute detector ascent
-   - Power (whole session): Avg / NP
+   - Avg speed for rides and outdoor NordicSki; Pace plus speed for runs including virtual; Pace alone for walks/hikes; no speed/pace for ergs or strength
+   - Terrain, Temperature and Wind on separate supported lines, followed by Climbs with one display-unit position/length/average/max-gradient line per supplied climb; indoor activities show only device Temperature when present
+   - Power (whole session): average W, W/kg when present, NP; Max power from exact 1s; Peaks for each supplied 5s/1m/5m/20m/60m point, descriptive only
    - Executed structure (method/status and supported step/set actuals or descriptive thirds/efforts; say unavailable when missing; omit for Walk/Hike)
    - IF (session-level intensity factor; omit when null; render as specified in the post-workout template)
    - Power zones (% breakdown)
    - Grey Zone (Z3): X%
    - Quality (Z4+): X%
    - Session profile (activities with zone data; classify the executed session as specified in the post-workout template)
-   - HR: Avg / Max
+   - Variability Index (cycling with power; assessment labels apply to steady-state only; omit the label for interval sessions where high VI is expected)
+   - HR: Avg, Max
    - HR zones (% breakdown)
    - Cadence (avg)
    - Decoupling (assessment label only when the session passes the per-session gate under *Evidence handling*: ≥ 90 min with VI ≤ 1.05 and > 0; otherwise the value without drift interpretation)
    - EF (when power and HR available; interpret only when the session passes the per-session gate under *Evidence handling*: ≥ 20 min with VI ≤ 1.05 and > 0)
    - HRRc (bpm; omit when null)
-   - Variability Index (cycling with power; assessment labels apply to steady-state only; omit the label for interval sessions where high VI is expected)
    - DFA a1 (when a session-level `dfa` block is present; follow the post-workout template's quality and drift-state rules, including a quality notice without readings for insufficient data)
-   - Calories (kcal)
+   - Work (kJ), Calories (kcal)
    - Carbs used (g)
    - TSS (actual vs planned)
    - Feel (omit when null; use the post-workout template's labels)
@@ -1142,8 +1166,10 @@ Reports use a structured line-by-line format per session, not bullet-point summa
    - Effort response (omit when null; interpret as specified in the post-workout template; does not change readiness)
    - Note (athlete text or coach notes, if present on the activity)
    Apply the activity-specific inclusion, omission and label rules in examples/reports/POST_WORKOUT_REPORT_TEMPLATE.md, including its null-value and insufficient-DFA branches.
-4. **Weekly totals (rolling 7d) block:** Phase, Polarization, Durability (7d/28d + trend), EF (7d/28d + trend), HRRc (7d/28d + trend; partial or omitted when data is insufficient, per the post-workout template), TID 28d (+ drift), TSB, CTL, ATL, Ramp rate, ACWR, Recovery Index, Hours, TSS
-5. **Overall:** Coach note (2–4 sentences: compliance, key quality observations, load context, recovery note if applicable)
+   Use blank lines between time, distance/context, climbs, power, HR and energy groups. Power/HR zones are each one line, labels first (Z1 30%, Z2 31%), retaining the ≥1% rounding rule. No middle-dot separators or hyphen continuation lines.
+4. **Weekly totals (rolling 7 days):** Bold heading with four unlabelled blank-line groups: Phase; Polarization, Durability, EF, HRRc and TID 28d; TSB, CTL, ATL, Ramp rate, ACWR and Recovery Index; Hours and TSS. Retain all existing 7d/28d means, counts, trends and HRRc partial/omission cases.
+5. **Interpretation:** Bold heading, 2–4 sentences: compliance, key quality observations, load context, recovery note and supported terrain/heat/wind causal clauses.
+6. **Tomorrow:** Bold heading then one planned session per line in start-time order: Sport: workout type duration, condensed main set, HH:MM when present. Keep every session and the template's unchanged workout_summary/description fallback rules; omit the section when none is planned.
 
 See **Output Format Guidelines** for full field reference, assessment labels, and report templates.
 
@@ -2279,9 +2305,9 @@ The primary consumer is **post-workout interpretation**: explaining elevated RPE
 
 **Post-workout report integration:**
 
-These are anchors for surfacing context, not gates. Apply judgment to the specific activity rather than mechanical thresholds.
+These are anchors for interpretive context, not gates on the descriptive Terrain, Temperature, Wind and Climbs lines. Apply judgment to the specific activity rather than mechanical thresholds.
 
-1. **Surface terrain when it materially shaped the effort.** Typical triggers: significant elevation density (`elevation_per_km ≥ 20`), `course_character` of `hilly` or `mountain`, or `max_grade_pct ≥ 8` on otherwise moderate routes. A flat ride's terrain block is not noise to highlight; absence of mention is the correct signal.
+1. **Interpret terrain when it materially shaped the effort.** Typical triggers: significant elevation density (`elevation_per_km ≥ 20`), `course_character` of `hilly` or `mountain`, or `max_grade_pct ≥ 8` on otherwise moderate routes. Flat terrain may appear descriptively without requiring interpretive commentary.
 
    *Note on `max_grade_pct` calibration:* The value is computed from smoothed elevation in 200m chunks, which dampens GPS/barometric noise but also attenuates peak gradients; a real-world 12-15% kicker typically reads as 6-8% in `max_grade_pct`. The `≥ 8` threshold is calibrated to this smoothed scale; do not compare it to gradients quoted from Strava, Garmin Connect, or other tools that report unsmoothed peaks.
 
@@ -2291,14 +2317,16 @@ These are anchors for surfacing context, not gates. Apply judgment to the specif
 
 4. **`no_elevation` requires explicit acknowledgment.** Treating a no-elevation ride as either flat OR climbed without saying so risks misattributing physiological signals to the wrong cause. Phrasing: "GPS-only ride (no altitude recorded); terrain effects on this session can't be confirmed." Then interpret remaining signals (power, HR, RPE) on their own terms.
 
-**Outdoor context synthesis line:** A single optional line at the top of each outdoor activity block summarizes terrain and weather and, when earned, attributes observed variability or environmental cost. It primes interpretation before the reader reaches the metrics block; the full `terrain_summary` and `weather_summary` data remain available for any deeper read.
+**Completed-activity context lines:** Each outdoor activity has separate Terrain, Temperature and Wind lines when supported, followed by Climbs when nonempty. These replace the former combined Outdoor context line. Causal explanation belongs in Interpretation, retaining the triggers below. Indoor activities may show device Temperature only.
 
 *Inputs.* From `terrain_summary`: `course_character`, `elevation_per_km`, `max_grade_pct`. From `weather_summary`: `avg_feels_like`, `avg_wind_speed`, `headwind_pct`, `rain`. From the activity record: `variability_index`, `type` (gates the cycling-only variability clause).
 
 *Descriptive phrases.* Render whenever the corresponding summary is present. The bands describe environmental conditions as recorded; sport-specific interpretation (heat tiers, cold warm-up rules) remains the responsibility of the Environmental Conditions Protocol.
 
-- Terrain phrase: `"{course_character} route ({elevation_per_km} m/km)"`. Reuse the classification produced by `sync.py`; never reclassify.
-- Wind band (`avg_wind_speed`): calm < 3 / breezy 3–6 / windy 6–9 / very windy ≥ 9.
+- Terrain: `"{course_character} ({display.elevation_per_distance.value} {unit})"`. Reuse the classification produced by sync.py; never reclassify.
+- Wind: `"{descriptor} ({avg_wind_speed} {unit}, gusts up to {avg_wind_gust} {unit})"`. The supplied gust value is the existing gust statistic, not a newly measured instantaneous maximum. Bands in m/s: calm < 3 / breezy 3–<6 / windy 6–<9 / very windy ≥ 9; equivalent boundaries are 10.8/21.6/32.4 km/h or 6.7/13.4/20.1 mph. Use weather_summary.units.wind.
+- Temperature: `"{display.avg_temp.value} {unit} avg (min {display.min_temp.value}, max {display.max_temp.value})"` from one source. Missing endpoints are omitted individually; indoor requires temp_source=device.
+- Climbs: one display.position/display.distance line per supplied climb, with avg_gradient_pct and max_gradient_pct; no time or power.
 - Temp band (`avg_feels_like`): cold < 5 / cool 5–12 / mild 12–18 / warm 18–25 / hot > 25.
 - Weather phrase: `"{wind_band} {temp_band} conditions"`. If `rain > 0`, append `", wet"`.
 
@@ -2315,18 +2343,18 @@ The headwind clause requires both an elevated percentage and a wind magnitude ab
 
 If multiple triggers fire, chain at most two with a comma; if more than two would qualify, keep the most acute on the day.
 
-*Graceful degrade.* The line composes only what is available:
+*Graceful degrade.* Each line includes only available values:
 
-| State | Line |
+| State | Lines |
 |---|---|
-| Both summaries present | `"Outdoor context: {terrain phrase}, {weather phrase}[; {clause}]."` |
-| Terrain only | `"Outdoor context: {terrain phrase}[; {clause}]."` (only the variability clause can fire) |
-| Weather only | `"Outdoor context: {weather phrase}[; {clause}]."` |
-| Neither (indoor, or both absent on outdoor) | Omit the line entirely |
+| Terrain only | Terrain and available Climbs; no invented weather. Only the variability clause can fire |
+| Weather only | Available Temperature and Wind; no invented terrain |
+| Both summaries present | Separate Terrain, Temperature, Wind and available Climbs |
+| Neither | Omit unsupported context lines; an independently supplied same-source activity temperature may still appear |
 
-`terrain_status` or `weather_status` indicating unavailable data follow the do-not-invent rule defined elsewhere in this section: omit the line rather than fill with hedges.
+`terrain_status` or `weather_status` indicating unavailable data follow the do-not-invent rule: omit the affected line. Temperature uses the independent same-source activity fields, including device fallback; no_elevation still warrants acknowledgment when it limits interpretation.
 
-*Placement.* Top of each outdoor activity block, one line, blank line below before `Completed workout:`. Per-activity, never per-day. Indoor activities have no line; omission is the correct signal.
+*Placement.* After distance/ascent/speed in each activity block, followed by a blank-separated Climbs group when available. Per-activity, never per-day. Causal clauses move to Interpretation.
 
 **Weekly and block review applicability:** Across 7-day or block-level windows, comparing `headwind_pct` exposure, accumulated `total_elevation_m`, and `course_character` distribution adds context to TSS / CTL / TSB patterns. A week with three high-headwind rides and a stale TSB gives a different read than the same TSB with calm conditions. Use sparingly; the goal is correct attribution of fatigue, not exhaustive environmental accounting.
 
