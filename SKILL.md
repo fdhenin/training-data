@@ -1,6 +1,6 @@
 ---
 name: section-11
-description: Evidence-based endurance coaching protocol (v11.79). Use when analyzing training data, reviewing sessions, generating pre/post-workout reports, planning workouts, answering training questions, or giving endurance coaching advice. Always read or fetch athlete JSON data before responding to any training question.
+description: Evidence-based endurance coaching protocol (v11.80). Use when analyzing training data, reviewing sessions, generating pre/post-workout or requested weather reports, planning workouts, answering training questions, or giving endurance coaching advice. Always read or fetch athlete JSON data before responding to any training question.
 ---
 
 # Section 11 - AI Coaching Protocol
@@ -54,7 +54,8 @@ On first use:
    - Check for `HEARTBEAT.md` in the agent workspace
    - If not found, check `section11/examples/agentic/openclaw/HEARTBEAT_TEMPLATE.md`
    - If not found, fetch from: https://raw.githubusercontent.com/CrankAddict/section-11/main/examples/agentic/openclaw/HEARTBEAT_TEMPLATE.md
-   - Ask athlete for their specific values (location, timezone, riding hours, weather thresholds, notification hours)
+   - Ask athlete for their specific values (timezone, riding hours, weather thresholds, notification hours)
+   - Point weather uses Section 11's [shared location rule](SECTION_11.md#point-weather-location), not a stored heartbeat location: current-chat statement, then current `athlete_profile.location`, then dossier Home region only when the profile location is null/empty. Show the source; a chat override expires with that conversation
    - Save as HEARTBEAT.md in the agent workspace
 
 4. **Configure data discipline rule** (agentic platforms with persistent identity)
@@ -75,7 +76,7 @@ Load the coaching protocol using this precedence:
 
 If both root and `section11/` copies exist, prefer the root copy.
 
-**Current version:** 11.79
+**Current version:** 11.80
 
 ## External Sources
 
@@ -95,13 +96,15 @@ Each source answers its own domain; the order is not a ranking across domains. S
 
 ## Required Actions
 
+Read `latest.json.data_overview` first to discover companions and route-weather/map availability. Resolve its relative paths against the latest file's source; for folderless Manual uploads match by filename. Presence does not establish AI access. Weather briefs use local zone-labelled times and 16-point compass directions per SECTION_11. Report weather times use HH:MM, adding a zone only when different from the athlete's or a UTC fallback; the Data updated header, maps and data retain zone labels. Read and show the matching PNG pages in their listed order; identify any missing page and retain text. Show only pages actually read; maps are never downloads or additions to the artifact ZIP.
+
 - Whole-session average power and NP never establish main-set power, in reports, comparison or prescription. Read `recent_activities[].structure_summary`: compare the same identified windows and keep targets separate from actuals. Check method/status and issues. Load `intervals.json` for detailed analysis when `has_structure: true`; its `session_structure` carries window metrics. An expired full block leaves a last-captured summary, not a fresh verification. Thirds/WORK efforts are descriptive; broad window agreement is not formal adherence. If the required structure or role is unavailable, say so and obtain it.
 
 - Read or fetch latest.json before any training question. Check the data directory first, then the connected repo (if a connector is available), then uploaded or attached files, then the configured raw URLs (in the project instructions or, when a dossier is used, its source configuration).
 - Read or fetch history.json when trend analysis, phase context, or longitudinal comparison is needed. Same precedence.
 - Load `intervals.json` when analyzing a specific activity where `has_intervals: true` OR `has_dfa: true` OR `has_structure: true`. For block reports, load when any session in the block has one of these flags and detail is needed. Use for: interval compliance, pacing analysis, cardiac drift per set, recovery quality, DFA a1 session-level interpretation and completed-session detail. For pre-workout/everyday comparisons use structure_summary in latest.json; load detail only when needed, not merely for readiness, load management or weekly aggregate totals.
 - Load `routes.json` when a planned event has `has_terrain: true`. Use for: route analysis, terrain-adjusted pacing, pre-ride briefing, race preparation. Same precedence as other JSON files.
-  `route_weather_summary` must match the detailed brief's event, full route_ref, departure, cache_key and brief_id. Follow SECTION_11's status, forecast/outlook tier, freshness, ETA uncertainty and linked provider-attribution rules, including upcoming-ride questions. Route weather is on by default; see README for off switches and privacy. A completed-activity weather_summary is not a forecast.
+  `route_weather_summary` must match the detailed brief's event, full route_ref, departure, cache_key and brief_id. Follow SECTION_11's status, forecast/outlook tier, freshness, ETA uncertainty and linked provider-attribution rules, including upcoming-ride questions. On request, use the Weather Report template for the next five days; pre-workout retains today's brief only. Show the matching `route_weather_map.pages` PNGs in page order when available; otherwise retain the text brief and never describe an unseen map. Route weather is on by default; see README for off switches and privacy. A completed-activity weather_summary is not a forecast.
 - Load `saved_workouts.json` when selecting or reusing a saved workout, or when the athlete asks about their saved workouts. Do not load it for every training question or report. It is the preferred read path for saved workouts on every platform, because it avoids repeated API retrieval and is faster and cheaper to consume. On API-connected platforms, use the Intervals.icu API for edits, and as a read fallback when the mirror is missing, unavailable, stale, inconsistent, or lacks required data. The mirror is read-only and never grants write authority. Check `refresh.status` before use: `ok` means the snapshot was verified at `refresh.last_success_at`, `stale` means a retained older snapshot after a failed refresh, `unavailable` means no snapshot has ever succeeded. `consistency: endpoints_disagree` means the two upstream endpoints did not agree; treat folder membership as indicative. A saved workout may be prescribed only after verifying that its structure implements an applicable Workout Reference Library template or permitted variant. `saved_workouts.json` is never evidence of what was prescribed for a completed activity: historical compliance requires a verified Intervals.icu activity/event pairing or an authoritative prescription supplied in context, while latest.json's structure_summary and intervals.json's session_structure provide bounded comparison data only. They do not retain the complete prescription or satisfy formal role/mapping/completion gates.
 - Before prescribing a structured session, including a familiar workout the athlete names or a saved workout proposed for reuse, identify the Workout Reference Library template it implements (Section 11 B §8). Load `WORKOUT_REFERENCE.md` from `section11/examples/workout-library/`, then the connected repo, then uploaded or attached files, then https://raw.githubusercontent.com/CrankAddict/section-11/main/examples/workout-library/WORKOUT_REFERENCE.md. If it cannot be loaded, say so rather than improvising a structure.
 - For all files (JSON data, protocol, dossier, templates): data directory → connected repo → uploaded/attached files → URL fetch. For the dossier this order only locates copies: authority belongs to the current official copy named by its `Official dossier location`, and conflicting copies go to the athlete.
@@ -114,6 +117,8 @@ Each source answers its own domain; the order is not a ranking across domains. S
 - Cite frameworks per protocol (checklist item #10)
 
 ## Write Capabilities
+
+When route-weather `departure.source` is `assumed`, retain the ASSUMED label and ask for the actual start time or ask the athlete to set it in Intervals.icu. Exact midnight/date-only uses the configured default (normally 10:00 local). With verified capability, push.py v0.8 can preview and, after user confirmation, apply a same-date `move --time HH:MM`; the next sync supplies the new brief. Without --time, move preserves the existing time. Outlook direction uses the compact `display_wind_from`, never an expanded sector list.
 
 If `push.py` is available (`section11/examples/agentic/push.py` or in the data repo), the skill can manage the athlete's Intervals.icu calendar and training data:
 - **push**: write planned workouts to calendar
@@ -140,7 +145,8 @@ Use standardized report formats. Load templates using this precedence:
 5. If not found, fetch from: https://raw.githubusercontent.com/CrankAddict/section-11/main/examples/reports/
 
 Templates:
-- **Pre-workout:** Readiness assessment, Go/Modify/Skip recommendation: `PRE_WORKOUT_REPORT_TEMPLATE.md`
+- **Weather (on request):** Five-day planned-route forecasts/outlooks, preparation and supported comparison: `WEATHER_REPORT_TEMPLATE.md`
+- **Pre-workout:** Grouped status summary, a Today block per session in calendar order, weather directly under outdoor rides and runs only, and a Go/Modify/Skip recommendation followed immediately by interpretation: `PRE_WORKOUT_REPORT_TEMPLATE.md`
 - **Post-workout:** Session metrics, plan compliance, weekly totals: `POST_WORKOUT_REPORT_TEMPLATE.md`
 - **Weekly:** Week summary, compliance, phase context: `WEEKLY_REPORT_TEMPLATE.md`
 - **Block:** Mesocycle review, phase progression: `BLOCK_REPORT_TEMPLATE.md`
