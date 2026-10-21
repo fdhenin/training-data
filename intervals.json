@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-21T15:16:43.819194",
+  "generated_at": "2026-10-21T19:28:58.742324",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
@@ -908,6 +908,54 @@
           "zone": 2,
           "training_load": 44.835194,
           "decoupling": 5.967487
+        }
+      ]
+    },
+    {
+      "activity_id": "i200061424",
+      "date": "2026-10-21",
+      "type": "VirtualRide",
+      "name": "Zwift - Jarvis Seaside Sprint in Watopia",
+      "interval_summary": [
+        "1x 13s 375w"
+      ],
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 1592,
+          "avg_power": 117,
+          "max_power": 308,
+          "avg_hr": 116,
+          "max_hr": 145,
+          "avg_cadence": 81.87626,
+          "zone": 2,
+          "training_load": 21.518148,
+          "decoupling": -21.076408
+        },
+        {
+          "type": "WORK",
+          "label": "13s@375w106rpm",
+          "duration_secs": 13,
+          "avg_power": 375,
+          "max_power": 467,
+          "avg_hr": 135,
+          "max_hr": 140,
+          "avg_cadence": 106.0,
+          "zone": 7,
+          "training_load": 0.28776324,
+          "decoupling": 13.001911
+        },
+        {
+          "type": "RECOVERY",
+          "duration_secs": 207,
+          "avg_power": 80,
+          "max_power": 332,
+          "avg_hr": 126,
+          "max_hr": 148,
+          "avg_cadence": 79.44927,
+          "zone": 1,
+          "training_load": 2.2417133,
+          "decoupling": -5.5651765
         }
       ]
     }
