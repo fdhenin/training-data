@@ -1,10 +1,14 @@
 # Section 11 - AI Coach Protocol
 
-**Protocol Version:** 11.84  
-**Last Updated:** 2026-10-21
+**Protocol Version:** 11.85  
+**Last Updated:** 2026-10-22
 **License:** [MIT](https://opensource.org/licenses/MIT)
 
 ### Changelog
+
+**v11.85 - Calendar spans and sustainability environment (2026-10-22, sync.py v3.151):**
+
+Multi-day planned calendar entries carry an inclusive end_date using the health-marker conversion. Returned in-progress spans retain their original start; single-day entries are unchanged. HOLIDAY means a planned break, not illness. Reports show each span once with its date range. Sustainability can use a complete homogeneous cycling window's classified environment and matching FTP without inventing anchor identity. The existing activity listing covers 42 days while other consumers retain their original slices; no request is added. Legacy step verdicts without captured identity remain conservatively unassessed.
 
 **v11.84 - Rolling reports and paired-but-unassessed summaries (2026-10-21, sync.py v3.150):**
 
@@ -573,6 +577,8 @@ The ±5% screen is deliberate: neighbouring steps in typical stepped endurance p
 After detail expires, `has_structure` becomes false and only the last step assessment is retained. Every run refreshes pairing identity, plan name/duration and duration result across all 28 days from the existing activities request and resolved events batch (whose oldest date covers that window). No extra request or older stream backfill is added. Exact forward or unique reverse pairing is accepted after identity checks; conflicts/ambiguity remain explicit. A newly paired empty-step plan replaces stale no_plan with no_steps. An unchanged pair/definition keeps its captured step verdict with `assessment_retained: true`; changed identity/definition revokes that current verdict and may preserve it under `retained_step_assessment`. Missing event data does not invent a plan name or fresh step assessment. Walk/Hike still have no step assessment, but their separate pairing fields below remain available.
 
 #### Current Pairing and Report Fields (sync 3.150)
+
+Legacy retained step verdicts lacking captured plan identity remain `not_assessed` after detail expiry, with the old verdict under `retained_step_assessment`. An old current-event `updated` timestamp alone does not prove which plan was assessed; the compact summary does not retain its capture timestamp. Do not promote that historical verdict to current adherence.
 
 | Field | Meaning |
 |---|---|
@@ -3202,10 +3208,10 @@ At each anchor duration, cycling provides three power estimates; the divergence 
 Actual MMP only. No published Coggan-equivalent duration factors exist. No sport-specific CP/W′ values are typically configured. These fields are absent from non-cycling sport blocks (not null, absent). The AI works with observed data and HR.
 
 **Indoor vs Outdoor (Cycling Only):**
-Power curves are fetched separately by activity type; the higher value at each anchor is retained. Environment comes from the identified activity's indoor flag, never the request type or the first curve in a tie. Sync resolves aligned activity IDs or an exact cached per-activity power observation; tied observations use a deterministic activity ID. Without that evidence the source is observed_unknown and environment-specific models are withheld. No additional fetch is added.
-- `observed_outdoor`: the identified activity has indoor=false; models use cycling.ftp.
-- `observed_indoor`: the identified activity has indoor=true; models use cycling.ftp_indoor.
-- `observed_unknown`: identity or environment unavailable, including older 42-day anchors outside available activity metadata. Do not guess a source or substitute the other environment's FTP. Each anchor exposes activity_id, date and ftp_used when known; block ftp_used is populated only when all observed anchors share the same known FTP.
+Power curves are fetched separately by activity type; the higher value at each anchor is retained. Environment uses the same activity classifier as fun facts, never the curve request type or the first curve in a tie. VirtualRide or a virtual sub_type is indoor; otherwise any true trainer/indoor/virtual/is_virtual flag is indoor, a nonboolean non-null flag is unknown, and remaining cycling activities are outdoor (including Ride with trainer missing). Sync resolves aligned activity IDs or an exact cached per-activity power observation; tied observations use a deterministic activity ID. Without individual attribution, a complete 42-day activity listing can establish environment only when every cycling activity in that window classifies to the same known environment. The existing activity request covers that window; ACWR, reports and detail processing retain their original 28-day slice. No additional fetch is added.
+- `observed_outdoor`: the identified activity classifies as outdoor, or every cycling activity in the complete window does; models use cycling.ftp.
+- `observed_indoor`: the identified activity classifies as indoor, or every cycling activity in the complete window does; models use cycling.ftp_indoor.
+- `observed_unknown`: environment unavailable. Mixed windows still need individual attribution; incomplete/empty windows or any unknown cycling classification cannot establish a homogeneous environment. Do not guess a source or substitute the other environment's FTP. Window-only attribution leaves activity_id and date null; ftp_used is the matching environment FTP when available. Block ftp_used is populated only when all observed anchors share the same known FTP.
 - Indoor MMP is typically 3–5% lower than outdoor (cooling limitations, motivational differences). If the best effort at a race-relevant duration is indoor, the outdoor race ceiling is likely higher. The source flag lets the AI communicate this to the athlete.
 
 **HR Layer (Per-Sport):**
@@ -3896,8 +3902,8 @@ This subsection defines the formal self-validation and audit metadata structure 
 | `capability.sustainability_profile.{sport}.anchors.{dur}.actual_wpkg` | number/null | Actual watts / weight_kg. Null if watts or weight unavailable. |
 | `capability.sustainability_profile.{sport}.anchors.{dur}.actual_hr` | number/null | Max sustained HR (bpm) at this duration from sport-filtered HR curves. Null if unavailable. |
 | `capability.sustainability_profile.{sport}.anchors.{dur}.pct_lthr` | number/null | `actual_hr / sport_lthr × 100`. Uses sport-specific LTHR from per-sport thresholds (v11.8). Null if LTHR not configured for this sport. |
-| `capability.sustainability_profile.{sport}.anchors.{dur}.source` | string/null | observed_outdoor, observed_indoor or observed_unknown from the identified activity's indoor flag (cycling); observed for other sports. Null without observed watts. Never from the curve request type |
-| `capability.sustainability_profile.{sport}.anchors.{dur}.activity_id`, `date`, `ftp_used` | string/number/null | Attributed observation ID/local date and environment-specific model FTP (cycling only). Missing identity/flag/FTP keeps the model null; tied request types cannot change the source |
+| `capability.sustainability_profile.{sport}.anchors.{dur}.source` | string/null | observed_outdoor, observed_indoor or observed_unknown from the shared activity classifier applied to individual attribution or a complete homogeneous cycling window; observed for other sports. Null without observed watts. Never from the curve request type |
+| `capability.sustainability_profile.{sport}.anchors.{dur}.activity_id`, `date`, `ftp_used` | string/number/null | Attributed observation ID/local date and environment-specific model FTP (cycling only). Window-only attribution leaves ID/date null. Unknown environment or missing matching FTP keeps the model null; tied request types cannot change the source |
 | `capability.sustainability_profile.{sport}.anchors.{dur}.coggan_watts` | number/null | Cycling only. FTP × Coggan duration factor (midpoint). Null for non-cycling sports or if FTP unavailable. |
 | `capability.sustainability_profile.{sport}.anchors.{dur}.coggan_wpkg` | number/null | Cycling only. Coggan watts / weight_kg. |
 | `capability.sustainability_profile.{sport}.anchors.{dur}.cp_model_watts` | number/null | Cycling only. `CP + W′/t` where CP ≈ FTP, t = anchor duration in seconds. Null if FTP or W′ unavailable. |
@@ -3912,6 +3918,20 @@ This subsection defines the formal self-validation and audit metadata structure 
 ---
 
 ### Plan Metadata Schema (Section 11 B Reference)
+
+#### Planned Calendar Entries (`latest.json.planned_workouts`)
+
+| Field | Type | Meaning |
+|---|---|---|
+| `planned_workouts[].date` | string | Original local start date, including for an entry already in progress |
+| `planned_workouts[].end_date` | string, optional | Inclusive last calendar-marked day, shared with the health-marker conversion: a midnight exclusive end becomes the previous date; a non-midnight end includes its end day; never earlier than date. Omitted for single-day entries. Calendar marking only, not proof that illness ended |
+| `planned_workouts[].type` | string | Calendar category. HOLIDAY means a planned break/off-season, not illness. Other returned multi-day categories use the same span rule; ordinary workouts are unchanged unless they genuinely span days |
+
+The existing resolved events request reaches back `max(days_back - 1, 27, 14)` days and 90 days ahead. Planned display includes returned entries overlapping today through today+42, retaining their original start and inclusive end. A span starting before that request's start-date floor can be absent; absence is not proof of no ongoing break. Health context retains its separate longer lookup and health gates.
+
+When listing planned calendar entries, select spans overlapping the displayed dates and show each once with the full range, for example `Holiday - Off Season, 3–6 Nov`. Keep the 7-day report's one-item-per-line, no-clock-time layout; do not count a holiday as a training session or infer illness from it.
+
+#### Plan Fields
 
 | Field                 | Type    | Description                                                                         |
 |-----------------------|---------|-------------------------------------------------------------------------------------|

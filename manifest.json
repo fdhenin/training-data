@@ -20,7 +20,7 @@
       "hash": "a79a9be57382ab70a93f78509618a109c1ef55207b0fbaeb82d126e2156e6096"
     },
     "SECTION_11.md": {
-      "hash": "bf0662edd4d7ba8bcfc7b05dc774795198bd212f20b5a6da28b8e0499f45ce01",
+      "hash": "5878d9219207d2e8a1b8e32af4f04722305104adce8b0fdedb4e58d531461a9a",
       "description": "Coaching protocol"
     },
     "SECURITY.md": {
@@ -30,7 +30,7 @@
       "hash": "ab6fdc2649d50752f8770650893db59980355086834ca544a2a4fa6aa40ef91f"
     },
     "SKILL.md": {
-      "hash": "b878c388aac8f28574bc6c1dbb0c7ec9d707de356ee0a52a1e9fa874a9db0232"
+      "hash": "ed8d1588531ebe681b1c1310e3835a3121ed7c1acacadef4702bbf57ffc6b6e2"
     },
     "THIRD_PARTY_NOTICES.md": {
       "hash": "2d9fa3fc0fe1477ab66d63f9edebe758f329fcda3f439702bbe5a8ff78b9b53e"
@@ -129,7 +129,7 @@
       "hash": "f0b45e3d7484e1436664fcaf42f07a15d9670d26e562b460e2a2f98a2d9e2974"
     },
     "examples/reports/7_DAY_REPORT_TEMPLATE.md": {
-      "hash": "797609cd941ef8e8f1badde279aca4c55fbc2341ecfad370b381bd53d4232f8c"
+      "hash": "aa1846b283889ed797d0fd2bb5d4560861ab61b939907991d62db012c33a128b"
     },
     "examples/reports/BLOCK_REPORT_EXAMPLES.md": {
       "hash": "7b4b3b70e3841b28b37ee26907cb72c6c3ebc07726acb820bb9e5d3665ece3ee"
@@ -147,7 +147,7 @@
       "hash": "12ab816863fe0e1f16c93a7187fdf8b1cb93e28eba1a739c36695b093d7ca655"
     },
     "examples/reports/PRE_WORKOUT_REPORT_TEMPLATE.md": {
-      "hash": "949f9b1007e54be110722b94eda6f590e907850dddce04a483739929b0d56375"
+      "hash": "3122119aaea5c224cd6380176726e28ba9a26286144ea512798d0e1f9f35e765"
     },
     "examples/reports/README.md": {
       "hash": "2767aeb73b39f6c72362e6a0ae13dd0ad76ca4fa3670f7173ca51cb65cfb6de8"
@@ -177,7 +177,7 @@
       "hash": "53b5f2cc457baab0f89dde417003572e221aea8852873be91fb88317447347a9"
     },
     "examples/sync.py": {
-      "hash": "5e0a45e98f263d95ce9e09be3910d41798bae20dcba612e252bcc9bf54d2dcef"
+      "hash": "d7cabb3f087b199f1e41d7f57fc1085c4de6af56fa64e5d97cabc5813e08b904"
     },
     "examples/workout-library/README.md": {
       "hash": "4d6f5ee1d7b87c8306d4dcbf9ea80bd305ff827f7d3b3c6629b9dd665a811208"
