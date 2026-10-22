@@ -1,6 +1,6 @@
 ---
 name: section-11
-description: Evidence-based endurance coaching protocol (v11.83). Use when analyzing training data, reviewing sessions, generating pre/post-workout or requested weather reports, planning workouts, answering training questions, or giving endurance coaching advice. Always read or fetch athlete JSON data before responding to any training question.
+description: Evidence-based endurance coaching protocol (v11.84). Use when analyzing training data, reviewing sessions, generating pre/post-workout or requested weather reports, planning workouts, answering training questions, or giving endurance coaching advice. Always read or fetch athlete JSON data before responding to any training question.
 ---
 
 # Section 11 - AI Coaching Protocol
@@ -76,7 +76,7 @@ Load the coaching protocol using this precedence:
 
 If both root and `section11/` copies exist, prefer the root copy.
 
-**Current version:** 11.83
+**Current version:** 11.84
 
 ## External Sources
 
@@ -102,7 +102,7 @@ Read `latest.json.data_overview` first to discover companions and route-weather/
 
 - Read or fetch latest.json before any training question. Check the data directory first, then the connected repo (if a connector is available), then uploaded or attached files, then the configured raw URLs (in the project instructions or, when a dossier is used, its source configuration).
 - Read or fetch history.json when trend analysis, phase context, or longitudinal comparison is needed. Same precedence.
-- Load `intervals.json` when analyzing a specific activity where `has_intervals: true` OR `has_dfa: true` OR `has_structure: true`. For block reports, load when any session in the block has one of these flags and detail is needed. Use for: interval compliance, pacing analysis, cardiac drift per set, recovery quality, DFA a1 session-level interpretation and completed-session detail. For pre-workout/everyday comparisons use structure_summary in latest.json; load detail only when needed, not merely for readiness, load management or weekly aggregate totals.
+- Load `intervals.json` when analyzing a specific activity where `has_intervals: true` OR `has_dfa: true` OR `has_structure: true`. For 28-day reports, load when any session in the window has one of these flags and detail is needed. Use for: interval compliance, pacing analysis, cardiac drift per set, recovery quality, DFA a1 session-level interpretation and completed-session detail. For pre-workout/everyday comparisons use structure_summary in latest.json; load detail only when needed, not merely for readiness, load management or weekly aggregate totals.
 - Load `routes.json` when a planned event has `has_terrain: true`. Use for: route analysis, terrain-adjusted pacing, pre-ride briefing, race preparation. Same precedence as other JSON files.
   `route_weather_summary` must match the detailed brief's event, full route_ref, departure, cache_key and brief_id. Follow SECTION_11's status, forecast/outlook tier, freshness, ETA uncertainty and linked provider-attribution rules, including upcoming-ride questions. On request, use the Weather Report template for the next five days; pre-workout retains today's brief only. Show the matching `route_weather_map.pages` PNGs in page order when available; otherwise retain the text brief and never describe an unseen map. Route weather is on by default; see README for off switches and privacy. A completed-activity weather_summary is not a forecast.
 - Load `saved_workouts.json` when selecting or reusing a saved workout, or when the athlete asks about their saved workouts. Do not load it for every training question or report. It is the preferred read path for saved workouts on every platform, because it avoids repeated API retrieval and is faster and cheaper to consume. On API-connected platforms, use the Intervals.icu API for edits, and as a read fallback when the mirror is missing, unavailable, stale, inconsistent, or lacks required data. The mirror is read-only and never grants write authority. Check `refresh.status` before use: `ok` means the snapshot was verified at `refresh.last_success_at`, `stale` means a retained older snapshot after a failed refresh, `unavailable` means no snapshot has ever succeeded. `consistency: endpoints_disagree` means the two upstream endpoints did not agree; treat folder membership as indicative. A saved workout may be prescribed only after verifying that its structure implements an applicable Workout Reference Library template or permitted variant. `saved_workouts.json` is never evidence of what was prescribed for a completed activity: historical compliance requires a verified Intervals.icu activity/event pairing or an authoritative prescription supplied in context, while latest.json's structure_summary and intervals.json's session_structure provide bounded comparison data only. They do not retain the complete prescription or satisfy formal role/mapping/completion gates.
@@ -148,8 +148,13 @@ Templates:
 - **Weather (on request):** Five-day planned-route forecasts/outlooks, preparation and supported comparison: `WEATHER_REPORT_TEMPLATE.md`
 - **Pre-workout:** Grouped status summary, a Today block per session in calendar order, weather directly under outdoor rides and runs only, and a Go/Modify/Skip recommendation followed immediately by interpretation: `PRE_WORKOUT_REPORT_TEMPLATE.md`
 - **Post-workout:** Dated header, one activity block with blank-separated time/context/climbs/power/HR/energy groups, grouped weekly totals, Interpretation and one Tomorrow session per line: `POST_WORKOUT_REPORT_TEMPLATE.md`. Quote the new display fields; activity peaks are descriptive only and never establish FTP, zones or readiness. Keep all existing structure, validity and missing-data rules
-- **Weekly:** Week summary, compliance, phase context: `WEEKLY_REPORT_TEMPLATE.md`
-- **Block:** Mesocycle review, phase progression: `BLOCK_REPORT_TEMPLATE.md`
+- **7-day:** Today plus six local dates, one line per session, plan-match counts, sport hours/TSS, Zones and TID, capability, descriptive fun facts and Next 7 days: `7_DAY_REPORT_TEMPLATE.md`
+- **28-day:** Four supplied rolling_7d_chunks only, displayed oldest to newest, plan counts with the 14-day detail limit, current phase and rolling progression: `28_DAY_REPORT_TEMPLATE.md`
+- **Season:** Completed configured calendar weeks, coupled ACWR bands, Zones plus separately labelled current TID, calendar-matched YoY and season fun facts: `SEASON_REPORT_TEMPLATE.md`
+
+Permanent aliases: a request for a "weekly report" produces the 7-day report; a "block report" produces the 28-day report. The renamed templates use bold dated headers, local Data updated, blank-line groups and labelled facts; omit missing metric lines. not_assessed means paired plan without an available assessment, never no plan. Fun facts are descriptive only. The week-start setting still controls history, Season, phase detection and planned-week features. Legacy template/example pointer files stay managed until the first release after 31 December 2026; update your own instructions to the new filenames.
+
+Follow the current template layouts: marker-only session lines, no not-assessed count category, avg with window/N and previous values in brackets. The 28-day report uses dated chunk blocks and full-period wellness/DFA, with start -> now Fitness and two-paragraph Interpretation. Season uses completed configured weeks, phase cycles ending at Deload and separate null weeks. Clear dossier prose stating grams carbohydrate per bottle is sufficient for inline fun equivalents.
 - **Brevity rule:** Brief when metrics are normal. Detailed when thresholds are breached or athlete asks "why."
 
 ## Heartbeat Operation

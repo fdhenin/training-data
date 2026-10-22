@@ -1,10 +1,14 @@
 # Section 11 - AI Coach Protocol
 
-**Protocol Version:** 11.83  
+**Protocol Version:** 11.84  
 **Last Updated:** 2026-10-21
 **License:** [MIT](https://opensource.org/licenses/MIT)
 
 ### Changelog
+
+**v11.84 - Rolling reports and paired-but-unassessed summaries (2026-10-21, sync.py v3.150):**
+
+Weekly and Block reports become 7-day and 28-day reports, with permanent request aliases. New templates/examples use rolling windows and labelled fact groups, retained plan-match status counts and descriptive fun facts; Season retains completed configured calendar weeks. The four old template/example filenames remain managed pointers until the first release after 31 December 2026 and are safe to delete when encountered after that date. Update personal instructions to the new filenames. Paired activities without a saved assessment carry not_assessed and pairing identity, reusing the fetched events list without new requests.
 
 **v11.83 - Coupled load context, paired-plan identity and descriptive facts (2026-10-21, sync.py v3.149):**
 
@@ -528,9 +532,9 @@ The Max power line uses power_curve["1"]; Peaks uses the five longer durations t
 
 From sync.py v3.141, every activity in the 28-day `latest.json.recent_activities[]` window carries `has_structure` and `structure_summary`. The flag means a detailed `session_structure` block currently exists for that activity in `intervals.json`, independently of `has_intervals` and `has_dfa`. It does not mean a plan was followed or a power meter was present.
 
-**Latest summary.** Read `structure_summary` for everyday comparisons and pre-workout context. Its `method: plan_match_v2` identifies the unchanged window calculation; `status` is `followed`, `partly_followed`, `not_followed`, `unknown`, `no_plan` or `no_steps`. `plan`, when present, copies the detailed exact-pair reference and explicit name/duration described below. Only paired plan steps have `steps`, ordered rows of `[duration_s, target_w, actual_mean_w, match]`. A target is a scalar or `[low, high]`; unknown values are null. With actual rows, duration is the measured span after the step-start exclusion and clipping, including zero for an unobserved step. Otherwise it is planned duration, never evidence of execution. A set appends a fifth element `[reps, bout_s, recovery_s]`; its duration sums measured work-bout time only. Display it as reps × bout_s with the work-bout mean, never as continuous work. A true match means power agreement, not completion. `issues` and `omitted_steps` appear only when relevant; never treat a truncated plan as complete. Carried `plan_match_v1` rows retain their older elapsed-window semantics, without the exclusion or set descriptor.
+**Latest summary.** Read `structure_summary` for everyday comparisons and pre-workout context. Its `method: plan_match_v2` identifies the unchanged window calculation; `status` is `followed`, `partly_followed`, `not_followed`, `unknown`, `no_plan`, `no_steps` or `not_assessed`. `plan`, when present, copies the detailed exact-pair reference and explicit name/duration described below. Only paired plan steps have `steps`, ordered rows of `[duration_s, target_w, actual_mean_w, match]`. A target is a scalar or `[low, high]`; unknown values are null. With actual rows, duration is the measured span after the step-start exclusion and clipping, including zero for an unobserved step. Otherwise it is planned duration, never evidence of execution. A set appends a fifth element `[reps, bout_s, recovery_s]`; its duration sums measured work-bout time only. Display it as reps × bout_s with the work-bout mean, never as continuous work. A true match means power agreement, not completion. `issues` and `omitted_steps` appear only when relevant; never treat a truncated plan as complete. Carried `plan_match_v1` rows retain their older elapsed-window semantics, without the exclusion or set descriptor.
 
-**Detailed block.** Load `intervals.json.activities[].session_structure` by exact activity ID when `has_structure` is true and session detail is needed, including post-workout analysis. It has `version: 3`, `method` and `status`; no schema text or thresholds are repeated in JSON. Version 3 refreshes older detail caches to capture plan identity and no_steps; the version 2 window calculations are unchanged.
+**Detailed block.** Load `intervals.json.activities[].session_structure` by exact activity ID when `has_structure` is true and session detail is needed, including post-workout analysis. It has `version: 4`, `method` and `status`; no schema text or thresholds are repeated in JSON. Version 4 refreshes older detail caches for the duration tolerance below; power agreement, coverage and window calculations are unchanged.
 
 | Field | Meaning and use |
 |---|---|
@@ -552,10 +556,11 @@ From sync.py v3.141, every activity in the 28-day `latest.json.recent_activities
 
 **Sets.** Reuse the workout-summary alternating-pattern detector for flat repeated patterns of at least three higher/lower pairs, but require exactly equal targets and durations within each side for numeric aggregation. When the lower bouts are under 60 seconds, emit one work-bout set row and do not judge those short recoveries individually. Long/differing recovery steps stay separate, with their own target and match. Uncompressed steps remain explicit and count toward the output cap; no unsupported atom is silently discarded. This grouping does not establish the formal roles required for compliance.
 
-- `followed`: every measured step/set has at least 95% power coverage and unrounded mean within ±5% of a single target, or inside an explicit range; recording end is 0–30 seconds after the original shifted plan end. Set agreement is on the combined work-bout mean, not each bout individually.
+- `followed`: every step/set has an observed match, at least 95% measured-span power coverage and unrounded mean within ±5% of a single target, or inside an explicit range. Absolute duration difference from the shifted plan end is at most max(5% of planned duration, 300 seconds); a difference within this inclusive tolerance does not alone raise shortened_or_extended. Clipping remains disclosed; unobserved steps cannot match. Set agreement is on the combined work-bout mean, not each bout individually.
 - `partly_followed`: some observable steps disagree, a step has insufficient coverage, or the ride is shortened/extended, without a majority of observable steps disagreeing or a gross duration difference. Below 95% coverage, only that step loses its metric numbers and match; bounds and coverage remain available, and usable neighbours retain their values. Unobserved steps have null numbers and match. Coverage denominators use the measured spans after exclusion/clipping, with clipping separately disclosed.
-- `not_followed`: more than half of observable steps disagree, or absolute duration difference exceeds 50% of plan total. Suppress step actuals; use descriptive fallback.
+- `not_followed`: more than half of observable steps disagree, or absolute duration difference exceeds both the duration tolerance and 50% of plan total. Suppress step actuals; use descriptive fallback.
 - `unknown`: unsupported/missing intent, invalid timing, a missing power stream, or failed retrieval. No step actuals. A supplied stream with missing readings instead qualifies each step as above.
+- `not_assessed`: a paired_event_id exists but no detailed or retained assessment is available. The fallback summary retains plan.event_id and plan.name (null when the name is unavailable). Existing fetched events may supply exact-pair name/duration after reverse/athlete identity checks; missing or ambiguous events never trigger a new request here. This is not no_plan, no_steps or evidence of execution. Generic unknown/detail_unavailable fallbacks from older exports are refreshed to this status when pairing is present; real retained assessments keep their original semantics.
 - `no_plan`: no paired event ID.
 - `no_steps`: the exactly paired event has an explicit empty steps list. Retain its name and explicit duration; no step comparison is possible. A missing event or missing steps field remains unknown, not no-plan or no_steps.
 
@@ -565,9 +570,22 @@ The ±5% screen is deliberate: neighbouring steps in typical stepped endurance p
 
 **Sport scope.** Walk and Hike have no structure block, no thirds/effort fallback and no structure fetch, including when paired with a plan. Their flag is false and summary is unknown with `sport_out_of_scope`; omit the Executed structure report line. Other sports without a usable plan retain descriptive fallback, including rides, runs and SkiErg. Distance/Ascent and existing interval/DFA processing are unchanged.
 
-After detail expires, sync carries the last summary forward in latest.json through its existing 28-day activity window, without refetching streams or recreating detail. `has_structure` becomes false. This is the last captured comparison, not a fresh check of later edits; no detailed HR/coverage/fallback rows remain. A cold start with no saved summary outside detail retention is unknown. Missing fields in older exports likewise mean unavailable, never flat execution. Outdoor and slope workouts use the same gates; terrain segmentation and independent power detection remain later work.
+After detail expires, `has_structure` becomes false and only the last step assessment is retained. Every run refreshes pairing identity, plan name/duration and duration result across all 28 days from the existing activities request and resolved events batch (whose oldest date covers that window). No extra request or older stream backfill is added. Exact forward or unique reverse pairing is accepted after identity checks; conflicts/ambiguity remain explicit. A newly paired empty-step plan replaces stale no_plan with no_steps. An unchanged pair/definition keeps its captured step verdict with `assessment_retained: true`; changed identity/definition revokes that current verdict and may preserve it under `retained_step_assessment`. Missing event data does not invent a plan name or fresh step assessment. Walk/Hike still have no step assessment, but their separate pairing fields below remain available.
 
-Expired pre-v3 summaries may still use the old no_plan meaning (including an empty paired plan) until they age out. Do not infer absence of a paired event from such a retained summary or invent missing plan metadata.
+#### Current Pairing and Report Fields (sync 3.150)
+
+| Field | Meaning |
+|---|---|
+| `recent_activities[].plan_pairing.paired` | Current forward paired_event_id or unique reverse event paired_activity_id, for every sport. Never inferred from activity names |
+| `plan_pairing.plan` | Exact event_id and available name, duration_s, duration_source and updated metadata. Null without a pair; unavailable identity details remain null |
+| `plan_pairing.status`, `definition_key` | Current plan-resolution status and bounded definition fingerprint, separate from retained step execution. No-step events resolve as no_steps; unresolved/conflicting definitions do not imply execution |
+| `plan_pairing.duration` | planned_s, actual_s (moving time), signed delta_s, tolerance_s=max(5% planned,300), within_tolerance. Missing/invalid durations produce null delta/result, never false failure. Applies to every sport, including no-step plans |
+| `plan_pairing.targets_intensity` | True if any explicit/resolved step targets Z3+, false for explicit empty-step plans or fully known easy steps, null for unknown intent. Nested steps are inspected; names never determine intent. Explicit zone targets and power %FTP use their defined boundary; absolute power/HR needs supplied zone bounds (power can use 75% FTP). Does not widen step-matching scope |
+| `recent_activities[].z3_time` | power_s and hr_s from each activity's separate zone-time observations. Null for absent Z3 data; zero remains an observed zero. Neither basis overwrites the other |
+| `latest.json.wellness_28d` | Inclusive start/end plus hrv, resting_hr, sleep_hours, sleep_quality and weight_kg. Each has avg/min/max/days from observed local dates in the full 28-day fetch, not wellness_data's seven-day display slice. HRV uses its existing validity gate; other inputs must be finite positive numbers. No missing-day filling |
+| `wellness_28d.weight_kg` | Also latest and latest_date; days is the weigh-in count (one daily wellness record per date). weight_display provides avg/latest in athlete units. Existing current_status.weight slope and its observation gate remain unchanged |
+| `recent_activities[].dfa_rollup` | Compact schema_version/date/dfa inputs retained through the existing 28-day latest activity window, containing only quality, avg, time-in-band, drift/eligibility and crossing summaries, never streams. Fresh absence/insufficiency supersedes retained data |
+| `derived_metrics.capability.dfa_a1_profile_28d` | Same eligibility and per-sport schema as dfa_a1_profile, over all available sufficient sessions in the inclusive 28-day window, with window, recorded_sessions and coverage_note. Drift still uses only eligible contrasts; marker estimates still require eligible depth. No backfill; older summaries accumulate through normal runs. The existing latest-seven-sufficient profile remains unchanged |
 
 #### Rolling 7-Day Chunks
 
@@ -581,6 +599,8 @@ Load, hours, zones and hard days use all sports; capability fields retain their 
 | `total_hours`, `total_tss` | Moving hours (2 decimals) and summed icu_training_load (whole TSS), same bases as existing summaries |
 | `zone_distribution` | z1_hours, z2_hours, z3_hours, z4_plus_hours, total_hours (2 decimals) and zone_basis (power/hr/mixed/null), using exactly the existing zone_distribution_7d helper and per-sport preference/fallback |
 | `hard_days` | Distinct local dates meeting the existing accumulated daily power/HR hard-day ladders; multiple sessions on one date count at most once |
+| `hard_day_details` | Per hard date: basis, all triggered rungs with seconds/threshold_s, contributing activity IDs/names/bases/plan-intensity state, and power_z3_only_non_intensity. The latter is true only for the sole power z3+ rung with contributing cycling Z3 sessions explicitly not planned as intensity. Uses the unchanged preferred-basis classifier; counts are unchanged |
+| `wellness` | Same observed-date avg/min/max/days schema as wellness_28d for this exact seven-date chunk, including sleep_quality and weight. Existing legacy avg_* and wellness_days remain available |
 | `durability_mean`, `durability_qualifying` | Existing 7d steady-power decoupling gate: VI >0 and <=1.05, moving time >=5400s, available decoupling including zero/negative. Mean needs N>=2; qualifying count is always supplied |
 | `ef_mean`, `ef_qualifying` | Existing 7d EF gate: Ride/VirtualRide/MountainBikeRide/GravelRide, VI >0 and <=1.05, moving time >=1200s, available EF including zero. Mean needs N>=2 |
 | `hrrc_mean`, `hrrc_qualifying` | Existing 7d HRRc gate and scalar/dictionary normalization; positive observations, mean at N>=1. These seven-day chunks do not use the 28d N>=3 mean minimum |
@@ -591,7 +611,7 @@ Load, hours, zones and hard days use all sports; capability fields retain their 
 
 #### Descriptive Period Facts
 
-Sync 3.149 supplies data for future rolling/season reports; it adds no report section. `latest.json.fun_facts` contains `scope: cycling`, `rolling_7d` and `rolling_28d`, including today and the preceding 6/27 local dates. `history.json.fun_facts.season` reduces full in-memory observations for completed calendar rows only (`weekly_180d[:-1]`). Persisted weekly fun_facts retains only the compact power cache described below; all non-power season observations are recomputed on refresh from the existing full activity fetch. History facts have history's generated_at and refresh cadence, not latest.json's freshness. Cycling uses the existing sport-family mapping, including virtual rides and e-bikes. Other sports do not enter these facts or saddle time.
+The 7-day, 28-day and Season reports consume the descriptive facts introduced in sync 3.149. `latest.json.fun_facts` contains `scope: cycling`, `rolling_7d` and `rolling_28d`, including today and the preceding 6/27 local dates. `history.json.fun_facts.season` reduces full in-memory observations for completed calendar rows only (`weekly_180d[:-1]`). Persisted weekly fun_facts retains only the compact power cache described below; all non-power season observations are recomputed on refresh from the existing full activity fetch. History facts have history's generated_at and refresh cadence, not latest.json's freshness. Cycling uses the existing sport-family mapping, including virtual rides and e-bikes. Other sports do not enter these facts or saddle time.
 
 All facts are descriptive observed values, never tests, bests or capability and never evidence for FTP, zones or readiness. Ties use earliest date then activity ID. Missing values remain null; zero totals for an empty period do not mean recorded zero in a nonempty period with missing data. Totals with partial coverage are observed subtotals, not estimates of the missing data. No bottles or other equivalents are computed.
 
@@ -735,7 +755,7 @@ Schema 2 compact `dfa_summary` and `dfa_a1_profile.latest_session` carry `drift_
 
 **See DFA a1 Protocol section for interpretation rules.**
 
-**Loading rule:** Load `intervals.json` when analyzing a specific activity where `has_intervals: true` OR `has_dfa: true` OR `has_structure: true`. For block reports, load `intervals.json` when any session in the block has any of these flags set. Use for: interval compliance, pacing analysis, cardiac drift per set, recovery quality, DFA a1 session-level interpretation, block-scale calibration deltas and completed-session detail. Use the latest.json structure summary for pre-workout and everyday comparisons; load detail only when required. Do not load merely for readiness, load management or aggregate weekly totals.
+**Loading rule:** Load `intervals.json` when analyzing a specific activity where `has_intervals: true` OR `has_dfa: true` OR `has_structure: true`. For 28-day reports, load `intervals.json` when a session in the window has one of these flags and detail is needed. Use for: interval compliance, pacing analysis, cardiac drift per set, recovery quality, DFA a1 session-level interpretation, block-scale calibration deltas and completed-session detail. Use the latest.json structure summary for pre-workout and everyday comparisons; load detail only when required. Do not load merely for readiness, load management or aggregate weekly totals.
 
 #### Data Source Usage Hierarchy
 
@@ -952,8 +972,8 @@ The `capability.tid_comparison` object compares these windows to detect distribu
 
 **AI Response Logic:**
 - `consistent` → No mention needed in reports
-- `shifting` → Note in weekly report; investigate if sustained >2 weeks
-- `acute_depolarization` → Flag in pre-workout and weekly reports; likely indicates fatigue shifting distribution toward grey zone
+- `shifting` → Note in 7-day report; investigate if sustained >2 weeks
+- `acute_depolarization` → Flag in pre-workout and 7-day reports; likely indicates fatigue shifting distribution toward grey zone
 - TID drift is a **Tier 3 diagnostic**. It informs coaching context, not go/no-go decisions
 
 #### Zone Preference Configuration
@@ -1753,7 +1773,7 @@ Daily metrics synchronised through data hierarchy and mirrored in JSON dataset e
 
 ### Body Weight Handling
 
-**Purpose:** Surface body weight as a training signal in block reports (W/kg headline) and weekly reports (trend). Gated by data density. No daily noise.
+**Purpose:** Surface body weight as a training signal in 28-day reports (W/kg headline) and 7-day reports (trend). Gated by data density. No daily noise.
 
 **Architecture:** All weight metrics surfaced in reports are computed in `sync.py` and live under `current_status.weight` in `latest.json`. The AI layer interprets only: no slope, delta, or W/kg arithmetic against raw `wellness_data[]` or `daily_90d` / `weekly_180d` weight values for the report fields below. A field's absence from the JSON is the explicit signal that its data-density gate failed; the AI omits the corresponding report section silently: no "insufficient data" boilerplate.
 
@@ -1775,7 +1795,7 @@ Daily metrics synchronised through data hierarchy and mirrored in JSON dataset e
 | `display.weight_7d_avg` | `{value, unit}` pair for `weight_7d_avg_kg` in the athlete's preferred weight unit | (mirrors `weight_7d_avg_kg`) |
 | `display.weight_28d_slope_per_week` | `{value, unit}` pair for `weight_28d_slope_kg_per_week`; unit code suffixed with `/week` (e.g. `"kg/week"` / `"lb/week"`); value rounded to 3 decimal places | (mirrors `weight_28d_slope_kg_per_week`) |
 
-**FTP source preference:** Tested cycling FTP from `sportSettings` is used when present; eFTP is the fallback. The source tag (`wkg_ftp_source`) plus `ftp_setting_date` carry the staleness signal; eFTP is *not* suppressed when the underlying tested FTP is old. The `ftp_setting_date` reflects the most recent FTP setting change recorded in `ftp_history.json`; Intervals.icu does not expose a formal test-event date, so the field is named for what it represents. The block report narration must surface the source inline (e.g., "based on tested FTP set 2026-03-12" vs "based on eFTP").
+**FTP source preference:** Tested cycling FTP from `sportSettings` is used when present; eFTP is the fallback. The source tag (`wkg_ftp_source`) plus `ftp_setting_date` carry the staleness signal; eFTP is *not* suppressed when the underlying tested FTP is old. The `ftp_setting_date` reflects the most recent FTP setting change recorded in `ftp_history.json`; Intervals.icu does not expose a formal test-event date, so the field is named for what it represents. The 28-day report narration must surface the source inline (e.g., "based on tested FTP set 2026-03-12" vs "based on eFTP").
 
 **Display fields (per Display Unit Semantics):** Narrated weight values must come from the `display.*` block, never from the canonical `*_kg` fields. W/kg numbers stay unit-universal (no display block on `wkg_*` fields), consistent with the protocol-wide rule that W/kg, IF, kJ, and percentage values do not pref-convert. The 28d slope display is built with 3dp precision (vs the 1dp default for absolute weights) and emits a unit code suffixed with `/week`.
 
@@ -2426,7 +2446,7 @@ If multiple triggers fire, chain at most two with a comma; if more than two woul
 
 *Placement.* After distance/ascent/speed in each activity block, followed by a blank-separated Climbs group when available. Per-activity, never per-day. Causal clauses move to Interpretation.
 
-**Weekly and block review applicability:** Across 7-day or block-level windows, comparing `headwind_pct` exposure, accumulated `total_elevation_m`, and `course_character` distribution adds context to TSS / CTL / TSB patterns. A week with three high-headwind rides and a stale TSB gives a different read than the same TSB with calm conditions. Use sparingly; the goal is correct attribution of fatigue, not exhaustive environmental accounting.
+**7-day and 28-day review applicability:** Across rolling 7-day or 28-day windows, comparing `headwind_pct` exposure, accumulated `total_elevation_m`, and `course_character` distribution adds context to TSS / CTL / TSB patterns. A week with three high-headwind rides and a stale TSB gives a different read than the same TSB with calm conditions. Use sparingly; the goal is correct attribution of fatigue, not exhaustive environmental accounting.
 
 **Ride comparison:** When the rider asks "how did this same loop go last time," activity-level `terrain_summary` and `weather_summary` enable side-by-side comparison without needing the activity to be linked to a `routes.json` event. Compare power-per-meter-elevation, headwind exposure, and feels-like against the prior ride to contextualize today's expectations.
 
@@ -3182,9 +3202,10 @@ At each anchor duration, cycling provides three power estimates; the divergence 
 Actual MMP only. No published Coggan-equivalent duration factors exist. No sport-specific CP/W′ values are typically configured. These fields are absent from non-cycling sport blocks (not null, absent). The AI works with observed data and HR.
 
 **Indoor vs Outdoor (Cycling Only):**
-Power curves are fetched separately for `Ride` and `VirtualRide`. At each anchor, the higher value is used. The `source` flag indicates which environment produced the best effort:
-- `observed_outdoor`: from outdoor rides (Ride type)
-- `observed_indoor`: from indoor rides (VirtualRide type)
+Power curves are fetched separately by activity type; the higher value at each anchor is retained. Environment comes from the identified activity's indoor flag, never the request type or the first curve in a tie. Sync resolves aligned activity IDs or an exact cached per-activity power observation; tied observations use a deterministic activity ID. Without that evidence the source is observed_unknown and environment-specific models are withheld. No additional fetch is added.
+- `observed_outdoor`: the identified activity has indoor=false; models use cycling.ftp.
+- `observed_indoor`: the identified activity has indoor=true; models use cycling.ftp_indoor.
+- `observed_unknown`: identity or environment unavailable, including older 42-day anchors outside available activity metadata. Do not guess a source or substitute the other environment's FTP. Each anchor exposes activity_id, date and ftp_used when known; block ftp_used is populated only when all observed anchors share the same known FTP.
 - Indoor MMP is typically 3–5% lower than outdoor (cooling limitations, motivational differences). If the best effort at a race-relevant duration is indoor, the outdoor race ceiling is likely higher. The source flag lets the AI communicate this to the athlete.
 
 **HR Layer (Per-Sport):**
@@ -3391,14 +3412,17 @@ Start with the bold Pre-workout date and a zone-labelled Data updated line. Pres
 
 See `POST_WORKOUT_REPORT_TEMPLATE.md` in the examples directory for field reference and rounding conventions.
 
-**Season Reports (on-demand only) must include:**
-- Annual position (current phase, previous phase, 180d phase trajectory, seasonal-table reference)
-- Current season trajectory (180d): volume, CTL peak/current, ACWR week-bucket counts, TID 180d, hard-day density with first-half vs second-half drift, longest ride / longest week, quality session count
-- Year-over-year comparison (calendar-month matched, metrics-only; no phase claims about prior years)
-- Notable patterns (FTP timeline events, data gaps, A-races completed/upcoming, one deviations line)
-- Interpretation (2-4 sentences)
+**Rolling reports:** A request for a "weekly report" permanently means the **7-day report**; a "block report" permanently means the **28-day report**. Use the corresponding templates in examples/reports; the approved layouts below supersede older shared display rules.
 
-See `SEASON_REPORT_TEMPLATE.md` in the examples directory for the full structure and the YoY material-threshold logic. Phase narrative is scoped to ≤180d by design; see template Notes for rationale.
+- The 7-day report covers today and six preceding local dates. Include per-sport totals, nonzero readable plan counts (never a not_assessed category), session lines, key sessions, Zones/TID, capability avg with window/N, fitness with previous seven days and Chronic, wellness ranges/quality/weight/Feel/RPE, flags, fun facts and Next 7 days without clock times. No Best efforts or power/HR-curve block.
+- Session lines show only ✅/⚠️/❌ verdict markers, no status words. Warnings/failures add a short supported duration delta or "steps off". Paired no-step sessions of any sport use the current duration tolerance; no marker without a plan, or without a supported verdict. Keep available plan name/duration, omit a duplicate plan name, and use "done" for non-rides. Key-session headers carry the emoji; exact Target and Actual windows remain separate from whole-ride power.
+- The 28-day breakdown uses only the four supplied rolling_7d_chunks, oldest first in separate dated blocks. Order: header/summary/current Phase; sport Totals; paired Plan counts and checked-against-plan result; Fitness start -> now; four chunks; Wellness (28 days); Intensity; Key sessions; Best efforts (last 28 days, previous 28 days in brackets); DFA a1 (28 days); flags; fun facts; two-paragraph Interpretation (what happened, then meaning). No ceilings, separate progression section, seven-day ramp, FTP/eFTP/W/kg or not-assessed counts.
+- Pairing/duration refresh for all sports over 28 days; steps retain their 14-day detail scope and older captured assessments. Reports distinguish pairing from assessment and never treat a broad match as formal adherence. HRRc lines contain numbers only, no trend words; interpretation requires several agreeing sessions and acknowledges output dependence. Z3 flags use sessions not planned as intensity and separate power/HR observations, with "Cause: creep, or zones/FTP off" when the bases strongly disagree. No high-drift count flag.
+- Bold dated headers, local Data updated, blank-line groups, one labelled fact per line. Every mean is labelled avg with its window; previous values are in brackets. Omit missing/zero-only lines and empty sections, retaining material coverage explanations. No middle-dot separators or pipe joins. Start -> now lines are allowed in 28-day Fitness. Week-start still controls history, Season, phase detection and planned-week features.
+
+**Season Reports (on-demand only)** use completed configured calendar weeks in weekly_180d[:-1], never assuming Monday. Layout: Position; Phases (cycles ending at Deload, null weeks on separate lines); Volume with completed-week averages; Fitness with CTL dates and coupled ACWR bins/known coverage; Intensity with dated half averages; matched calendar-month year comparison with previous values in brackets and no difference/% lines; non-empty Notable; fun facts; 2-4-sentence Interpretation. Combine empty above-1.3 bins as "ACWR above 1.3: none" only with known data. Current TID 28d remains separate from completed-week Coggan Zones. No Season Best efforts block.
+
+**Fun facts in all three reports:** Use latest.json.fun_facts.rolling_7d / rolling_28d or history.json.fun_facts.season immediately before Interpretation. Group dated max power (1 s)/HR, longest ride and environment distance/climbing, Peaks (7-day and Season only), saddle time, then Work/Carbs with inline equivalents and Most work in a day/week. The week appears only in 28-day and Season. Indoor/Outdoor labels come solely from sync's indoor flag/grouping, never names or source apps. Label indoor distance, speed and climbing outside the split too; omit zero climbing sides. Preserve partial/stale coverage and attribution. A clear dossier prose statement or table of grams carbohydrate per bottle establishes the bottle. Otherwise use about 27 g carbohydrate and 105 kcal per medium banana: carbs_used / 27 and work_kj / 105; bottle work remains work_kj / (4 * grams per bottle). The mechanical-kJ/expended-kcal approximation is documented once in each template, not repeated in reports. These are descriptive fun comparisons, not tests, threshold/readiness evidence or fueling advice.
 
 **Brevity Rule:** Brief when metrics are normal. Detailed when thresholds are breached or athlete asks "why."
 
@@ -3872,14 +3896,15 @@ This subsection defines the formal self-validation and audit metadata structure 
 | `capability.sustainability_profile.{sport}.anchors.{dur}.actual_wpkg` | number/null | Actual watts / weight_kg. Null if watts or weight unavailable. |
 | `capability.sustainability_profile.{sport}.anchors.{dur}.actual_hr` | number/null | Max sustained HR (bpm) at this duration from sport-filtered HR curves. Null if unavailable. |
 | `capability.sustainability_profile.{sport}.anchors.{dur}.pct_lthr` | number/null | `actual_hr / sport_lthr × 100`. Uses sport-specific LTHR from per-sport thresholds (v11.8). Null if LTHR not configured for this sport. |
-| `capability.sustainability_profile.{sport}.anchors.{dur}.source` | string/null | `observed_outdoor`, `observed_indoor` (cycling only, from Ride vs VirtualRide), or `observed` (non-cycling). Null if no observed data. |
+| `capability.sustainability_profile.{sport}.anchors.{dur}.source` | string/null | observed_outdoor, observed_indoor or observed_unknown from the identified activity's indoor flag (cycling); observed for other sports. Null without observed watts. Never from the curve request type |
+| `capability.sustainability_profile.{sport}.anchors.{dur}.activity_id`, `date`, `ftp_used` | string/number/null | Attributed observation ID/local date and environment-specific model FTP (cycling only). Missing identity/flag/FTP keeps the model null; tied request types cannot change the source |
 | `capability.sustainability_profile.{sport}.anchors.{dur}.coggan_watts` | number/null | Cycling only. FTP × Coggan duration factor (midpoint). Null for non-cycling sports or if FTP unavailable. |
 | `capability.sustainability_profile.{sport}.anchors.{dur}.coggan_wpkg` | number/null | Cycling only. Coggan watts / weight_kg. |
 | `capability.sustainability_profile.{sport}.anchors.{dur}.cp_model_watts` | number/null | Cycling only. `CP + W′/t` where CP ≈ FTP, t = anchor duration in seconds. Null if FTP or W′ unavailable. |
 | `capability.sustainability_profile.{sport}.anchors.{dur}.cp_model_wpkg` | number/null | Cycling only. CP model watts / weight_kg. |
 | `capability.sustainability_profile.{sport}.anchors.{dur}.model_divergence_pct` | number/null | Cycling only. `(actual - cp_model) / cp_model × 100`. Positive = actual exceeds model. Null if either value missing. |
 | `capability.sustainability_profile.{sport}.coverage_ratio` | number | Fraction of anchors with observed actual_watts data. 0.0–1.0. Below 0.5 = heavily model-dependent. |
-| `capability.sustainability_profile.cycling.ftp_used` | number/null | Cycling only. Athlete-set FTP used for Coggan and CP/W′ calculations. From sportSettings, not eFTP. |
+| `capability.sustainability_profile.cycling.ftp_used` | number/null | Shared environment-specific FTP only when all observed anchors use the same known value; otherwise null. Each anchor's ftp_used is authoritative. From sportSettings, not eFTP |
 | `capability.sustainability_profile.cycling.w_prime_used` | number/null | Cycling only. W′ (joules) from Intervals.icu power model, used for CP/W′ calculations. |
 | `capability.sustainability_profile.cycling.ftp_staleness_days` | number/null | Cycling only. Days since last FTP change in ftp_history.json. >60 = high staleness. |
 | `capability.sustainability_profile.cycling.model_trust_note` | string | Cycling only. Interpretation guidance for model trust by duration. |
