@@ -251,6 +251,7 @@ Walk them through:
 - A `latest.json` file should now exist in the repo root with their training data
 - A `history.json` file should also appear
 - An `intervals.json` file is written on every sync; its activity list can be empty if the athlete has no recent structured interval sessions
+- `latest.json.recent_activities[].interval_data` separates plan-match labels, gated Section 11 compliance evidence and descriptive detected intervals; see [Which interval data to use](SECTION_11.md#which-interval-data-to-use).
 - A `routes.json` file is written on every sync; its `events` list is empty unless the athlete has planned events with GPX/TCX file attachments
 - A `saved_workouts.json` file appears once the first sync completes: a read-only mirror of the athlete's Intervals.icu saved workouts
 
