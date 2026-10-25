@@ -1,10 +1,14 @@
 # Section 11 - AI Coach Protocol
 
-**Protocol Version:** 11.93  
+**Protocol Version:** 11.94  
 **Last Updated:** 2026-10-25
 **License:** [MIT](https://opensource.org/licenses/MIT)
 
 ### Changelog
+
+**v11.94 - Main-sport report intensity and activity zone basis (2026-10-25, sync.py v3.159):**
+
+Report intensity lines (Z1+Z2, Z3, Z4+ and TID) now use only the primary sport, the sport with the most TSS in the window, labelled with its sport and zone basis from the data (for example cycling, power or running, HR). Other sports' zone time no longer dilutes the picture. rolling_7d_chunks and history periods add seiler_tid_primary, and capability adds tid_comparison_primary. Every recent activity gets zone_reference with basis, the FTP its power zones used and environment (indoor when marked indoor or a Virtual activity type, otherwise outdoor), so a Z3 flag can name its zone basis. All-sports zone and Seiler fields are unchanged. Athletes with several main sports are not yet split into separate lines.
 
 **v11.93 - Interval data sources and per-step power compliance (2026-10-25, sync.py v3.158):**
 
@@ -705,6 +709,7 @@ Legacy retained step verdicts lacking captured plan identity remain `not_assesse
 | `plan_pairing.duration` | planned_s, actual_s (moving time), signed delta_s, tolerance_s=max(5% planned,300), within_tolerance. Missing/invalid durations produce null delta/result, never false failure. Applies to every sport, including no-step plans |
 | `plan_pairing.targets_intensity` | True if any explicit/resolved step targets Z3+, false for explicit empty-step plans or fully known easy steps, null for unknown intent. Nested steps are inspected; names never determine intent. Explicit zone targets and power %FTP use their defined boundary; absolute power/HR needs supplied zone bounds (power can use 75% FTP). Does not widen step-matching scope |
 | `recent_activities[].z3_time` | power_s and hr_s from each activity's separate zone-time observations. Null for absent Z3 data; zero remains an observed zero. Neither basis overwrites the other |
+| `recent_activities[].zone_reference` | `basis`: power/hr/null from the existing zone preference/fallback; `ftp_w`: positive finite activity icu_ftp in W only when basis is power, otherwise null; `environment`: indoor when trainer/indoor is true or activity type is Virtual* (including VirtualRide, VirtualRun and VirtualSki), otherwise outdoor including false/null/absent flags. A malformed non-boolean flag without a positive indoor marking leaves unknown. Type is a data marking; names and current athlete settings never decide environment. The separate legacy indoor field keeps its existing semantics. No pace-zone extractor is currently supported; pace-only evidence leaves basis null. See [Report intensity source](#report-intensity-source) |
 | `latest.json.wellness_28d` | Inclusive start/end plus hrv, resting_hr, sleep_hours, sleep_quality and weight_kg. Each has avg/min/max/days from observed local dates in the full 28-day fetch, not wellness_data's seven-day display slice. HRV uses its existing validity gate; other inputs must be finite positive numbers. No missing-day filling |
 | `wellness_28d.weight_kg` | Also latest and latest_date; days is the weigh-in count (one daily wellness record per date). weight_display provides avg/latest in athlete units. Existing current_status.weight slope and its observation gate remain unchanged |
 | `recent_activities[].dfa_rollup` | Compact schema_version/date/dfa inputs retained through the existing 28-day latest activity window, containing only quality, avg, time-in-band, drift/eligibility and crossing summaries, never streams. Fresh absence/insufficiency supersedes retained data |
@@ -714,13 +719,14 @@ Legacy retained step verdicts lacking captured plan identity remain `not_assesse
 
 `latest.json.rolling_7d_chunks` contains exactly four newest-first chunks, numbered 1 to 4. Chunk 1 covers today and the preceding six local dates, the same window as the default 7d derived metrics and fun_facts.rolling_7d. Chunks 2 to 4 cover the preceding disjoint seven-date windows, together exactly the rolling 28-day period. They include observed activity so far today without extrapolation. Sync computes these values from its existing activity/wellness fetches; AIs must never calculate, reconstruct or shift the chunks. If the block is absent, report it as unavailable.
 
-Load, hours, zones and hard days use all sports; capability fields retain their existing sport/eligibility gates, while fun_facts is cycling-only. Phase is never calculated on these chunks. Phase detection and season remain on configured calendar weeks, with only completed weeks in season aggregates.
+Load, hours, legacy zone_distribution and hard days use all sports; report intensity uses seiler_tid_primary. Capability fields retain their existing sport/eligibility gates, while fun_facts is cycling-only. Phase is never calculated on these chunks. Phase detection and season remain on configured calendar weeks, with only completed weeks in season aggregates.
 
 | Chunk field | Meaning |
 |---|---|
 | `chunk`, `start`, `end` | 1 (newest) to 4 (oldest); inclusive local ISO date bounds. Independent of configured calendar week start |
 | `total_hours`, `total_tss` | Moving hours (2 decimals) and summed icu_training_load (whole TSS), same bases as existing summaries |
 | `zone_distribution` | z1_hours, z2_hours, z3_hours, z4_plus_hours, total_hours (2 decimals) and zone_basis (power/hr/mixed/null), using exactly the existing zone_distribution_7d helper and per-sport preference/fallback |
+| `seiler_tid_primary` | Same seconds, percentages, classification, polarization_index, sport and zone_basis as the primary Seiler blocks, restricted to this chunk and the current highest-seven-day-TSS sport. Null if no primary sport; null percentages/classification/basis if that sport has no zone time. Sole source of chunk intensity lines; see [Report intensity source](#report-intensity-source) |
 | `hard_days` | Distinct local dates meeting the existing accumulated daily power/HR hard-day ladders; multiple sessions on one date count at most once |
 | `hard_day_details` | Per hard date: basis, all triggered rungs with seconds/threshold_s, contributing activity IDs/names/bases/plan-intensity state, and power_z3_only_non_intensity. The latter is true only for the sole power z3+ rung with contributing cycling Z3 sessions explicitly not planned as intensity. Uses the unchanged preferred-basis classifier; counts are unchanged |
 | `wellness` | Same observed-date avg/min/max/days schema as wellness_28d for this exact seven-date chunk, including sleep_quality and weight. Existing legacy avg_* and wellness_days remain available |
@@ -1089,13 +1095,25 @@ If no condition matches (e.g., polarized structure but PI ≤ 2.0), classify as 
 
 **Dual Calculation:** TID is computed twice: for all sports combined and for the primary sport only (like monotony). This catches cases where multi-sport training inflates easy time.
 
+#### Report intensity source
+
+Report intensity is single-main-sport only. Use `derived_metrics.seiler_tid_7d_primary` and `seiler_tid_28d_primary` for the current 7-day and 28-day lines in pre-workout, post-workout and period reports. Render their `z1_pct`, `z2_pct`, `z3_pct` as `Z1+Z2`, `Z3`, `Z4+`, respectively, and label every distribution/classification with its returned `sport` and `zone_basis` (power, HR or mixed). These are Seiler group labels, not a claim that HR zones equal power zones. Never hardcode cycling or substitute all-sports `zone_distribution_7d`, `seiler_tid_7d` or `seiler_tid_28d`; those remain aggregate context. Per-activity power/HR zone lines still describe that activity, including secondary sports.
+
+`derived_metrics.primary_sport` is the sport family with the highest positive-TSS total over the latest seven local dates, using the existing rule and first-encountered tie behavior. Both current Seiler windows and all four `rolling_7d_chunks[].seiler_tid_primary` use this same sport, not a new winner in each older chunk. A heavy cross-training week can change this selection; it is not a persistent athlete preference. Multi-main-sport selection and stabilization are deferred.
+
+On ordinary history generation, `weekly_180d[].seiler_tid_primary` and `monthly_*[].seiler_tid_primary` use the highest-seven-day-TSS sport at that refresh across every historical period. Existing weekly `primary_sport` remains that calendar week's load winner for other consumers. Season uses only completed rows with new blocks whose `sport` matches current `derived_metrics.primary_sport`: sum the supplied three Seiler second counts and divide by their sum, never weight rounded percentages by all-sport hours. State contributing weeks; combine bases as mixed when they differ. Matched-month comparisons use the matching primary block's percentages and label each side's basis. Missing/older/mismatched history makes the affected intensity line unavailable until normal refresh, never an all-sports substitute or inferred zero. No extra history request or refresh trigger is added.
+
+Report TID drift comes from `derived_metrics.capability.tid_comparison_primary`, the unchanged comparison method applied to the same primary-sport 7d/28d blocks. The existing `tid_comparison` and automatic diagnostics remain all-sports context; do not attach their drift label to a primary-sport distribution. Missing primary data means unavailable; omit an unsupported line and explain a material gap once.
+
+Sync aggregates upstream per-activity zone seconds; it does not recompute zones. Power zone time uses the FTP applicable to each activity, including indoor/outdoor FTP, recorded as `zone_reference.ftp_w` from activity `icu_ftp`. Combining environments within one sport is valid as session-relative intensity. `zone_reference` records the selected basis and environment under the field rule above; it does not validate zone settings or supply an HR/pace threshold. For a Z3 creep flag, retain both power/HR observations and the existing intent gate. When provenance is available, state the basis, for example `Zones: power, from indoor FTP 260 W`, instead of the generic `Cause: creep, or zones/FTP off`. If FTP or environment is missing, name only supported facts and the missing reference. Use the generic wording only when basis provenance is unavailable. Different activities may have different thresholds; never attach one activity's reference to the whole period.
+
 **Dual-Timeframe TID (7d vs 28d):**
 
 The data mirror provides both 7-day (acute) and 28-day (chronic) Seiler TID classifications:
-- `seiler_tid_7d` / `seiler_tid_7d_primary`: current week's distribution
+- `seiler_tid_7d` / `seiler_tid_7d_primary`: rolling seven-day distribution
 - `seiler_tid_28d` / `seiler_tid_28d_primary`: 28-day chronic distribution
 
-The `capability.tid_comparison` object compares these windows to detect distribution drift:
+The `capability.tid_comparison` object compares the all-sports windows; `capability.tid_comparison_primary` applies the same method to the primary-sport windows for reports:
 
 | Drift Category          | Condition                                        | Severity |
 |-------------------------|--------------------------------------------------|----------|
@@ -1123,7 +1141,7 @@ When configured, the aggregation layer prefers the specified zone basis for that
 - `zone_preference` in `READ_THIS_FIRST`: shows the active configuration (empty dict = default)
 - `zone_basis` on `zone_distribution_7d`, `seiler_tid_7d`, `seiler_tid_7d_primary`, `seiler_tid_28d`, `seiler_tid_28d_primary`: `"power"`, `"hr"`, or `"mixed"` (when activities in the aggregation used different bases)
 
-**AI coaching rule:** When `zone_basis` is not `"power"` (the default), note the basis in reports so the athlete understands which zones drove the analysis. Per-activity zone distributions in `recent_activities` still output both power and HR zones regardless of this setting.
+**AI coaching rule:** Always label report intensity with the supplied sport and zone_basis, including power; follow [Report intensity source](#report-intensity-source). Per-activity zone distributions in `recent_activities` still output both power and HR zones regardless of this setting.
 
 ---
 
@@ -3611,10 +3629,10 @@ See `POST_WORKOUT_REPORT_TEMPLATE.md` in the examples directory for field refere
 - The 7-day report covers today and six preceding local dates. Include per-sport totals, nonzero readable plan counts (never a not_assessed category), session lines, key sessions, Zones/TID, capability avg with window/N, fitness with previous seven days and Chronic, wellness ranges/quality/weight/Feel/RPE, flags, fun facts and Next 7 days without clock times. No Best efforts or power/HR-curve block.
 - Session lines show only ✅/⚠️/❌ verdict markers, no status words. Warnings/failures add a short supported duration delta or "steps off". Paired no-step sessions of any sport use the current duration tolerance; no marker without a plan, or without a supported verdict. Keep available plan name/duration, omit a duplicate plan name, and use "done" for non-rides. Key-session headers carry the emoji; exact Target and Actual windows remain separate from whole-ride power.
 - The 28-day breakdown uses only the four supplied rolling_7d_chunks, oldest first in separate dated blocks. Order: header/summary/current Phase; sport Totals; paired Plan counts and checked-against-plan result; Fitness start -> now; four chunks; Wellness (28 days); Intensity; Key sessions; Best efforts (last 28 days, previous 28 days in brackets); DFA a1 (28 days); flags; fun facts; two-paragraph Interpretation (what happened, then meaning). No ceilings, separate progression section, seven-day ramp, FTP/eFTP/W/kg or not-assessed counts.
-- Pairing/duration refresh for all sports over 28 days; steps retain their 14-day detail scope and older captured assessments. Reports distinguish pairing from assessment and never treat a broad match as formal adherence. HRRc lines contain numbers only, no trend words; interpretation requires several agreeing sessions and acknowledges output dependence. Z3 flags use sessions not planned as intensity and separate power/HR observations, with "Cause: creep, or zones/FTP off" when the bases strongly disagree. No high-drift count flag.
+- Pairing/duration refresh for all sports over 28 days; steps retain their 14-day detail scope and older captured assessments. Reports distinguish pairing from assessment and never treat a broad match as formal adherence. HRRc lines contain numbers only, no trend words; interpretation requires several agreeing sessions and acknowledges output dependence. Z3 flags use sessions not planned as intensity and separate power/HR observations, naming the activity's zone_reference when available per [Report intensity source](#report-intensity-source). No high-drift count flag.
 - Bold dated headers, local Data updated, blank-line groups, one labelled fact per line. Every mean is labelled avg with its window; previous values are in brackets. Omit missing/zero-only lines and empty sections, retaining material coverage explanations. No middle-dot separators or pipe joins. Start -> now lines are allowed in 28-day Fitness. Week-start still controls history, Season, phase detection and planned-week features.
 
-**Season Reports (on-demand only)** use completed configured calendar weeks in weekly_180d[:-1], never assuming Monday. Layout: Position; Phases (cycles ending at Deload, null weeks on separate lines); Volume with completed-week averages; Fitness with CTL dates and coupled ACWR bins/known coverage; Intensity with dated half averages; matched calendar-month year comparison with previous values in brackets and no difference/% lines; non-empty Notable; fun facts; 2-4-sentence Interpretation. Combine empty above-1.3 bins as "ACWR above 1.3: none" only with known data. Current TID 28d remains separate from completed-week Coggan Zones. No Season Best efforts block.
+**Season Reports (on-demand only)** use completed configured calendar weeks in weekly_180d[:-1], never assuming Monday. Layout: Position; Phases (cycles ending at Deload, null weeks on separate lines); Volume with completed-week averages; Fitness with CTL dates and coupled ACWR bins/known coverage; Intensity with dated half averages; matched calendar-month year comparison with previous values in brackets and no difference/% lines; non-empty Notable; fun facts; 2-4-sentence Interpretation. Combine empty above-1.3 bins as "ACWR above 1.3: none" only with known data. Current primary-sport TID 28d remains separate from completed-week primary Seiler groups; see [Report intensity source](#report-intensity-source). No Season Best efforts block.
 
 **Fun facts in all three reports:** Use latest.json.fun_facts.rolling_7d / rolling_28d or history.json.fun_facts.season immediately before Interpretation. Group dated max power (1 s)/HR, longest ride and environment distance/climbing, Peaks (7-day and Season only), saddle time, then Work/Carbs with inline equivalents and Most work in a day/week. The week appears only in 28-day and Season. Indoor/Outdoor labels come solely from sync's indoor flag/grouping, never names or source apps. Label indoor distance, speed and climbing outside the split too; omit zero climbing sides. Preserve partial/stale coverage and attribution. A clear dossier prose statement or table of grams carbohydrate per bottle establishes the bottle. Otherwise use about 27 g carbohydrate and 105 kcal per medium banana: carbs_used / 27 and work_kj / 105; bottle work remains work_kj / (4 * grams per bottle). The mechanical-kJ/expended-kcal approximation is documented once in each template, not repeated in reports. These are descriptive fun comparisons, not tests, threshold/readiness evidence or fueling advice.
 
@@ -4058,8 +4076,9 @@ This subsection defines the formal self-validation and audit metadata structure 
 | `benchmark_seasonal_expected`  | boolean  | Whether current Benchmark Index is within seasonal expectations                     |
 | `w_prime_data_available`       | boolean  | Whether CP/W′ data is available                                                     |
 | `w_prime_confidence`           | string   | Confidence level of W′ estimates ("high" / "medium" / "low" / "unavailable")        |
-| `seiler_tid_7d`                | string   | Seiler TID classification for 7-day window (Polarized/Pyramidal/Threshold/etc.) |
-| `seiler_tid_28d`               | string   | Seiler TID classification for 28-day window                                     |
+| `seiler_tid_7d`, `seiler_tid_28d` | object | All-sports Seiler seconds, percentages, classification and PI; aggregate context, not report intensity sources |
+| `seiler_tid_7d_primary`, `seiler_tid_28d_primary` | object/null | Report intensity: same fields plus sport, using the current highest-seven-day-TSS family for both windows. Null without a primary sport; missing zone data leaves percentages/classification null |
+| `capability.tid_comparison_primary` | object | Primary-sport 7d/28d classification and PI comparison, with sport and nullable drift; report-only addition. Existing all-sports tid_comparison and automatic diagnostics are unchanged |
 | `zone_basis`                   | string/null | Zone basis used for aggregation: `"power"`, `"hr"`, or `"mixed"`. Present on `zone_distribution_7d`, all `seiler_tid_*` blocks. Null when no zone data available. Reflects `ZONE_PREFERENCE` config. |
 | `tid_drift`                    | string   | TID drift category: "consistent" / "shifting" / "acute_depolarization"          |
 | `durability_7d_mean`           | number   | Mean HR–Power decoupling (%) from qualifying steady-state sessions, 7-day       |

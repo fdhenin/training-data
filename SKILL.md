@@ -1,6 +1,6 @@
 ---
 name: section-11
-description: Evidence-based endurance coaching protocol (v11.93). Use when analyzing training data, reviewing sessions, generating pre/post-workout or requested weather reports, planning workouts, answering training questions, or giving endurance coaching advice. Always read or fetch athlete JSON data before responding to any training question.
+description: Evidence-based endurance coaching protocol (v11.94). Use when analyzing training data, reviewing sessions, generating pre/post-workout or requested weather reports, planning workouts, answering training questions, or giving endurance coaching advice. Always read or fetch athlete JSON data before responding to any training question.
 ---
 
 # Section 11 - AI Coaching Protocol
@@ -76,7 +76,7 @@ Load the coaching protocol using this precedence:
 
 If both root and `section11/` copies exist, prefer the root copy.
 
-**Current version:** 11.93
+**Current version:** 11.94
 
 ## External Sources
 
@@ -115,7 +115,7 @@ Read `latest.json.data_overview` first to discover companions and route-weather/
 - Every training metric cited (in reports, recommendations, or conversation) must come from a JSON data read in the current response. Conversation history, memory, and prior messages are not data sources.
 - Stable athlete facts (tested fueling or tolerance, medication or allergies, equipment, carrying capacity, durable constraints or preferences) come from the relevant section of the current official dossier, read when the task depends on them. A JSON read does not supply them, and conversation history, memory and superseded copies are not sources for them. If no dossier is used, the official copy is unreachable, or it has no entry, say so rather than presenting a generic default as the athlete's own. An explicit current athlete statement that contradicts the dossier is resolved by clarification and a proposed dossier change, never silently.
 - When `health_context.clarification_required` is true in latest.json, do not recommend the planned session without addressing it. A marker in `current` means acknowledge the illness or injury and establish severity. A marker in `recent` with none current means the calendar marking stopped, not that the athlete recovered. Ask, do not assume. When `source_status` is `partial` and no marker is visible, say that health markers could not be checked completely and confirm whether illness or injury is currently relevant. A marker does not discard or replace the plan: the planned session remains the starting candidate (not presumed clearance) until severity and compatibility are established, and minor illness or injury may still allow it as written or in modified form. It is not a readiness signal, does not by itself mean skip or deload, and never relaxes an existing Skip. See *Health Context* in SECTION_11.md.
-- Check `zone_preference` in READ_THIS_FIRST and `zone_basis` fields on TID/zone blocks. The athlete may have configured HR-preferred zones for specific sports (e.g., running). When `zone_basis` is not the default "power", note this in reports.
+- Check zone_preference and use primary-sport Seiler blocks for report intensity, always labelled with supplied sport and zone_basis. Use matching primary TID drift and activity zone_reference for provenance; all-sports zones/TID remain context only. See [Report intensity source](SECTION_11.md#report-intensity-source).
 - Follow Section 11 C validation checklist before generating recommendations
 - Cite frameworks per protocol (checklist item #10)
 
