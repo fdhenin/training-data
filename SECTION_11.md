@@ -1,10 +1,14 @@
 # Section 11 - AI Coach Protocol
 
-**Protocol Version:** 11.95  
+**Protocol Version:** 11.96  
 **Last Updated:** 2026-10-25
 **License:** [MIT](https://opensource.org/licenses/MIT)
 
 ### Changelog
+
+**v11.96 - Documentation cleanup (2026-10-26, doc-only):**
+
+Stops release-news churn in the documentation. SKILL.md no longer repeats the protocol version, and the four setup guides no longer carry an "Updated exports add ..." release paragraph; release news lives in this changelog. Existing version labels, provenance notes and upgrade notes elsewhere stay as written. Corrected stale statements: the DFA a1 non-Garmin link, the README anchor and validation-checklist reference in SKILL.md, CLI preview versus direct library writes and completed-activity annotation in push.py, consistency_index as a planned-date match ratio, freshness, maintenance and filesystem-access claims, report-template and heartbeat-weather references, example counts, and merger runbook wording. New dev/tests/test_docs_contract.py checks local links and anchors and flags release news outside the changelog or a current-version line in SKILL.md. CONTRIBUTING.md records the rule. sync.py, data and behavior are unchanged.
 
 **v11.95 - Multi-sport report intensity (2026-10-25, sync.py v3.160):**
 
@@ -2760,7 +2764,7 @@ DFA a1 (Detrended Fluctuation Analysis, short-term scaling exponent α1) is a no
 - "**Save ALPHA1 to FIT**" enabled in AlphaHRV settings (and a full Edge restart after toggling)
 - **Direct Garmin → Intervals.icu sync**, not via Strava; Strava strips FIT developer fields and AlphaHRV's output never reaches Intervals.icu via that path
 
-**Non-Garmin athletes:** see [`examples/dfa_a1/NON_GARMIN.md`](../examples/dfa_a1/NON_GARMIN.md) for the current status of Suunto, Hammerhead Karoo, Wahoo, Coros, Polar, and phone-based fallback paths. As of v11.30, **only Garmin + AlphaHRV is verified end-to-end**. Other paths are documented as investigational with verification commands ready for users on those platforms to run.
+**Non-Garmin athletes:** see [`examples/dfa_a1/NON_GARMIN.md`](examples/dfa_a1/NON_GARMIN.md) for the current status of Suunto, Hammerhead Karoo, Wahoo, Coros, Polar, and phone-based fallback paths. As of v11.30, **only Garmin + AlphaHRV is verified end-to-end**. Other paths are documented as investigational with verification commands ready for users on those platforms to run.
 
 **Ingest path:** Direct Garmin Connect → Intervals.icu sync. AlphaHRV writes DFA a1 to the FIT file as a developer field. Intervals.icu ingests it natively and exposes it as a per-second `dfa_a1` stream plus per-interval `average_dfa_a1` field. `sync.py` reads both via the streams API and produces the per-session `dfa` block in `intervals.json`.
 

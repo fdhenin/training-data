@@ -1,6 +1,6 @@
 ---
 name: section-11
-description: Evidence-based endurance coaching protocol (v11.95). Use when analyzing training data, reviewing sessions, generating pre/post-workout or requested weather reports, planning workouts, answering training questions, or giving endurance coaching advice. Always read or fetch athlete JSON data before responding to any training question.
+description: Evidence-based endurance coaching protocol. Use when analyzing training data, reviewing sessions, generating pre/post-workout or requested weather reports, planning workouts, answering training questions, or giving endurance coaching advice. Always read or fetch athlete JSON data before responding to any training question.
 ---
 
 # Section 11 - AI Coaching Protocol
@@ -48,7 +48,7 @@ On first use:
    - `ftp_history.json`: dated FTP changes (indoor/outdoor), used for staleness tracking and benchmark comparison
    - `routes.json`: route/terrain data for events with GPX/TCX attachments (when present)
    - `saved_workouts.json`: read-only mirror of the athlete's saved workouts from Intervals.icu (Saved Workouts Mirror)
-   - See: https://github.com/CrankAddict/section-11#2-set-up-your-data-mirror-optional-but-recommended
+   - See: https://github.com/CrankAddict/section-11#2-set-up-your-data-sync
 
 3. **Configure heartbeat settings** (optional, OpenClaw)
    - Check for `HEARTBEAT.md` in the agent workspace
@@ -75,8 +75,6 @@ Load the coaching protocol using this precedence:
 5. If not found, fetch from: https://raw.githubusercontent.com/CrankAddict/section-11/main/SECTION_11.md
 
 If both root and `section11/` copies exist, prefer the root copy.
-
-**Current version:** 11.95
 
 ## External Sources
 
@@ -116,7 +114,7 @@ Read `latest.json.data_overview` first to discover companions and route-weather/
 - Stable athlete facts (tested fueling or tolerance, medication or allergies, equipment, carrying capacity, durable constraints or preferences) come from the relevant section of the current official dossier, read when the task depends on them. A JSON read does not supply them, and conversation history, memory and superseded copies are not sources for them. If no dossier is used, the official copy is unreachable, or it has no entry, say so rather than presenting a generic default as the athlete's own. An explicit current athlete statement that contradicts the dossier is resolved by clarification and a proposed dossier change, never silently.
 - When `health_context.clarification_required` is true in latest.json, do not recommend the planned session without addressing it. A marker in `current` means acknowledge the illness or injury and establish severity. A marker in `recent` with none current means the calendar marking stopped, not that the athlete recovered. Ask, do not assume. When `source_status` is `partial` and no marker is visible, say that health markers could not be checked completely and confirm whether illness or injury is currently relevant. A marker does not discard or replace the plan: the planned session remains the starting candidate (not presumed clearance) until severity and compatibility are established, and minor illness or injury may still allow it as written or in modified form. It is not a readiness signal, does not by itself mean skip or deload, and never relaxes an existing Skip. See *Health Context* in SECTION_11.md.
 - Report intensity uses each period's report_intensity blocks decoded through the file-level report_intensity_schema (2), with one line per selected sport and actual power/HR basis/mapping, labelled with covered weeks and sessions. Use report_intensity_comparison only for compatible observed-session drift with coverage read from both ready blocks. Resolve explicit rolling refs using the chunk's own dates and monthly blocks by first occurrence across the ordered monthly tiers; an unmarked missing block is not a reference. Missing new blocks mean unavailable; a present empty block is authoritative. Legacy primary/all-sport fields keep their meanings but do not supply updated report lines. Activity zone_reference is unchanged. See [Report intensity source](SECTION_11.md#report-intensity-source).
-- Follow Section 11 C validation checklist before generating recommendations
+- Follow the [AI Self-Validation Checklist](SECTION_11.md#ai-self-validation-checklist) before generating recommendations
 - Cite frameworks per protocol (checklist item #10)
 
 ## Write Capabilities
@@ -131,7 +129,7 @@ If `push.py` is available (`section11/examples/agentic/push.py` or in the data r
 - **set-threshold**: update sport-specific thresholds (FTP, indoor FTP, LTHR, max HR, threshold pace). Only after validated test results, never from estimates
 - **annotate**: add notes to completed activities (description by default, `--chat` for messages panel) or planned workouts (`NOTE:` prepended to description)
 
-All write operations default to preview mode. Nothing is written without `--confirm`. Execution via local CLI or GitHub Actions dispatch. See `examples/agentic/README.md` for full usage, workout syntax, and template ID mappings.
+CLI write operations default to preview mode and require `--confirm` to write. Direct library calls do not have this gate; obtain approval before calling a write method. Execution via local CLI or GitHub Actions dispatch. See `examples/agentic/README.md` for full usage, workout syntax, and template ID mappings.
 
 Requires a runtime that can execute code or trigger repository actions, with verified access and configured credentials, not merely a platform labelled agentic. Web chat cannot use this. Grok Bot and Hermes Agent have the required capability class but are **experimental**: neither is validated end to end against the Section 11 pipeline, and capability class is not a support promise. A connector supplies data only: it confers no write authority, no ability to trigger actions or workflows, and no script execution. Each of those capabilities is separate and must be verified before it is used or assumed.
 
@@ -145,7 +143,7 @@ Use standardized report formats. Load templates using this precedence:
 2. If not found, check `section11/examples/reports/`
 3. If not found, check connected repo (if GitHub connector is available)
 4. If not found, check uploaded or attached files
-5. If not found, fetch from: https://raw.githubusercontent.com/CrankAddict/section-11/main/examples/reports/
+5. If not found, append the task-selected template filename to https://raw.githubusercontent.com/CrankAddict/section-11/main/examples/reports/ and fetch that file.
 
 Templates:
 - **Weather (on request):** Five-day planned-route forecasts/outlooks, preparation and supported comparison: `WEATHER_REPORT_TEMPLATE.md`
@@ -163,7 +161,7 @@ Follow the current template layouts: marker-only session lines, no not-assessed 
 ## Heartbeat Operation
 
 On each heartbeat, follow the checks and scheduling rules defined in your HEARTBEAT.md:
-- Daily: training/wellness observations (from latest.json), weather (only if conditions are good)
+- Daily: training/wellness observations (from latest.json). For weather scheduling, follow the [heartbeat template](examples/agentic/openclaw/HEARTBEAT_TEMPLATE.md#weather-moved-to-cron).
 - Weekly: background analysis (use history.json for trend comparison)
 - Self-schedule next heartbeat with randomized timing within notification hours
 

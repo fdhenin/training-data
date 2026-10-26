@@ -521,7 +521,7 @@ See `examples/agentic/README.md` for commands, workout syntax, and template mapp
 
 Route by whether the AI has a runtime filesystem at all, not by which sync method they chose. If it does (the athlete's own machine or a provider-hosted agent computer), it is an agentic session: use [`PROJECT_INSTRUCTIONS_AGENTIC.md`](PROJECT_INSTRUCTIONS_AGENTIC.md) and copy the block between the fences there into the agent's instructions. That holds even when the training data itself arrives through a connector. Only a session with no runtime filesystem uses [`PROJECT_INSTRUCTIONS_WEB.md`](PROJECT_INSTRUCTIONS_WEB.md).
 
-The agentic contract names the Workout Reference Library (`section11/examples/workout-library/WORKOUT_REFERENCE.md`, with a fetch fallback) but not the report templates. Where the agent can actually reach them (a provider-hosted computer often cannot), tell them to point it at `section11/examples/reports/` as well.
+The agentic contract names the Workout Reference Library and report templates. Verify that the agent can read the required files at `section11/examples/workout-library/WORKOUT_REFERENCE.md` and `section11/examples/reports/`; a path on the athlete's machine does not establish access from another runtime.
 
 ---
 
