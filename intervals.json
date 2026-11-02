@@ -1,31 +1,10 @@
 {
-  "generated_at": "2026-11-01T22:57:53.623083",
+  "generated_at": "2026-11-02T02:19:21.238857",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
   "retention_days": 14,
   "activities": [
-    {
-      "activity_id": "i198685101",
-      "date": "2026-10-18",
-      "type": "VirtualRide",
-      "name": "Zwift - Diesel Distance Builder",
-      "interval_summary": null,
-      "intervals": [
-        {
-          "type": "RECOVERY",
-          "duration_secs": 3614,
-          "avg_power": 134,
-          "max_power": 157,
-          "avg_hr": 129,
-          "max_hr": 147,
-          "avg_cadence": 80.39264,
-          "zone": 2,
-          "training_load": 44.835194,
-          "decoupling": 5.967487
-        }
-      ]
-    },
     {
       "activity_id": "i200061424",
       "date": "2026-10-21",
