@@ -1,55 +1,28 @@
 {
-  "generated_at": "2026-11-04T23:22:37.338335",
+  "generated_at": "2026-11-08T18:59:56.658049",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
   "retention_days": 14,
   "activities": [
     {
-      "activity_id": "i200061424",
-      "date": "2026-10-21",
+      "activity_id": "i207485032",
+      "date": "2026-11-08",
       "type": "VirtualRide",
-      "name": "Zwift - Jarvis Seaside Sprint in Watopia",
-      "interval_summary": [
-        "1x 13s 375w"
-      ],
+      "name": "Zwift - Colorado River Sunrise in Video",
+      "interval_summary": null,
       "intervals": [
         {
           "type": "RECOVERY",
-          "duration_secs": 1592,
-          "avg_power": 117,
-          "max_power": 308,
-          "avg_hr": 116,
-          "max_hr": 145,
-          "avg_cadence": 81.87626,
-          "zone": 2,
-          "training_load": 21.518148,
-          "decoupling": -21.076408
-        },
-        {
-          "type": "WORK",
-          "label": "13s@375w106rpm",
-          "duration_secs": 13,
-          "avg_power": 375,
-          "max_power": 467,
-          "avg_hr": 135,
-          "max_hr": 140,
-          "avg_cadence": 106.0,
-          "zone": 7,
-          "training_load": 0.28776324,
-          "decoupling": 13.001911
-        },
-        {
-          "type": "RECOVERY",
-          "duration_secs": 207,
-          "avg_power": 80,
-          "max_power": 332,
-          "avg_hr": 126,
-          "max_hr": 148,
-          "avg_cadence": 79.44927,
+          "duration_secs": 4410,
+          "avg_power": 70,
+          "max_power": 216,
+          "avg_hr": 107,
+          "max_hr": 129,
+          "avg_cadence": 88.195694,
           "zone": 1,
-          "training_load": 2.2417133,
-          "decoupling": -5.5651765
+          "training_load": 19.072826,
+          "decoupling": 13.903135
         }
       ]
     }
