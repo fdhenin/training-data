@@ -1,6 +1,6 @@
 # Section 11 - AI Coach Protocol
 
-**Protocol Version:** 11.108  
+**Protocol Version:** 11.110  
 **Last Updated:** 2026-11-08
 **License:** [MIT](https://opensource.org/licenses/MIT)
 
@@ -12,6 +12,14 @@ paths for those installed files. If a required file is unavailable, say what is
 missing and ask for it.
 
 ### Changelog
+
+**v11.110 - Local update check every 10 minutes (2026-11-10, sync.py v3.173):**
+
+Local and Manual now check for a verified Section 11 update at most once every 10 minutes after the data work, instead of once a day after 04:00 UTC. When the latest release and the local installation are unchanged since the last verified check, the check reuses that result and downloads nothing. Automatic installation stays opt-in with `auto_update`; otherwise the check only reports that an update is available.
+
+**v11.109 - Local timer fix (2026-11-10, sync.py v3.172):**
+
+A Local update no longer removes and reloads a timer that has not changed. On a Mac, an automatic update from release 2026.11.03 to 2026.11.10 could stop its own timer and leave the installation unfinished, so `latest.json` stopped updating. Running the fixed release's `sync.py --update` from the data folder completes that installation and reloads the timer. If an ordinary update or setup cannot confirm a timer's loaded state, it leaves the timer unchanged and prints a note.
 
 **v11.108 - Same-day release names (2026-11-09, sync.py v3.171):**
 
@@ -35,8 +43,8 @@ GitHub scheduled runs use the hosted slow-source cache and per-run request contr
 
 **v11.103 - Verified release updates (2026-11-03, sync.py v3.166):**
 - Every setup installs the complete verified date release. The first installation is accepted once after a single warning. See [updates and rollback](examples/maintenance/UPDATING.md) for installation rules.
-- Local init/update install or refresh the standard timer at `check_interval_minutes` unless `--no-timer` is chosen. Remove any timer you previously made yourself. Updates are confirmed with `--update` by default; automatic installation is opt-in. `--rollback` restores the previous installation, and an identical reinstall preserves that slot.
-- Every setup checks once per UTC day on the first run starting at or after 04:00 UTC, after data work even if sync failed or credentials were missing. Unknown data publication holds maintenance for reconciliation. An unclaimed day can be claimed by a rerun; failed or unknown maintenance consumes the day. On-demand checks only on user-started runs. GitHub uses Sync, Update, Status and Rollback in one owner-installed workflow with separate direct data, installation and control commits.
+- Local init/update install the standard timer at `check_interval_minutes` unless `--no-timer` is chosen, and rewrite it only when it changed. Remove any timer you previously made yourself. Updates are confirmed with `--update` by default; automatic installation is opt-in. `--rollback` restores the previous installation, and an identical reinstall preserves that slot.
+- Local/Manual check after data work at most once every 10 minutes, including failed checks; the final hosted workflow verifies the latest official runtime each run and defers automatic application maintenance after a recent run, without a check-only commit. Unknown data publication holds maintenance for reconciliation. On-demand checks only on user-started runs. Old workflow (v11.105): hosted maintenance retains its daily 04:00 UTC rule. See [update timing](examples/maintenance/UPDATING.md#utc-timing-rejection-and-rollback).
 - latest.json can carry fixed `installation_notice` and `update_notice` reminders for outstanding verified updates or repairs, including same-date repairs; mention them briefly and coach normally. Explicit Update clears a rolled-back release's automatic skip. Request budgets, multi-sport calculations, report contracts, export freshness and the hosted slow-source cache retain their behavior.
 
 **v11.102 - Export delivery expectation (2026-10-29, sync.py v3.165):**
