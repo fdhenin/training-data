@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-10T11:34:28.186409",
+  "generated_at": "2026-11-10T18:50:48.933107",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
@@ -23,6 +23,27 @@
           "zone": 1,
           "training_load": 19.072826,
           "decoupling": 13.903135
+        }
+      ]
+    },
+    {
+      "activity_id": "i208248088",
+      "date": "2026-11-10",
+      "type": "VirtualRide",
+      "name": "Zwift - California Dreamin' in Watopia",
+      "interval_summary": null,
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 2990,
+          "avg_power": 80,
+          "max_power": 245,
+          "avg_hr": 102,
+          "max_hr": 125,
+          "avg_cadence": 89.81572,
+          "zone": 1,
+          "training_load": 16.002974,
+          "decoupling": 18.530222
         }
       ]
     }
