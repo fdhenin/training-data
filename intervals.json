@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-11T12:54:35.475605",
+  "generated_at": "2026-11-11T20:03:03.466347",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
@@ -44,6 +44,26 @@
           "zone": 1,
           "training_load": 16.002974,
           "decoupling": 18.530222
+        }
+      ]
+    },
+    {
+      "activity_id": "i208816124",
+      "date": "2026-11-11",
+      "type": "VirtualRide",
+      "name": "Zwift - Molten Momentum in Watopia",
+      "interval_summary": null,
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 3060,
+          "avg_power": 95,
+          "max_power": 249,
+          "avg_hr": 123,
+          "max_hr": 132,
+          "avg_cadence": 87.89967,
+          "zone": 1,
+          "training_load": 24.449533
         }
       ]
     }
