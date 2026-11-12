@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-12T09:27:23.820575",
+  "generated_at": "2026-11-12T17:42:18.360564",
   "version": "3.112",
   "script_hash": "a60c2ee19b34",
   "scan_hours": 72,
@@ -64,6 +64,27 @@
           "avg_cadence": 87.89967,
           "zone": 1,
           "training_load": 24.449533
+        }
+      ]
+    },
+    {
+      "activity_id": "i209100191",
+      "date": "2026-11-12",
+      "type": "VirtualRide",
+      "name": "Zwift - Tempus Fugit in Watopia",
+      "interval_summary": null,
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 2710,
+          "avg_power": 92,
+          "max_power": 293,
+          "avg_hr": 104,
+          "max_hr": 124,
+          "avg_cadence": 79.053894,
+          "zone": 1,
+          "training_load": 17.517288,
+          "decoupling": -5.256789
         }
       ]
     }
