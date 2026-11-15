@@ -1,0 +1,2313 @@
+{
+  "generated_at": "2026-04-25T06:00:00.000000",
+  "sync_version": "3.95",
+  "script_hash": "fad027f40c4e",
+  "events": [
+    {
+      "event_id": 90100001,
+      "route_status": "ok",
+      "terrain_summary": {
+        "polyline": [
+          [
+            0,
+            45,
+            5,
+            100
+          ],
+          [
+            0.6,
+            45.0054,
+            5,
+            110
+          ],
+          [
+            1.2,
+            45.0108,
+            5,
+            100
+          ]
+        ],
+        "total_distance_km": 1.2,
+        "total_elevation_m": 10,
+        "climbs": [],
+        "descents": [],
+        "course_character": "flat",
+        "source": "gpx_attachment"
+      },
+      "route_ref": {
+        "route_id": "intervals:90100001:attachment:12",
+        "attachment_id": 12,
+        "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "terrain_version": "3.142"
+      },
+      "route_weather": {
+        "event_id": 90100001,
+        "route_ref": {
+          "route_id": "intervals:90100001:attachment:12",
+          "attachment_id": 12,
+          "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "terrain_version": "3.142"
+        },
+        "departure": {
+          "at_utc": "2026-01-21T10:00:00+00:00",
+          "timezone": "UTC",
+          "source": "event_explicit_offset"
+        },
+        "eta": {
+          "status": "default",
+          "method": "generic_default_v2",
+          "source": "rolling_180d_record_from_existing_activity_fetches",
+          "window_days": 180,
+          "terrain_sample_count": 0,
+          "speed_ranges_kmh": {
+            "flat": [
+              22,
+              32
+            ],
+            "climb": [
+              8,
+              18
+            ],
+            "descent": [
+              20,
+              50
+            ]
+          },
+          "stops": {
+            "status": "default",
+            "sample_count": 0,
+            "ratio_range": [
+              1.0,
+              1.25
+            ],
+            "reason": "elapsed_time_unavailable",
+            "median_ratio": null
+          },
+          "reason": "insufficient_outdoor_history",
+          "sample_count": 0,
+          "sample_activity_ids": [],
+          "date_range": null,
+          "physics_context": {
+            "available": false,
+            "unavailable_reason": "missing_or_invalid_main_ftp",
+            "ftp_w": null,
+            "body_weight_kg": null,
+            "ftp_source": "thresholds.sports.cycling.ftp",
+            "weight_source": null,
+            "weight_date": null,
+            "prior_intensities": {
+              "flat": 0.65,
+              "long_climb": 0.825,
+              "short_climb": 0.9
+            },
+            "zone_source": "public_default_55_75_90_percent_boundaries",
+            "assumptions": {
+              "cda_m2": 0.32,
+              "crr": 0.005,
+              "bike_kit_mass_kg": 10.0,
+              "drivetrain_efficiency": 0.97,
+              "gravity_m_s2": 9.80665,
+              "sea_level_density_kg_m3": 1.225,
+              "density_scale_height_m": 8500,
+              "descent_cap_kmh": 50.0,
+              "descent_floor_kmh": 15.0,
+              "long_climb_km": 2.0,
+              "history_proxy_gradient": 0.05
+            }
+          },
+          "physics_comparison": {
+            "methods": {
+              "pace": {
+                "evaluated_rides": 0,
+                "coverage": null,
+                "median_window_width_s": null,
+                "median_relative_window_width": null,
+                "median_absolute_relative_error": null
+              },
+              "ftp_zones_physics": {
+                "evaluated_rides": 0,
+                "coverage": null,
+                "median_window_width_s": null,
+                "median_relative_window_width": null,
+                "median_absolute_relative_error": null
+              },
+              "ride_power_physics": {
+                "evaluated_rides": 0,
+                "coverage": null,
+                "median_window_width_s": null,
+                "median_relative_window_width": null,
+                "median_absolute_relative_error": null
+              }
+            },
+            "same_record_rides": 0,
+            "safeguard_passed": false,
+            "complete_record_comparison": true,
+            "record_rides": 0,
+            "width_tolerance_factor": 1.1,
+            "minimum_validation_rides": 12,
+            "history_geometry": "aggregate_symmetric_grade_proxy_not_observed_profiles",
+            "includes_stops": false,
+            "includes_rounding": false
+          },
+          "historical_ascent_density_range_m_per_km": null,
+          "historical_ascent_sample_count": 0,
+          "historical_ascent_sources": {
+            "producer_ascent_m": 0,
+            "recorded_ascent_m": 0
+          },
+          "ftp_consistency": {
+            "observed_power_over_main_ftp": null,
+            "sample_count": 0,
+            "status": "unavailable",
+            "reason": "whole_ride_power_is_not_an_ftp_test; weighted_power_is_an_effort_proxy"
+          },
+          "uncertainty": "Section physics is an estimate, not measured segment speed; aggregate-history geometry is a proxy. Residual coverage does not validate new terrain, surface, wind or segment timing.",
+          "route_ascent_m": 10,
+          "route_ascent_density_m_per_km": 8.333333333333334,
+          "terrain_extrapolation": true,
+          "terrain_support_status": "unknown",
+          "model_inputs": {
+            "ftp_used": false,
+            "weight_used": false,
+            "ftp_available": false,
+            "configured_main_ftp_w": null,
+            "body_weight_kg": null,
+            "prior_intensities": {
+              "flat": 0.65,
+              "long_climb": 0.825,
+              "short_climb": 0.9
+            },
+            "sample_count": 0,
+            "power_sample_count": 0,
+            "calibration_factor": null,
+            "flat_power_w": null,
+            "route_consistency_factor": 1.0
+          },
+          "selection_reason": "missing_or_invalid_main_ftp",
+          "polyline_positive_rise_m": 10,
+          "duration_range_s": [
+            0,
+            300
+          ],
+          "moving_duration_range_s": [
+            0,
+            300
+          ],
+          "moving_duration_central_s": 166
+        },
+        "schema_version": 2,
+        "tier": "forecast",
+        "name": "Endurance - Tuesday",
+        "cache_key": "ceb9a1b5dd981680266d1c53a75bfa1bb048d9f1d01159ee4c57941b06a01732",
+        "status": "ok",
+        "reason_codes": [],
+        "fetched_at": "2026-01-20T10:00:00+00:00",
+        "expires_at": "2026-01-20T11:00:00+00:00",
+        "units": {
+          "temperature": "C",
+          "wind": "m/s",
+          "precipitation": "mm",
+          "probability": "%",
+          "distance": "km",
+          "time": "s"
+        },
+        "provenance": {
+          "provider": "open_meteo",
+          "fallback": false,
+          "attribution": "Weather data by Open-Meteo",
+          "source_url": "https://open-meteo.com/",
+          "licence": "CC BY 4.0",
+          "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+          "transformations": "Spatial subsampling, time-window extrema and wind components by Section 11.",
+          "points": [
+            {
+              "point_id": 0,
+              "fetched_at": "2026-01-20T10:00:00+00:00",
+              "validated_at": "2026-01-20T10:00:00+00:00",
+              "expires_at": "2026-01-20T11:00:00+00:00",
+              "model": "best_match",
+              "model_run_at": null,
+              "model_run_reason": "not_returned_by_forecast_api",
+              "valid_instants_utc": [
+                "2026-01-20T00:00:00+00:00",
+                "2026-01-27T23:00:00+00:00"
+              ],
+              "provider_updated_at": null,
+              "error": null
+            },
+            {
+              "point_id": 1,
+              "fetched_at": "2026-01-20T10:00:00+00:00",
+              "validated_at": "2026-01-20T10:00:00+00:00",
+              "expires_at": "2026-01-20T11:00:00+00:00",
+              "model": "best_match",
+              "model_run_at": null,
+              "model_run_reason": "not_returned_by_forecast_api",
+              "valid_instants_utc": [
+                "2026-01-20T00:00:00+00:00",
+                "2026-01-27T23:00:00+00:00"
+              ],
+              "provider_updated_at": null,
+              "error": null
+            },
+            {
+              "point_id": 2,
+              "fetched_at": "2026-01-20T10:00:00+00:00",
+              "validated_at": "2026-01-20T10:00:00+00:00",
+              "expires_at": "2026-01-20T11:00:00+00:00",
+              "model": "best_match",
+              "model_run_at": null,
+              "model_run_reason": "not_returned_by_forecast_api",
+              "valid_instants_utc": [
+                "2026-01-20T00:00:00+00:00",
+                "2026-01-27T23:00:00+00:00"
+              ],
+              "provider_updated_at": null,
+              "error": null
+            }
+          ]
+        },
+        "summary": {
+          "temperature_range_c": [
+            10,
+            12
+          ],
+          "gust_max_mps": 8,
+          "precipitation_probability_max_pct": 65,
+          "hourly_precipitation_max_mm": 0.6000000000000001,
+          "aggregation": "Extrema over section arrival windows; precipitation is not a ride total.",
+          "complete_distance_pct": 100.0,
+          "display": {
+            "temperature_range": {
+              "value": [
+                10,
+                12
+              ],
+              "unit": "C",
+              "label": "10.0\u201312.0 \u00b0C"
+            },
+            "gust_max": {
+              "value": 8,
+              "unit": "m/s",
+              "label": "8.0 m/s"
+            },
+            "hourly_precipitation_max": {
+              "value": 0.6,
+              "unit": "mm",
+              "label": "0.6 mm/h"
+            },
+            "duration_range": [
+              "0s",
+              "5m"
+            ],
+            "moving_duration_range": [
+              "0s",
+              "5m"
+            ],
+            "moving_duration_central": "2m46s",
+            "departure": "2026-01-21 10:00 UTC+0000",
+            "fetched": "2026-01-20 10:00 UTC+0000",
+            "expires": "2026-01-20 11:00 UTC+0000",
+            "wind": "4.0\u20135.0 m/s",
+            "feels_like": "8.0\u201310.0 \u00b0C",
+            "rain": "0.6 mm/h \u00b7 65%"
+          }
+        },
+        "sampling": {
+          "points": [
+            {
+              "point_id": 0,
+              "km": 0,
+              "lat": 45,
+              "lon": 5,
+              "altitude": 100
+            },
+            {
+              "point_id": 1,
+              "km": 0.6,
+              "lat": 45.0054,
+              "lon": 5,
+              "altitude": 110
+            },
+            {
+              "point_id": 2,
+              "km": 1.2,
+              "lat": 45.0108,
+              "lon": 5,
+              "altitude": 100
+            }
+          ],
+          "max_spacing_km": 0.6,
+          "method": "Nearest distance sample; headings retained per polyline leg.",
+          "limitations": "Approximate 500 m geometry; no shelter, road safety or local exposure."
+        },
+        "sections": [
+          {
+            "section_id": 0,
+            "start_km": 0,
+            "end_km": 0.6,
+            "terrain_class": "flat",
+            "bearing_deg": 0.0,
+            "arrival_window_utc": [
+              "2026-01-21T10:00:00+00:00",
+              "2026-01-21T10:00:00+00:00"
+            ],
+            "end_window_utc": [
+              "2026-01-21T10:00:00+00:00",
+              "2026-01-21T10:05:00+00:00"
+            ],
+            "point_id": 0,
+            "weather": {
+              "temperature_range_c": [
+                10,
+                11
+              ],
+              "apparent_temperature_range_c": [
+                8,
+                9
+              ],
+              "wind_speed_range_mps": [
+                4,
+                4
+              ],
+              "head_component_range_mps": [
+                -3.864,
+                -3.464
+              ],
+              "cross_component_range_mps": [
+                1.035,
+                2.0
+              ],
+              "wind_classes": [
+                "tail"
+              ],
+              "gust_max_mps": 7,
+              "precipitation_intervals": [
+                {
+                  "from_utc": "2026-01-21T10:00:00+00:00",
+                  "to_utc": "2026-01-21T11:00:00+00:00",
+                  "period_hours": 1.0,
+                  "amount_mm": 0.6000000000000001,
+                  "probability_pct": 65,
+                  "display_amount": {
+                    "value": 0.6,
+                    "unit": "mm"
+                  }
+                }
+              ],
+              "coverage": {
+                "temperature": true,
+                "wind": true,
+                "gust": true,
+                "precipitation": true,
+                "probability": true
+              },
+              "instant_envelope_utc": [
+                "2026-01-21T10:00:00+00:00",
+                "2026-01-21T11:00:00+00:00"
+              ],
+              "complete": true,
+              "display": {
+                "wind_speed_range_mps": {
+                  "value": [
+                    4,
+                    4
+                  ],
+                  "unit": "m/s"
+                },
+                "head_component_range_mps": {
+                  "value": [
+                    -3.9,
+                    -3.5
+                  ],
+                  "unit": "m/s"
+                },
+                "cross_component_range_mps": {
+                  "value": [
+                    1.0,
+                    2.0
+                  ],
+                  "unit": "m/s"
+                },
+                "gust_max_mps": {
+                  "value": 7,
+                  "unit": "m/s"
+                },
+                "temperature_range_c": {
+                  "value": [
+                    10,
+                    11
+                  ],
+                  "unit": "C"
+                },
+                "apparent_temperature_range_c": {
+                  "value": [
+                    8,
+                    9
+                  ],
+                  "unit": "C"
+                }
+              },
+              "map_sample": {
+                "eta_midpoint_utc": "2026-01-21T10:02:30+00:00",
+                "forecast_at_utc": "2026-01-21T10:00:00+00:00",
+                "basis": "nearest_native_instant_to_section_eta_window_midpoint",
+                "wind_from_deg": 150,
+                "display_wind_from": "SSE",
+                "wind_speed_mps": 4,
+                "wind_class": "tail",
+                "display_wind_speed": {
+                  "value": 4,
+                  "unit": "m/s"
+                }
+              }
+            },
+            "display": {
+              "start": {
+                "value": 0,
+                "unit": "km"
+              },
+              "end": {
+                "value": 0.6,
+                "unit": "km"
+              }
+            }
+          },
+          {
+            "section_id": 1,
+            "start_km": 0.6,
+            "end_km": 1.2,
+            "terrain_class": "flat",
+            "bearing_deg": 0.0,
+            "arrival_window_utc": [
+              "2026-01-21T10:00:00+00:00",
+              "2026-01-21T10:05:00+00:00"
+            ],
+            "end_window_utc": [
+              "2026-01-21T10:00:00+00:00",
+              "2026-01-21T10:05:00+00:00"
+            ],
+            "point_id": 1,
+            "weather": {
+              "temperature_range_c": [
+                11,
+                12
+              ],
+              "apparent_temperature_range_c": [
+                9,
+                10
+              ],
+              "wind_speed_range_mps": [
+                5,
+                5
+              ],
+              "head_component_range_mps": [
+                -3.83,
+                -2.868
+              ],
+              "cross_component_range_mps": [
+                3.214,
+                4.096
+              ],
+              "wind_classes": [
+                "tail"
+              ],
+              "gust_max_mps": 8,
+              "precipitation_intervals": [
+                {
+                  "from_utc": "2026-01-21T10:00:00+00:00",
+                  "to_utc": "2026-01-21T11:00:00+00:00",
+                  "period_hours": 1.0,
+                  "amount_mm": 0.6000000000000001,
+                  "probability_pct": 65,
+                  "display_amount": {
+                    "value": 0.6,
+                    "unit": "mm"
+                  }
+                }
+              ],
+              "coverage": {
+                "temperature": true,
+                "wind": true,
+                "gust": true,
+                "precipitation": true,
+                "probability": true
+              },
+              "instant_envelope_utc": [
+                "2026-01-21T10:00:00+00:00",
+                "2026-01-21T11:00:00+00:00"
+              ],
+              "complete": true,
+              "display": {
+                "wind_speed_range_mps": {
+                  "value": [
+                    5,
+                    5
+                  ],
+                  "unit": "m/s"
+                },
+                "head_component_range_mps": {
+                  "value": [
+                    -3.8,
+                    -2.9
+                  ],
+                  "unit": "m/s"
+                },
+                "cross_component_range_mps": {
+                  "value": [
+                    3.2,
+                    4.1
+                  ],
+                  "unit": "m/s"
+                },
+                "gust_max_mps": {
+                  "value": 8,
+                  "unit": "m/s"
+                },
+                "temperature_range_c": {
+                  "value": [
+                    11,
+                    12
+                  ],
+                  "unit": "C"
+                },
+                "apparent_temperature_range_c": {
+                  "value": [
+                    9,
+                    10
+                  ],
+                  "unit": "C"
+                }
+              },
+              "map_sample": {
+                "eta_midpoint_utc": "2026-01-21T10:02:30+00:00",
+                "forecast_at_utc": "2026-01-21T10:00:00+00:00",
+                "basis": "nearest_native_instant_to_section_eta_window_midpoint",
+                "wind_from_deg": 220,
+                "display_wind_from": "SW",
+                "wind_speed_mps": 5,
+                "wind_class": "tail",
+                "display_wind_speed": {
+                  "value": 5,
+                  "unit": "m/s"
+                }
+              }
+            },
+            "display": {
+              "start": {
+                "value": 0.6,
+                "unit": "km"
+              },
+              "end": {
+                "value": 1.2,
+                "unit": "km"
+              }
+            }
+          }
+        ],
+        "lead_hours_at_fetch": 24.0,
+        "display_time": {
+          "zone": "UTC",
+          "source": "athlete_timezone",
+          "fallback": false
+        },
+        "bands": [
+          {
+            "letter": "A",
+            "point_id": 0,
+            "section_count": 1,
+            "start_km": 0,
+            "end_km": 0.6,
+            "arrival_window_local": [
+              "2026-01-21 10:00 UTC+0000",
+              "2026-01-21 10:00 UTC+0000"
+            ],
+            "end_window_local": [
+              "2026-01-21 10:00 UTC+0000",
+              "2026-01-21 10:05 UTC+0000"
+            ],
+            "wind_class": "tail",
+            "wind_from": "SSE",
+            "wind_speed": {
+              "value": [
+                4,
+                4
+              ],
+              "unit": "m/s"
+            },
+            "gust_max": {
+              "value": 7,
+              "unit": "m/s"
+            },
+            "temperature": {
+              "value": [
+                10,
+                11
+              ],
+              "unit": "C"
+            },
+            "feels_like": {
+              "value": [
+                8,
+                9
+              ],
+              "unit": "C"
+            },
+            "coverage": {
+              "temperature": true,
+              "wind": true,
+              "gust": true,
+              "precipitation": true,
+              "probability": true
+            },
+            "representative_section_index": 0,
+            "rain": {
+              "max_amount": {
+                "value": 0.6,
+                "unit": "mm"
+              },
+              "max_probability_pct": 65,
+              "period_hours": 1.0,
+              "wettest_window_local": [
+                "2026-01-21 10:00 UTC+0000",
+                "2026-01-21 11:00 UTC+0000"
+              ]
+            },
+            "display": {
+              "distance": "0.0\u20130.6 km",
+              "start_time": "10:00",
+              "time": "10:00\u201310:05",
+              "wind_class": "Tailwind",
+              "wind": "4.0 m/s from SSE \u00b7 gusts 7.0",
+              "temperature": "10.0\u201311.0 \u00b0C",
+              "feels_like": "8.0\u20139.0 \u00b0C",
+              "rain": "0.6 mm/h \u00b7 65%"
+            }
+          },
+          {
+            "letter": "B",
+            "point_id": 1,
+            "section_count": 1,
+            "start_km": 0.6,
+            "end_km": 1.2,
+            "arrival_window_local": [
+              "2026-01-21 10:00 UTC+0000",
+              "2026-01-21 10:05 UTC+0000"
+            ],
+            "end_window_local": [
+              "2026-01-21 10:00 UTC+0000",
+              "2026-01-21 10:05 UTC+0000"
+            ],
+            "wind_class": "tail",
+            "wind_from": "SW",
+            "wind_speed": {
+              "value": [
+                5,
+                5
+              ],
+              "unit": "m/s"
+            },
+            "gust_max": {
+              "value": 8,
+              "unit": "m/s"
+            },
+            "temperature": {
+              "value": [
+                11,
+                12
+              ],
+              "unit": "C"
+            },
+            "feels_like": {
+              "value": [
+                9,
+                10
+              ],
+              "unit": "C"
+            },
+            "coverage": {
+              "temperature": true,
+              "wind": true,
+              "gust": true,
+              "precipitation": true,
+              "probability": true
+            },
+            "representative_section_index": 1,
+            "rain": {
+              "max_amount": {
+                "value": 0.6,
+                "unit": "mm"
+              },
+              "max_probability_pct": 65,
+              "period_hours": 1.0,
+              "wettest_window_local": [
+                "2026-01-21 10:00 UTC+0000",
+                "2026-01-21 11:00 UTC+0000"
+              ]
+            },
+            "display": {
+              "distance": "0.6\u20131.2 km",
+              "start_time": "10:00",
+              "time": "10:00\u201310:05",
+              "wind_class": "Tailwind",
+              "wind": "5.0 m/s from SW \u00b7 gusts 8.0",
+              "temperature": "11.0\u201312.0 \u00b0C",
+              "feels_like": "9.0\u201310.0 \u00b0C",
+              "rain": "0.6 mm/h \u00b7 65%"
+            }
+          },
+          {
+            "letter": "C",
+            "point_id": 2,
+            "section_count": 0,
+            "start_km": null,
+            "end_km": null,
+            "arrival_window_local": [],
+            "end_window_local": [],
+            "wind_class": "unknown",
+            "wind_from": "UNKNOWN",
+            "wind_speed": null,
+            "gust_max": null,
+            "temperature": null,
+            "feels_like": null,
+            "coverage": {
+              "temperature": false,
+              "wind": false,
+              "gust": false,
+              "precipitation": false,
+              "probability": false
+            },
+            "representative_section_index": null,
+            "rain": {
+              "max_amount": null,
+              "max_probability_pct": null,
+              "period_hours": null,
+              "wettest_window_local": []
+            },
+            "display": {
+              "distance": "UNKNOWN",
+              "start_time": "unknown",
+              "time": "unknown",
+              "wind_class": "Unknown",
+              "wind": "UNKNOWN from UNKNOWN \u00b7 gusts unknown",
+              "temperature": "UNKNOWN",
+              "feels_like": "UNKNOWN",
+              "rain": "Rain unknown \u00b7 chance unknown"
+            }
+          }
+        ],
+        "brief_id": "17fb54224e43b48adac09ea943a17a8fe76d902a5fac9be1fe5e556fc680a4f6"
+      },
+      "route_weather_map": {
+        "page": 1,
+        "path": "maps/weather/weather-ad7804efd58d9d229785e19d00490dd4.png",
+        "format": "png",
+        "width_px": 1080,
+        "height_px": 1646,
+        "sha256": "4653975e3a746139882de6bb79753033e252c0ab09f3b85cdd1afc92bf0836c9",
+        "bytes": 101305,
+        "pages": [
+          {
+            "page": 1,
+            "path": "maps/weather/weather-ad7804efd58d9d229785e19d00490dd4.png",
+            "format": "png",
+            "width_px": 1080,
+            "height_px": 1646,
+            "sha256": "4653975e3a746139882de6bb79753033e252c0ab09f3b85cdd1afc92bf0836c9",
+            "bytes": 101305
+          }
+        ],
+        "page_count": 1,
+        "total_bytes": 101305,
+        "renderer_version": 4,
+        "brief_id": "17fb54224e43b48adac09ea943a17a8fe76d902a5fac9be1fe5e556fc680a4f6",
+        "cache_key": "ceb9a1b5dd981680266d1c53a75bfa1bb048d9f1d01159ee4c57941b06a01732",
+        "tier": "forecast",
+        "expires_at": "2026-01-20T11:00:00+00:00"
+      }
+    },
+    {
+      "event_id": 90100002,
+      "route_status": "ok",
+      "terrain_summary": {
+        "polyline": [[0, 45, 5, 100], [0.6, 45.0054, 5, 110], [1.2, 45.0108, 5, 100]],
+        "total_distance_km": 1.2,
+        "total_elevation_m": 10,
+        "climbs": [],
+        "descents": [],
+        "course_character": "flat",
+        "source": "gpx_attachment"
+      },
+      "route_ref": {
+        "route_id": "intervals:90100002:attachment:17",
+        "attachment_id": 17,
+        "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "terrain_version": "3.142"
+      },
+      "route_weather": {
+        "schema_version": 2,
+        "event_id": 90100002,
+        "route_ref": {
+          "route_id": "intervals:90100002:attachment:17",
+          "attachment_id": 17,
+          "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "terrain_version": "3.142"
+        },
+        "status": "unavailable",
+        "reason_codes": ["forecast_unavailable", "provider_timeout"],
+        "brief_id": null,
+        "departure": {
+          "at_utc": "2026-01-20T10:15:00+00:00",
+          "timezone": "UTC",
+          "source": "assumed",
+          "assumed_reason": "start_passed",
+          "planned_local": "2026-01-20T09:00:00+00:00"
+        }
+      }
+    },
+    {
+      "event_id": 90100003,
+      "route_status": "ok",
+      "terrain_summary": {
+        "polyline": [[0, 45, 5, 100], [0.6, 45.0054, 5, 110], [1.2, 45.0108, 5, 100]],
+        "total_distance_km": 1.2,
+        "total_elevation_m": 10,
+        "climbs": [],
+        "descents": [],
+        "course_character": "flat",
+        "source": "gpx_attachment"
+      },
+      "route_ref": {
+        "route_id": "intervals:90100003:attachment:18",
+        "attachment_id": 18,
+        "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "terrain_version": "3.142"
+      },
+      "route_weather": {
+        "schema_version": 2,
+        "event_id": 90100003,
+        "route_ref": {
+          "route_id": "intervals:90100003:attachment:18",
+          "attachment_id": 18,
+          "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "terrain_version": "3.142"
+        },
+        "status": "unavailable",
+        "reason_codes": ["forecast_unavailable", "provider_timeout"],
+        "brief_id": null,
+        "departure": {
+          "at_utc": "2026-01-21T10:00:00+00:00",
+          "timezone": "UTC",
+          "source": "assumed",
+          "assumed_reason": "unset_time",
+          "planned_local": "2026-01-21T10:00:00+00:00"
+        }
+      }
+    },
+    {
+      "event_id": 102006323,
+      "event_name": "Tour of Flanders Sportive",
+      "event_date": "2026-04-05",
+      "category": "RACE_A",
+      "attachment_id": "a450075a-a5d4-44c4-8b1b-54f5696243f7",
+      "filename": "Tour_of_Flanders_Sportive.gpx",
+      "terrain_summary": {
+        "source": "gpx_attachment",
+        "total_distance_km": 256.8,
+        "total_elevation_m": 2005,
+        "elevation_per_km": 7.8,
+        "course_character": "rolling",
+        "climbs": [
+          {
+            "position_km": 157.1,
+            "distance_km": 1.5,
+            "elevation_m": 63,
+            "avg_gradient_pct": 4.3,
+            "start_coords": [
+              50.82042,
+              3.67216
+            ],
+            "end_coords": [
+              50.83134,
+              3.67186
+            ],
+            "max_gradient_pct": 11.3,
+            "category": null
+          },
+          {
+            "position_km": 205.5,
+            "distance_km": 2.2,
+            "elevation_m": 75,
+            "avg_gradient_pct": 3.3,
+            "start_coords": [
+              50.81161,
+              3.68164
+            ],
+            "end_coords": [
+              50.79937,
+              3.69201
+            ],
+            "max_gradient_pct": 10.8,
+            "category": null
+          },
+          {
+            "position_km": 221.0,
+            "distance_km": 3.6,
+            "elevation_m": 124,
+            "avg_gradient_pct": 3.4,
+            "start_coords": [
+              50.75183,
+              3.60231
+            ],
+            "end_coords": [
+              50.75992,
+              3.57208
+            ],
+            "max_gradient_pct": 9.6,
+            "category": "Cat 4"
+          },
+          {
+            "position_km": 228.0,
+            "distance_km": 2.6,
+            "elevation_m": 94,
+            "avg_gradient_pct": 3.6,
+            "start_coords": [
+              50.74919,
+              3.55752
+            ],
+            "end_coords": [
+              50.76389,
+              3.53964
+            ],
+            "max_gradient_pct": 10.8,
+            "category": null
+          },
+          {
+            "position_km": 234.8,
+            "distance_km": 3.1,
+            "elevation_m": 101,
+            "avg_gradient_pct": 3.3,
+            "start_coords": [
+              50.78612,
+              3.52451
+            ],
+            "end_coords": [
+              50.76597,
+              3.54424
+            ],
+            "max_gradient_pct": 9.7,
+            "category": "Cat 4"
+          }
+        ],
+        "descents": [
+          {
+            "position_km": 190.9,
+            "distance_km": 1.5,
+            "elevation_m": -65,
+            "avg_gradient_pct": -4.4,
+            "start_coords": [
+              50.83196,
+              3.78155
+            ],
+            "end_coords": [
+              50.82315,
+              3.77282
+            ]
+          },
+          {
+            "position_km": 207.7,
+            "distance_km": 2.1,
+            "elevation_m": -73,
+            "avg_gradient_pct": -3.5,
+            "start_coords": [
+              50.79937,
+              3.69201
+            ],
+            "end_coords": [
+              50.79584,
+              3.66722
+            ]
+          },
+          {
+            "position_km": 214.6,
+            "distance_km": 6.4,
+            "elevation_m": -103,
+            "avg_gradient_pct": -1.6,
+            "start_coords": [
+              50.76403,
+              3.67937
+            ],
+            "end_coords": [
+              50.75183,
+              3.60231
+            ]
+          },
+          {
+            "position_km": 224.4,
+            "distance_km": 3.4,
+            "elevation_m": -112,
+            "avg_gradient_pct": -3.3,
+            "start_coords": [
+              50.75928,
+              3.57479
+            ],
+            "end_coords": [
+              50.74909,
+              3.56043
+            ]
+          },
+          {
+            "position_km": 231.0,
+            "distance_km": 3.3,
+            "elevation_m": -115,
+            "avg_gradient_pct": -3.4,
+            "start_coords": [
+              50.76486,
+              3.53385
+            ],
+            "end_coords": [
+              50.78541,
+              3.51917
+            ]
+          }
+        ],
+        "polyline": [
+          [
+            0.0,
+            51.19291,
+            3.18235,
+            8
+          ],
+          [
+            0.5,
+            51.19084,
+            3.18682,
+            8
+          ],
+          [
+            1.0,
+            51.18789,
+            3.19168,
+            9
+          ],
+          [
+            1.5,
+            51.18837,
+            3.19887,
+            6
+          ],
+          [
+            2.0,
+            51.18843,
+            3.20612,
+            4
+          ],
+          [
+            256.8,
+            50.85713,
+            3.60697,
+            10
+          ]
+        ],
+        "polyline_note": "Truncated for example — production output contains full 500m-resolution track"
+      },
+      "start_time": "07:00"
+    },
+    {
+      "event_id": 102004457,
+      "event_name": "Mallorca 312",
+      "event_date": "2026-04-25",
+      "category": "RACE_A",
+      "attachment_id": "4fcd610f-04bf-4778-aa6b-4ccb734a6392",
+      "filename": "Mallorca312_OKMobility_2025.gpx",
+      "terrain_summary": {
+        "source": "gpx_attachment",
+        "total_distance_km": 313.2,
+        "total_elevation_m": 4698,
+        "elevation_per_km": 15.0,
+        "course_character": "hilly",
+        "climbs": [
+          {
+            "position_km": 24.0,
+            "distance_km": 11.9,
+            "elevation_m": 459,
+            "avg_gradient_pct": 3.9,
+            "start_coords": [
+              39.86883,
+              2.96668
+            ],
+            "end_coords": [
+              39.83184,
+              2.89564
+            ],
+            "max_gradient_pct": 9.2,
+            "category": "Cat 2"
+          },
+          {
+            "position_km": 37.8,
+            "distance_km": 3.7,
+            "elevation_m": 175,
+            "avg_gradient_pct": 4.7,
+            "start_coords": [
+              39.82026,
+              2.89228
+            ],
+            "end_coords": [
+              39.82168,
+              2.86989
+            ],
+            "max_gradient_pct": 7.0,
+            "category": "Cat 4"
+          },
+          {
+            "position_km": 46.6,
+            "distance_km": 8.8,
+            "elevation_m": 309,
+            "avg_gradient_pct": 3.5,
+            "start_coords": [
+              39.82048,
+              2.82994
+            ],
+            "end_coords": [
+              39.78895,
+              2.7795
+            ],
+            "max_gradient_pct": 9.9,
+            "category": "Cat 3"
+          },
+          {
+            "position_km": 70.5,
+            "distance_km": 4.6,
+            "elevation_m": 208,
+            "avg_gradient_pct": 4.6,
+            "start_coords": [
+              39.77681,
+              2.70544
+            ],
+            "end_coords": [
+              39.77355,
+              2.67657
+            ],
+            "max_gradient_pct": 7.8,
+            "category": "Cat 3"
+          },
+          {
+            "position_km": 77.9,
+            "distance_km": 10.1,
+            "elevation_m": 306,
+            "avg_gradient_pct": 3.0,
+            "start_coords": [
+              39.76367,
+              2.65377
+            ],
+            "end_coords": [
+              39.72403,
+              2.60606
+            ],
+            "max_gradient_pct": 10.3,
+            "category": "Cat 3"
+          },
+          {
+            "position_km": 90.9,
+            "distance_km": 3.0,
+            "elevation_m": 131,
+            "avg_gradient_pct": 4.4,
+            "start_coords": [
+              39.70462,
+              2.59584
+            ],
+            "end_coords": [
+              39.69066,
+              2.57484
+            ],
+            "max_gradient_pct": 6.6,
+            "category": "Cat 4"
+          },
+          {
+            "position_km": 104.7,
+            "distance_km": 11.1,
+            "elevation_m": 219,
+            "avg_gradient_pct": 2.0,
+            "start_coords": [
+              39.68732,
+              2.51403
+            ],
+            "end_coords": [
+              39.64378,
+              2.45017
+            ],
+            "max_gradient_pct": 7.7,
+            "category": "Cat 3"
+          },
+          {
+            "position_km": 119.7,
+            "distance_km": 3.7,
+            "elevation_m": 176,
+            "avg_gradient_pct": 4.8,
+            "start_coords": [
+              39.62752,
+              2.42624
+            ],
+            "end_coords": [
+              39.60636,
+              2.40972
+            ],
+            "max_gradient_pct": 8.0,
+            "category": "Cat 4"
+          },
+          {
+            "position_km": 129.3,
+            "distance_km": 5.4,
+            "elevation_m": 136,
+            "avg_gradient_pct": 2.5,
+            "start_coords": [
+              39.58085,
+              2.43117
+            ],
+            "end_coords": [
+              39.57941,
+              2.45586
+            ],
+            "max_gradient_pct": 7.3,
+            "category": "Cat 4"
+          },
+          {
+            "position_km": 138.1,
+            "distance_km": 5.7,
+            "elevation_m": 278,
+            "avg_gradient_pct": 4.9,
+            "start_coords": [
+              39.58722,
+              2.47638
+            ],
+            "end_coords": [
+              39.60731,
+              2.50162
+            ],
+            "max_gradient_pct": 7.5,
+            "category": "Cat 3"
+          },
+          {
+            "position_km": 148.2,
+            "distance_km": 4.2,
+            "elevation_m": 243,
+            "avg_gradient_pct": 5.8,
+            "start_coords": [
+              39.62313,
+              2.52745
+            ],
+            "end_coords": [
+              39.64356,
+              2.53232
+            ],
+            "max_gradient_pct": 8.3,
+            "category": "Cat 3"
+          },
+          {
+            "position_km": 259.7,
+            "distance_km": 2.8,
+            "elevation_m": 125,
+            "avg_gradient_pct": 4.5,
+            "start_coords": [
+              39.65277,
+              3.1886
+            ],
+            "end_coords": [
+              39.63554,
+              3.20249
+            ],
+            "max_gradient_pct": 9.8,
+            "category": "Cat 4"
+          },
+          {
+            "position_km": 269.4,
+            "distance_km": 7.0,
+            "elevation_m": 115,
+            "avg_gradient_pct": 1.6,
+            "start_coords": [
+              39.61979,
+              3.23065
+            ],
+            "end_coords": [
+              39.66606,
+              3.26858
+            ],
+            "max_gradient_pct": 6.8,
+            "category": "Cat 4"
+          }
+        ],
+        "descents": [
+          {
+            "position_km": 35.9,
+            "distance_km": 1.6,
+            "elevation_m": -63,
+            "avg_gradient_pct": -3.9,
+            "start_coords": [
+              39.83184,
+              2.89564
+            ],
+            "end_coords": [
+              39.82056,
+              2.89412
+            ]
+          },
+          {
+            "position_km": 43.5,
+            "distance_km": 3.8,
+            "elevation_m": -107,
+            "avg_gradient_pct": -2.8,
+            "start_coords": [
+              39.82436,
+              2.85094
+            ],
+            "end_coords": [
+              39.8161,
+              2.82885
+            ]
+          },
+          {
+            "position_km": 54.9,
+            "distance_km": 15.3,
+            "elevation_m": -825,
+            "avg_gradient_pct": -5.4,
+            "start_coords": [
+              39.79112,
+              2.78434
+            ],
+            "end_coords": [
+              39.77862,
+              2.70456
+            ]
+          },
+          {
+            "position_km": 75.0,
+            "distance_km": 2.8,
+            "elevation_m": -107,
+            "avg_gradient_pct": -3.8,
+            "start_coords": [
+              39.77355,
+              2.67657
+            ],
+            "end_coords": [
+              39.76367,
+              2.65377
+            ]
+          },
+          {
+            "position_km": 93.9,
+            "distance_km": 10.6,
+            "elevation_m": -388,
+            "avg_gradient_pct": -3.7,
+            "start_coords": [
+              39.69066,
+              2.57484
+            ],
+            "end_coords": [
+              39.68785,
+              2.51651
+            ]
+          },
+          {
+            "position_km": 116.5,
+            "distance_km": 3.2,
+            "elevation_m": -133,
+            "avg_gradient_pct": -4.1,
+            "start_coords": [
+              39.6426,
+              2.44684
+            ],
+            "end_coords": [
+              39.62752,
+              2.42624
+            ]
+          },
+          {
+            "position_km": 123.4,
+            "distance_km": 5.9,
+            "elevation_m": -262,
+            "avg_gradient_pct": -4.4,
+            "start_coords": [
+              39.60636,
+              2.40972
+            ],
+            "end_coords": [
+              39.58085,
+              2.43117
+            ]
+          },
+          {
+            "position_km": 143.7,
+            "distance_km": 4.5,
+            "elevation_m": -192,
+            "avg_gradient_pct": -4.3,
+            "start_coords": [
+              39.60731,
+              2.50162
+            ],
+            "end_coords": [
+              39.62313,
+              2.52745
+            ]
+          },
+          {
+            "position_km": 152.4,
+            "distance_km": 13.7,
+            "elevation_m": -352,
+            "avg_gradient_pct": -2.6,
+            "start_coords": [
+              39.64356,
+              2.53232
+            ],
+            "end_coords": [
+              39.65589,
+              2.641
+            ]
+          },
+          {
+            "position_km": 252.5,
+            "distance_km": 7.0,
+            "elevation_m": -128,
+            "avg_gradient_pct": -1.8,
+            "start_coords": [
+              39.63668,
+              3.15694
+            ],
+            "end_coords": [
+              39.65106,
+              3.18796
+            ]
+          },
+          {
+            "position_km": 279.4,
+            "distance_km": 5.7,
+            "elevation_m": -120,
+            "avg_gradient_pct": -2.1,
+            "start_coords": [
+              39.67392,
+              3.29691
+            ],
+            "end_coords": [
+              39.68625,
+              3.3495
+            ]
+          }
+        ],
+        "polyline": [
+          [
+            0.0,
+            39.80699,
+            3.11674,
+            6
+          ],
+          [
+            0.6,
+            39.81171,
+            3.11541,
+            6
+          ],
+          [
+            1.1,
+            39.81622,
+            3.11398,
+            5
+          ],
+          [
+            1.6,
+            39.82112,
+            3.11466,
+            5
+          ],
+          [
+            2.2,
+            39.82625,
+            3.11562,
+            5
+          ],
+          [
+            313.2,
+            39.80677,
+            3.11681,
+            6
+          ]
+        ],
+        "polyline_note": "Truncated for example — production output contains full 500m-resolution track"
+      },
+      "start_time": "06:30"
+    },
+    {
+      "event_id": 102004168,
+      "event_name": "DGI Hærvejsløbet - L'Étape Denmark by Tour de France",
+      "event_date": "2026-06-27",
+      "category": "RACE_A",
+      "attachment_id": "8b4c7b03-a164-4cd3-b1fd-68e9a779a7b8",
+      "filename": "Flensborg-Viborg Landevej 300km 2026.gpx",
+      "terrain_summary": {
+        "source": "gpx_attachment",
+        "total_distance_km": 299.3,
+        "total_elevation_m": 2173,
+        "elevation_per_km": 7.3,
+        "course_character": "rolling",
+        "climbs": [
+          {
+            "position_km": 250.1,
+            "distance_km": 1.4,
+            "elevation_m": 59,
+            "avg_gradient_pct": 4.3,
+            "start_coords": [
+              56.1351,
+              9.46535
+            ],
+            "end_coords": [
+              56.14609,
+              9.46197
+            ],
+            "max_gradient_pct": 7.2,
+            "category": null
+          }
+        ],
+        "descents": [
+          {
+            "position_km": 41.7,
+            "distance_km": 1.6,
+            "elevation_m": -55,
+            "avg_gradient_pct": -3.5,
+            "start_coords": [
+              55.05918,
+              9.40846
+            ],
+            "end_coords": [
+              55.05258,
+              9.42224
+            ]
+          },
+          {
+            "position_km": 284.8,
+            "distance_km": 2.3,
+            "elevation_m": -69,
+            "avg_gradient_pct": -3.0,
+            "start_coords": [
+              56.35053,
+              9.34072
+            ],
+            "end_coords": [
+              56.36682,
+              9.3303
+            ]
+          }
+        ],
+        "polyline": [
+          [
+            0.0,
+            54.79285,
+            9.4335,
+            2
+          ],
+          [
+            0.7,
+            54.79787,
+            9.42773,
+            3
+          ],
+          [
+            1.2,
+            54.80197,
+            9.42438,
+            9
+          ],
+          [
+            1.9,
+            54.8083,
+            9.42249,
+            18
+          ],
+          [
+            2.8,
+            54.8158,
+            9.42181,
+            35
+          ],
+          [
+            299.3,
+            56.44893,
+            9.40998,
+            32
+          ]
+        ],
+        "polyline_note": "Truncated for example — production output contains full 500m-resolution track"
+      },
+      "start_time": "06:00"
+    },
+    {
+      "event_id": 102003950,
+      "event_name": "Marmotte Granfondo Alpes",
+      "event_date": "2026-07-04",
+      "category": "RACE_A",
+      "attachment_id": "64998ee8-2feb-4228-80de-58ebfff2c576",
+      "filename": "MA25_Parcours-Marmotte-GF-Alpes-1.gpx",
+      "terrain_summary": {
+        "source": "gpx_attachment",
+        "total_distance_km": 175.9,
+        "total_elevation_m": 7719,
+        "elevation_per_km": 43.9,
+        "course_character": "mountain",
+        "climbs": [
+          {
+            "position_km": 9.8,
+            "distance_km": 12.2,
+            "elevation_m": 576,
+            "avg_gradient_pct": 4.7,
+            "start_coords": [
+              45.12725,
+              6.03587
+            ],
+            "end_coords": [
+              45.21118,
+              6.0475
+            ],
+            "max_gradient_pct": 17.5,
+            "category": "Cat 2"
+          },
+          {
+            "position_km": 23.5,
+            "distance_km": 9.0,
+            "elevation_m": 608,
+            "avg_gradient_pct": 6.8,
+            "start_coords": [
+              45.20931,
+              6.05718
+            ],
+            "end_coords": [
+              45.22185,
+              6.13667
+            ],
+            "max_gradient_pct": 29.7,
+            "category": "Cat 2"
+          },
+          {
+            "position_km": 33.9,
+            "distance_km": 2.7,
+            "elevation_m": 187,
+            "avg_gradient_pct": 6.8,
+            "start_coords": [
+              45.22778,
+              6.15152
+            ],
+            "end_coords": [
+              45.23951,
+              6.17557
+            ],
+            "max_gradient_pct": 12.6,
+            "category": "Cat 4"
+          },
+          {
+            "position_km": 69.4,
+            "distance_km": 23.4,
+            "elevation_m": 1032,
+            "avg_gradient_pct": 4.4,
+            "start_coords": [
+              45.26752,
+              6.37659
+            ],
+            "end_coords": [
+              45.19594,
+              6.4424
+            ],
+            "max_gradient_pct": 18.3,
+            "category": "HC"
+          },
+          {
+            "position_km": 96.8,
+            "distance_km": 17.3,
+            "elevation_m": 1140,
+            "avg_gradient_pct": 6.6,
+            "start_coords": [
+              45.16551,
+              6.43001
+            ],
+            "end_coords": [
+              45.0662,
+              6.40998
+            ],
+            "max_gradient_pct": 18.7,
+            "category": "HC"
+          },
+          {
+            "position_km": 145.5,
+            "distance_km": 2.1,
+            "elevation_m": 127,
+            "avg_gradient_pct": 5.9,
+            "start_coords": [
+              45.04132,
+              6.17216
+            ],
+            "end_coords": [
+              45.04607,
+              6.14855
+            ],
+            "max_gradient_pct": 48.8,
+            "category": "Cat 4"
+          },
+          {
+            "position_km": 151.4,
+            "distance_km": 1.1,
+            "elevation_m": 150,
+            "avg_gradient_pct": 13.5,
+            "start_coords": [
+              45.04289,
+              6.12425
+            ],
+            "end_coords": [
+              45.03947,
+              6.11222
+            ],
+            "max_gradient_pct": 43.2,
+            "category": "Cat 4"
+          },
+          {
+            "position_km": 155.6,
+            "distance_km": 0.6,
+            "elevation_m": 86,
+            "avg_gradient_pct": 13.6,
+            "start_coords": [
+              45.03134,
+              6.08581
+            ],
+            "end_coords": [
+              45.02714,
+              6.08055
+            ],
+            "max_gradient_pct": 48.0,
+            "category": null
+          },
+          {
+            "position_km": 162.2,
+            "distance_km": 13.8,
+            "elevation_m": 1095,
+            "avg_gradient_pct": 8.0,
+            "start_coords": [
+              45.06193,
+              6.0372
+            ],
+            "end_coords": [
+              45.09034,
+              6.07076
+            ],
+            "max_gradient_pct": 28.5,
+            "category": "HC"
+          }
+        ],
+        "descents": [
+          {
+            "position_km": 21.2,
+            "distance_km": 2.3,
+            "elevation_m": -89,
+            "avg_gradient_pct": -3.9,
+            "start_coords": [
+              45.20516,
+              6.04332
+            ],
+            "end_coords": [
+              45.20931,
+              6.05718
+            ]
+          },
+          {
+            "position_km": 32.5,
+            "distance_km": 1.3,
+            "elevation_m": -63,
+            "avg_gradient_pct": -5.0,
+            "start_coords": [
+              45.22185,
+              6.13667
+            ],
+            "end_coords": [
+              45.22683,
+              6.14935
+            ]
+          },
+          {
+            "position_km": 36.7,
+            "distance_km": 23.6,
+            "elevation_m": -1449,
+            "avg_gradient_pct": -6.1,
+            "start_coords": [
+              45.23951,
+              6.17557
+            ],
+            "end_coords": [
+              45.32658,
+              6.31651
+            ]
+          },
+          {
+            "position_km": 92.7,
+            "distance_km": 4.1,
+            "elevation_m": -176,
+            "avg_gradient_pct": -4.3,
+            "start_coords": [
+              45.19594,
+              6.4424
+            ],
+            "end_coords": [
+              45.16551,
+              6.43001
+            ]
+          },
+          {
+            "position_km": 116.2,
+            "distance_km": 22.3,
+            "elevation_m": -1216,
+            "avg_gradient_pct": -5.5,
+            "start_coords": [
+              45.06228,
+              6.4071
+            ],
+            "end_coords": [
+              45.03969,
+              6.25809
+            ]
+          },
+          {
+            "position_km": 139.3,
+            "distance_km": 1.7,
+            "elevation_m": -184,
+            "avg_gradient_pct": -10.7,
+            "start_coords": [
+              45.03876,
+              6.24708
+            ],
+            "end_coords": [
+              45.03615,
+              6.22628
+            ]
+          },
+          {
+            "position_km": 141.4,
+            "distance_km": 3.6,
+            "elevation_m": -339,
+            "avg_gradient_pct": -9.4,
+            "start_coords": [
+              45.03643,
+              6.22114
+            ],
+            "end_coords": [
+              45.03919,
+              6.17749
+            ]
+          },
+          {
+            "position_km": 147.7,
+            "distance_km": 3.5,
+            "elevation_m": -262,
+            "avg_gradient_pct": -7.5,
+            "start_coords": [
+              45.04607,
+              6.14855
+            ],
+            "end_coords": [
+              45.04465,
+              6.12505
+            ]
+          },
+          {
+            "position_km": 152.5,
+            "distance_km": 3.6,
+            "elevation_m": -242,
+            "avg_gradient_pct": -6.8,
+            "start_coords": [
+              45.03947,
+              6.11222
+            ],
+            "end_coords": [
+              45.0285,
+              6.08235
+            ]
+          },
+          {
+            "position_km": 156.2,
+            "distance_km": 5.9,
+            "elevation_m": -222,
+            "avg_gradient_pct": -3.7,
+            "start_coords": [
+              45.02714,
+              6.08055
+            ],
+            "end_coords": [
+              45.06193,
+              6.0372
+            ]
+          }
+        ],
+        "polyline": [
+          [
+            0.0,
+            45.05501,
+            6.02986,
+            726
+          ],
+          [
+            0.6,
+            45.05984,
+            6.0274,
+            719
+          ],
+          [
+            1.1,
+            45.06378,
+            6.02468,
+            719
+          ],
+          [
+            1.6,
+            45.06806,
+            6.02109,
+            715
+          ],
+          [
+            2.2,
+            45.07214,
+            6.01803,
+            727
+          ],
+          [
+            175.9,
+            45.09034,
+            6.07076,
+            1813
+          ]
+        ],
+        "polyline_note": "Truncated for example — production output contains full 500m-resolution track"
+      },
+      "start_time": "07:00"
+    },
+    {
+      "event_id": 102004367,
+      "event_name": "Maratona dles Dolomites",
+      "event_date": "2026-07-05",
+      "category": "RACE_A",
+      "attachment_id": "a07a389c-9f23-47f0-9e31-b2723ac872b3",
+      "filename": "GPX_Maratona_Course.gpx",
+      "terrain_summary": {
+        "source": "gpx_attachment",
+        "total_distance_km": 138.6,
+        "total_elevation_m": 5708,
+        "elevation_per_km": 41.2,
+        "course_character": "mountain",
+        "climbs": [
+          {
+            "position_km": 0.0,
+            "distance_km": 9.5,
+            "elevation_m": 442,
+            "avg_gradient_pct": 4.7,
+            "start_coords": [
+              46.57785,
+              11.89589
+            ],
+            "end_coords": [
+              46.51424,
+              11.87235
+            ],
+            "max_gradient_pct": 13.7,
+            "category": "Cat 2"
+          },
+          {
+            "position_km": 13.6,
+            "distance_km": 9.3,
+            "elevation_m": 639,
+            "avg_gradient_pct": 6.8,
+            "start_coords": [
+              46.49728,
+              11.87422
+            ],
+            "end_coords": [
+              46.48743,
+              11.8127
+            ],
+            "max_gradient_pct": 14.2,
+            "category": "Cat 2"
+          },
+          {
+            "position_km": 29.4,
+            "distance_km": 5.4,
+            "elevation_m": 421,
+            "avg_gradient_pct": 7.7,
+            "start_coords": [
+              46.49583,
+              11.78744
+            ],
+            "end_coords": [
+              46.50782,
+              11.76916
+            ],
+            "max_gradient_pct": 17.7,
+            "category": "Cat 2"
+          },
+          {
+            "position_km": 40.4,
+            "distance_km": 5.6,
+            "elevation_m": 247,
+            "avg_gradient_pct": 4.4,
+            "start_coords": [
+              46.53248,
+              11.77868
+            ],
+            "end_coords": [
+              46.54995,
+              11.80692
+            ],
+            "max_gradient_pct": 12.8,
+            "category": "Cat 3"
+          },
+          {
+            "position_km": 55.0,
+            "distance_km": 6.2,
+            "elevation_m": 352,
+            "avg_gradient_pct": 5.6,
+            "start_coords": [
+              46.55128,
+              11.86886
+            ],
+            "end_coords": [
+              46.51424,
+              11.87235
+            ],
+            "max_gradient_pct": 13.7,
+            "category": "Cat 3"
+          },
+          {
+            "position_km": 74.7,
+            "distance_km": 2.2,
+            "elevation_m": 94,
+            "avg_gradient_pct": 4.3,
+            "start_coords": [
+              46.47864,
+              11.97596
+            ],
+            "end_coords": [
+              46.48728,
+              11.99028
+            ],
+            "max_gradient_pct": 21.1,
+            "category": null
+          },
+          {
+            "position_km": 81.0,
+            "distance_km": 2.9,
+            "elevation_m": 152,
+            "avg_gradient_pct": 5.2,
+            "start_coords": [
+              46.45893,
+              11.98996
+            ],
+            "end_coords": [
+              46.44348,
+              12.00338
+            ],
+            "max_gradient_pct": 22.8,
+            "category": "Cat 4"
+          },
+          {
+            "position_km": 87.6,
+            "distance_km": 9.9,
+            "elevation_m": 911,
+            "avg_gradient_pct": 9.2,
+            "start_coords": [
+              46.45622,
+              12.03079
+            ],
+            "end_coords": [
+              46.48253,
+              12.05447
+            ],
+            "max_gradient_pct": 20.4,
+            "category": "Cat 1"
+          },
+          {
+            "position_km": 106.5,
+            "distance_km": 12.7,
+            "elevation_m": 676,
+            "avg_gradient_pct": 5.3,
+            "start_coords": [
+              46.51719,
+              12.09984
+            ],
+            "end_coords": [
+              46.5256,
+              11.99668
+            ],
+            "max_gradient_pct": 13.5,
+            "category": "Cat 1"
+          }
+        ],
+        "descents": [
+          {
+            "position_km": 9.5,
+            "distance_km": 4.1,
+            "elevation_m": -275,
+            "avg_gradient_pct": -6.7,
+            "start_coords": [
+              46.51424,
+              11.87235
+            ],
+            "end_coords": [
+              46.49728,
+              11.87422
+            ]
+          },
+          {
+            "position_km": 22.9,
+            "distance_km": 6.5,
+            "elevation_m": -420,
+            "avg_gradient_pct": -6.5,
+            "start_coords": [
+              46.48743,
+              11.8127
+            ],
+            "end_coords": [
+              46.49583,
+              11.78744
+            ]
+          },
+          {
+            "position_km": 34.9,
+            "distance_km": 5.5,
+            "elevation_m": -368,
+            "avg_gradient_pct": -6.7,
+            "start_coords": [
+              46.50782,
+              11.76916
+            ],
+            "end_coords": [
+              46.53248,
+              11.77868
+            ]
+          },
+          {
+            "position_km": 46.0,
+            "distance_km": 9.0,
+            "elevation_m": -594,
+            "avg_gradient_pct": -6.6,
+            "start_coords": [
+              46.54995,
+              11.80692
+            ],
+            "end_coords": [
+              46.55128,
+              11.86886
+            ]
+          },
+          {
+            "position_km": 61.2,
+            "distance_km": 7.9,
+            "elevation_m": -440,
+            "avg_gradient_pct": -5.5,
+            "start_coords": [
+              46.51424,
+              11.87235
+            ],
+            "end_coords": [
+              46.49666,
+              11.91946
+            ]
+          },
+          {
+            "position_km": 76.9,
+            "distance_km": 4.9,
+            "elevation_m": -193,
+            "avg_gradient_pct": -4.0,
+            "start_coords": [
+              46.48728,
+              11.99028
+            ],
+            "end_coords": [
+              46.45557,
+              11.98971
+            ]
+          },
+          {
+            "position_km": 83.9,
+            "distance_km": 3.6,
+            "elevation_m": -168,
+            "avg_gradient_pct": -4.6,
+            "start_coords": [
+              46.44348,
+              12.00338
+            ],
+            "end_coords": [
+              46.45622,
+              12.03079
+            ]
+          },
+          {
+            "position_km": 97.4,
+            "distance_km": 9.1,
+            "elevation_m": -712,
+            "avg_gradient_pct": -7.9,
+            "start_coords": [
+              46.48253,
+              12.05447
+            ],
+            "end_coords": [
+              46.51719,
+              12.09984
+            ]
+          },
+          {
+            "position_km": 119.2,
+            "distance_km": 13.6,
+            "elevation_m": -799,
+            "avg_gradient_pct": -5.9,
+            "start_coords": [
+              46.5256,
+              11.99668
+            ],
+            "end_coords": [
+              46.58378,
+              11.9081
+            ]
+          }
+        ],
+        "polyline": [
+          [
+            0.0,
+            46.57785,
+            11.89589,
+            1435
+          ],
+          [
+            0.6,
+            46.57367,
+            11.89244,
+            1453
+          ],
+          [
+            1.1,
+            46.56936,
+            11.89071,
+            1465
+          ],
+          [
+            1.6,
+            46.5658,
+            11.88725,
+            1485
+          ],
+          [
+            2.2,
+            46.56183,
+            11.88312,
+            1510
+          ],
+          [
+            138.6,
+            46.54944,
+            11.87137,
+            1534
+          ]
+        ],
+        "polyline_note": "Truncated for example — production output contains full 500m-resolution track"
+      },
+      "start_time": "06:30"
+    }
+  ]
+}

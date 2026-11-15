@@ -1,0 +1,120 @@
+# push.py v0.8 workflow: supports push, list, move, delete, set-threshold, annotate
+name: Push Workout to Intervals.icu
+
+on:
+  workflow_dispatch:
+    inputs:
+      command:
+        description: 'Subcommand'
+        required: false
+        default: 'push'
+        type: choice
+        options:
+          - push
+          - list
+          - move
+          - delete
+          - set-threshold
+          - annotate
+      workouts:
+        description: 'JSON workout(s) — required for push'
+        required: false
+        type: string
+      event_id:
+        description: 'Event ID — for move/delete/annotate (planned)'
+        required: false
+        type: string
+      date:
+        description: 'Target date YYYY-MM-DD — for move'
+        required: false
+        type: string
+      time:
+        description: 'Optional HH:MM local for move; same date changes only time. Push uses time in workouts JSON'
+        required: false
+        type: string
+      oldest:
+        description: 'List start date (default: today)'
+        required: false
+        type: string
+      newest:
+        description: 'List end date (default: +6 days)'
+        required: false
+        type: string
+      sport:
+        description: 'Sport family or type — for set-threshold (cycling, Ride, run, etc.)'
+        required: false
+        type: string
+      ftp:
+        description: 'FTP — for set-threshold'
+        required: false
+        type: string
+      indoor_ftp:
+        description: 'Indoor FTP — for set-threshold'
+        required: false
+        type: string
+      lthr:
+        description: 'LTHR — for set-threshold'
+        required: false
+        type: string
+      max_hr:
+        description: 'Max HR — for set-threshold'
+        required: false
+        type: string
+      activity_id:
+        description: 'Activity ID — for annotate (completed)'
+        required: false
+        type: string
+      message:
+        description: 'Note text — for annotate'
+        required: false
+        type: string
+      chat:
+        description: 'Post to activity chat instead of description — for annotate'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+      confirm:
+        description: 'Execute write (false = preview only)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: section11-writer
+  cancel-in-progress: false
+  queue: max
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Require installed Section 11
+        run: |
+          if [ ! -f section11/examples/agentic/push.py ]; then
+            echo 'Section 11 is not installed yet; run Sync once first'
+            exit 1
+          fi
+      - name: Setup Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: python -m pip install requests
+      - name: Run managed push
+        env:
+          ATHLETE_ID: ${{ secrets.ATHLETE_ID }}
+          INTERVALS_KEY: ${{ secrets.INTERVALS_KEY }}
+        run: python section11/examples/agentic/push.py --workflow
