@@ -1,96 +1,16 @@
 {
-  "generated_at": "2026-11-15T09:28:08.795797",
-  "version": "3.112",
-  "script_hash": "a60c2ee19b34",
+  "generated_at": "2026-11-15T15:05:56.675407",
+  "interval_data_note": "recent_activities[].interval_data: plan_match is timeline matching only; compliance summarizes intervals.json session_structure power/time evidence (only that plan-aware source judges completion, per-bout counts and >=95% progression, subject to its context/availability gates); icu_detected is descriptive Intervals.icu interval_summary, not plan-aware. If sources disagree, report both; session_structure judges. Never use device/app lap averages, whole-session average/NP or a set mean as rep power or compliance counts. See SECTION_11.md#which-interval-data-to-use.",
+  "schema_version": 2,
+  "version": "3.175",
+  "script_hash": "87c3771fe680",
   "scan_hours": 72,
   "retention_days": 14,
   "activities": [
     {
-      "activity_id": "i207485032",
-      "date": "2026-11-08",
-      "type": "VirtualRide",
-      "name": "Zwift - Colorado River Sunrise in Video",
-      "interval_summary": null,
-      "intervals": [
-        {
-          "type": "RECOVERY",
-          "duration_secs": 4410,
-          "avg_power": 70,
-          "max_power": 216,
-          "avg_hr": 107,
-          "max_hr": 129,
-          "avg_cadence": 88.195694,
-          "zone": 1,
-          "training_load": 19.072826,
-          "decoupling": 13.903135
-        }
-      ]
-    },
-    {
-      "activity_id": "i208248088",
-      "date": "2026-11-10",
-      "type": "VirtualRide",
-      "name": "Zwift - California Dreamin' in Watopia",
-      "interval_summary": null,
-      "intervals": [
-        {
-          "type": "RECOVERY",
-          "duration_secs": 2990,
-          "avg_power": 80,
-          "max_power": 245,
-          "avg_hr": 102,
-          "max_hr": 125,
-          "avg_cadence": 89.81572,
-          "zone": 1,
-          "training_load": 16.002974,
-          "decoupling": 18.530222
-        }
-      ]
-    },
-    {
-      "activity_id": "i208816124",
-      "date": "2026-11-11",
-      "type": "VirtualRide",
-      "name": "Zwift - Molten Momentum in Watopia",
-      "interval_summary": null,
-      "intervals": [
-        {
-          "type": "RECOVERY",
-          "duration_secs": 3060,
-          "avg_power": 95,
-          "max_power": 249,
-          "avg_hr": 123,
-          "max_hr": 132,
-          "avg_cadence": 87.89967,
-          "zone": 1,
-          "training_load": 24.449533
-        }
-      ]
-    },
-    {
-      "activity_id": "i209100191",
-      "date": "2026-11-12",
-      "type": "VirtualRide",
-      "name": "Zwift - Tempus Fugit in Watopia",
-      "interval_summary": null,
-      "intervals": [
-        {
-          "type": "RECOVERY",
-          "duration_secs": 2710,
-          "avg_power": 92,
-          "max_power": 293,
-          "avg_hr": 104,
-          "max_hr": 124,
-          "avg_cadence": 79.053894,
-          "zone": 1,
-          "training_load": 17.517288,
-          "decoupling": -5.256789
-        }
-      ]
-    },
-    {
       "activity_id": "i209983610",
       "date": "2026-11-14",
+      "start_datetime": "2026-11-14T15:46:47",
       "type": "VirtualRide",
       "name": "Zwift - Force Development",
       "interval_summary": [
@@ -100,91 +20,613 @@
         {
           "type": "RECOVERY",
           "duration_secs": 423,
+          "moving_secs": 423,
+          "start_secs": 0,
+          "end_secs": 423,
           "avg_power": 128,
           "max_power": 160,
           "avg_hr": 124,
           "max_hr": 134,
+          "min_hr": 101,
           "avg_cadence": 68.754135,
           "zone": 2,
-          "training_load": 4.6527486,
-          "decoupling": -1.906482
+          "w_bal_start": 15960,
+          "w_bal_end": 15960,
+          "training_load": 4.6527486
         },
         {
           "type": "WORK",
           "label": "298s@184w66rpm",
           "duration_secs": 299,
+          "moving_secs": 299,
+          "start_secs": 423,
+          "end_secs": 722,
           "avg_power": 184,
           "max_power": 186,
           "avg_hr": 145,
           "max_hr": 153,
+          "min_hr": 124,
           "avg_cadence": 67.67224,
           "zone": 3,
-          "training_load": 6.546418,
-          "decoupling": 6.41052
+          "w_bal_start": 15960,
+          "w_bal_end": 15960,
+          "training_load": 6.546418
         },
         {
           "type": "RECOVERY",
           "duration_secs": 180,
+          "moving_secs": 180,
+          "start_secs": 722,
+          "end_secs": 902,
           "avg_power": 139,
           "max_power": 185,
           "avg_hr": 144,
           "max_hr": 154,
+          "min_hr": 138,
           "avg_cadence": 76.255554,
           "zone": 2,
-          "training_load": 2.5014873,
-          "decoupling": -3.4908593
+          "w_bal_start": 15960,
+          "w_bal_end": 15960,
+          "training_load": 2.5014873
         },
         {
           "type": "WORK",
           "label": "298s@184w66rpm",
           "duration_secs": 299,
+          "moving_secs": 299,
+          "start_secs": 902,
+          "end_secs": 1201,
           "avg_power": 184,
           "max_power": 187,
           "avg_hr": 154,
           "max_hr": 159,
+          "min_hr": 139,
           "avg_cadence": 66.234116,
           "zone": 3,
-          "training_load": 6.6185546,
-          "decoupling": 4.261328
+          "w_bal_start": 15960,
+          "w_bal_end": 15960,
+          "training_load": 6.6185546
         },
         {
           "type": "RECOVERY",
           "duration_secs": 183,
+          "moving_secs": 183,
+          "start_secs": 1201,
+          "end_secs": 1384,
           "avg_power": 140,
           "max_power": 185,
           "avg_hr": 152,
           "max_hr": 161,
+          "min_hr": 145,
           "avg_cadence": 79.38798,
           "zone": 2,
-          "training_load": 2.5431786,
-          "decoupling": -4.884376
+          "w_bal_start": 15960,
+          "w_bal_end": 15960,
+          "training_load": 2.5431786
         },
         {
           "type": "WORK",
           "label": "298s@184w66rpm",
           "duration_secs": 297,
+          "moving_secs": 297,
+          "start_secs": 1384,
+          "end_secs": 1681,
           "avg_power": 184,
           "max_power": 187,
           "avg_hr": 159,
           "max_hr": 165,
+          "min_hr": 146,
           "avg_cadence": 65.10438,
           "zone": 3,
-          "training_load": 6.574283,
-          "decoupling": 4.4046745
+          "w_bal_start": 15960,
+          "w_bal_end": 15960,
+          "training_load": 6.574283
         },
         {
           "type": "RECOVERY",
           "duration_secs": 1985,
+          "moving_secs": 1985,
+          "start_secs": 1681,
+          "end_secs": 3666,
           "avg_power": 84,
           "max_power": 227,
           "avg_hr": 133,
           "max_hr": 166,
+          "min_hr": 109,
           "avg_cadence": 78.775314,
           "zone": 1,
-          "training_load": 12.09185,
-          "decoupling": -5.9874883
+          "w_bal_start": 15960,
+          "w_bal_end": 15959,
+          "training_load": 12.09185
         }
-      ]
+      ],
+      "zone_basis": "power",
+      "session_structure": {
+        "version": 6,
+        "method": "fixed_elapsed_thirds",
+        "status": "no_plan",
+        "thirds": [
+          [
+            0,
+            1221,
+            157.8,
+            192.7,
+            140.5,
+            69.0,
+            100.0,
+            100.0,
+            100.0,
+            0.08
+          ],
+          [
+            1221,
+            2443,
+            117.7,
+            143.8,
+            144.9,
+            80.8,
+            100.0,
+            100.0,
+            100.0,
+            0.16
+          ],
+          [
+            2443,
+            3665,
+            83.3,
+            101.8,
+            131.0,
+            73.7,
+            100.0,
+            100.0,
+            100.0,
+            1.06
+          ]
+        ],
+        "efforts": [
+          [
+            423,
+            722,
+            184,
+            145,
+            67.67224
+          ],
+          [
+            902,
+            1201,
+            184,
+            154,
+            66.234116
+          ],
+          [
+            1384,
+            1681,
+            184,
+            159,
+            65.10438
+          ]
+        ],
+        "issues": [
+          "efforts_from_interval_cache"
+        ],
+        "cache": {
+          "activity_key": "90acda82953d0cdb9ccf5e1ca9174b183873b4a163bc73b74bc6d4ec11cc66a3",
+          "event_key": null,
+          "plan_key": null,
+          "plan_key_version": 2,
+          "sampled_at": "2026-11-15T15:06:01.812763+00:00",
+          "next_refresh_at": "2026-11-16T15:06:01.812763+00:00"
+        }
+      }
+    },
+    {
+      "activity_id": "i209100191",
+      "date": "2026-11-12",
+      "start_datetime": "2026-11-12T12:17:18",
+      "type": "VirtualRide",
+      "name": "Zwift - Tempus Fugit in Watopia",
+      "interval_summary": null,
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 2710,
+          "moving_secs": 2710,
+          "start_secs": 0,
+          "end_secs": 2710,
+          "avg_power": 92,
+          "max_power": 293,
+          "avg_hr": 104,
+          "max_hr": 124,
+          "min_hr": 78,
+          "avg_cadence": 79.053894,
+          "zone": 1,
+          "w_bal_start": 15960,
+          "w_bal_end": 15939,
+          "training_load": 17.517288
+        }
+      ],
+      "zone_basis": "power",
+      "session_structure": {
+        "version": 6,
+        "method": "fixed_elapsed_thirds",
+        "status": "no_plan",
+        "thirds": [
+          [
+            0,
+            903,
+            73.5,
+            66.3,
+            93.4,
+            79.9,
+            99.89,
+            99.89,
+            99.89,
+            1.66
+          ],
+          [
+            903,
+            1806,
+            107.6,
+            97.1,
+            110.4,
+            80.6,
+            100.0,
+            100.0,
+            100.0,
+            0.66
+          ],
+          [
+            1806,
+            2709,
+            95.6,
+            86.3,
+            109.4,
+            76.8,
+            100.0,
+            100.0,
+            100.0,
+            0.78
+          ]
+        ],
+        "cache": {
+          "activity_key": "ce2ade3d1cf9f2140d43298e44c468c9dcab59337965243d6439da2b517a400e",
+          "event_key": null,
+          "plan_key": null,
+          "plan_key_version": 2,
+          "sampled_at": "2026-11-15T15:06:01.812763+00:00",
+          "next_refresh_at": "2026-11-16T15:06:01.812763+00:00"
+        }
+      }
+    },
+    {
+      "activity_id": "i208816124",
+      "date": "2026-11-11",
+      "start_datetime": "2026-11-11T17:23:09",
+      "type": "VirtualRide",
+      "name": "Zwift - Molten Momentum in Watopia",
+      "interval_summary": null,
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 3060,
+          "moving_secs": 3060,
+          "start_secs": 0,
+          "end_secs": 3060,
+          "avg_power": 95,
+          "max_power": 249,
+          "avg_hr": 123,
+          "max_hr": 132,
+          "min_hr": 114,
+          "avg_cadence": 87.89967,
+          "zone": 1,
+          "w_bal_start": 15960,
+          "w_bal_end": 15954,
+          "training_load": 24.449533
+        }
+      ],
+      "zone_basis": "power",
+      "session_structure": {
+        "version": 6,
+        "method": "fixed_elapsed_thirds",
+        "status": "no_plan",
+        "thirds": [
+          [
+            0,
+            1019,
+            101.9,
+            103.9,
+            null,
+            84.9,
+            100.0,
+            0.0,
+            100.0,
+            0.29
+          ],
+          [
+            1019,
+            2039,
+            99.6,
+            101.6,
+            null,
+            89.4,
+            100.0,
+            0.0,
+            100.0,
+            0.39
+          ],
+          [
+            2039,
+            3059,
+            84.4,
+            86.1,
+            123.8,
+            89.5,
+            100.0,
+            52.45,
+            100.0,
+            2.25
+          ]
+        ],
+        "cache": {
+          "activity_key": "0f558eb9b5194bb5f46c825f315eda36683f17a8a73af869bdbcd9d5ec9be977",
+          "event_key": null,
+          "plan_key": null,
+          "plan_key_version": 2,
+          "sampled_at": "2026-11-15T15:06:01.812763+00:00",
+          "next_refresh_at": "2026-11-16T15:06:01.812763+00:00"
+        }
+      }
+    },
+    {
+      "activity_id": "i208248088",
+      "date": "2026-11-10",
+      "start_datetime": "2026-11-10T12:17:33",
+      "type": "VirtualRide",
+      "name": "Zwift - California Dreamin' in Watopia",
+      "interval_summary": null,
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 2990,
+          "moving_secs": 2990,
+          "start_secs": 0,
+          "end_secs": 2990,
+          "avg_power": 80,
+          "max_power": 245,
+          "avg_hr": 102,
+          "max_hr": 125,
+          "min_hr": 77,
+          "avg_cadence": 89.81572,
+          "zone": 1,
+          "w_bal_start": 15960,
+          "w_bal_end": 15959,
+          "training_load": 16.002974
+        }
+      ],
+      "zone_basis": "power",
+      "session_structure": {
+        "version": 6,
+        "method": "fixed_elapsed_thirds",
+        "status": "no_plan",
+        "thirds": [
+          [
+            0,
+            996,
+            84.8,
+            84.5,
+            99.4,
+            91.5,
+            100.0,
+            100.0,
+            100.0,
+            1.1
+          ],
+          [
+            996,
+            1992,
+            84.4,
+            84.1,
+            105.5,
+            92.1,
+            100.0,
+            100.0,
+            100.0,
+            0.0
+          ],
+          [
+            1992,
+            2989,
+            73.4,
+            73.2,
+            103.2,
+            85.9,
+            100.0,
+            100.0,
+            100.0,
+            0.8
+          ]
+        ],
+        "cache": {
+          "activity_key": "9c6da5dedc31b4303209e98b99c1f1be4a32a6c997acb3d176758e56e319c07e",
+          "event_key": null,
+          "plan_key": null,
+          "plan_key_version": 2,
+          "sampled_at": "2026-11-15T15:06:01.812763+00:00",
+          "next_refresh_at": "2026-11-16T15:06:01.812763+00:00"
+        }
+      }
+    },
+    {
+      "activity_id": "i207485032",
+      "date": "2026-11-08",
+      "start_datetime": "2026-11-08T17:04:14",
+      "type": "VirtualRide",
+      "name": "Zwift - Colorado River Sunrise in Video",
+      "interval_summary": null,
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 4410,
+          "moving_secs": 4410,
+          "start_secs": 0,
+          "end_secs": 4410,
+          "avg_power": 70,
+          "max_power": 216,
+          "avg_hr": 107,
+          "max_hr": 129,
+          "min_hr": 84,
+          "avg_cadence": 88.195694,
+          "zone": 1,
+          "w_bal_start": 15960,
+          "w_bal_end": 15959,
+          "training_load": 19.072826
+        }
+      ],
+      "zone_basis": "power",
+      "session_structure": {
+        "version": 6,
+        "method": "fixed_elapsed_thirds",
+        "status": "no_plan",
+        "thirds": [
+          [
+            0,
+            1469,
+            67.8,
+            99.6,
+            99.9,
+            79.7,
+            100.0,
+            100.0,
+            100.0,
+            1.09
+          ],
+          [
+            1469,
+            2939,
+            75.6,
+            111.2,
+            111.0,
+            93.7,
+            100.0,
+            100.0,
+            100.0,
+            0.07
+          ],
+          [
+            2939,
+            4409,
+            67.0,
+            98.5,
+            110.8,
+            91.2,
+            100.0,
+            100.0,
+            100.0,
+            1.36
+          ]
+        ],
+        "cache": {
+          "activity_key": "2f0779ea89de0de88e29b06d1aabf85de24fa2030f0596ac13453c75f83e4fc9",
+          "event_key": null,
+          "plan_key": null,
+          "plan_key_version": 2,
+          "sampled_at": "2026-11-15T15:06:01.812763+00:00",
+          "next_refresh_at": "2026-11-16T15:06:01.812763+00:00"
+        }
+      }
     }
-  ]
+  ],
+  "fetch_state": {
+    "i209983610": {
+      "date": "2026-11-14",
+      "intervals": {
+        "attempts": 1,
+        "first_seen": "2026-11-15T15:05:56.675407",
+        "last_attempt": "2026-11-15T15:05:56.675407",
+        "status": "ok",
+        "reason": "ok",
+        "source_icu_sync_date": "2026-11-14T15:47:55.525+00:00"
+      },
+      "streams": {
+        "attempts": 1,
+        "first_seen": "2026-11-15T15:05:56.675407",
+        "last_attempt": "2026-11-15T15:05:56.675407",
+        "status": "pending",
+        "reason": "no_data",
+        "next_retry_at": "2026-11-15T15:10:56.675407"
+      }
+    },
+    "i209100191": {
+      "date": "2026-11-12",
+      "intervals": {
+        "attempts": 1,
+        "first_seen": "2026-11-15T15:05:56.675407",
+        "last_attempt": "2026-11-15T15:05:56.675407",
+        "status": "ok",
+        "reason": "ok",
+        "source_icu_sync_date": "2026-11-12T12:02:29.395+00:00"
+      },
+      "streams": {
+        "attempts": 1,
+        "first_seen": "2026-11-15T15:05:56.675407",
+        "last_attempt": "2026-11-15T15:05:56.675407",
+        "status": "tombstone",
+        "reason": "retry_expired"
+      }
+    },
+    "i208816124": {
+      "date": "2026-11-11",
+      "intervals": {
+        "attempts": 1,
+        "first_seen": "2026-11-15T15:05:56.675407",
+        "last_attempt": "2026-11-15T15:05:56.675407",
+        "status": "ok",
+        "reason": "ok",
+        "source_icu_sync_date": "2026-11-11T17:14:24.898+00:00"
+      },
+      "streams": {
+        "attempts": 1,
+        "first_seen": "2026-11-15T15:05:56.675407",
+        "last_attempt": "2026-11-15T15:05:56.675407",
+        "status": "tombstone",
+        "reason": "retry_expired"
+      }
+    },
+    "i208248088": {
+      "date": "2026-11-10",
+      "intervals": {
+        "attempts": 1,
+        "first_seen": "2026-11-15T15:05:56.675407",
+        "last_attempt": "2026-11-15T15:05:56.675407",
+        "status": "ok",
+        "reason": "ok",
+        "source_icu_sync_date": "2026-11-10T12:07:25.410+00:00"
+      },
+      "streams": {
+        "attempts": 1,
+        "first_seen": "2026-11-15T15:05:56.675407",
+        "last_attempt": "2026-11-15T15:05:56.675407",
+        "status": "tombstone",
+        "reason": "retry_expired"
+      }
+    },
+    "i207485032": {
+      "date": "2026-11-08",
+      "intervals": {
+        "attempts": 1,
+        "first_seen": "2026-11-15T15:05:56.675407",
+        "last_attempt": "2026-11-15T15:05:56.675407",
+        "status": "ok",
+        "reason": "ok",
+        "source_icu_sync_date": "2026-11-08T17:17:52.074+00:00"
+      },
+      "streams": {
+        "attempts": 1,
+        "first_seen": "2026-11-15T15:05:56.675407",
+        "last_attempt": "2026-11-15T15:05:56.675407",
+        "status": "tombstone",
+        "reason": "retry_expired"
+      }
+    }
+  }
 }

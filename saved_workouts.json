@@ -1,0 +1,407 @@
+{
+  "generated_at": "2026-11-15T15:05:52.700867+00:00",
+  "schema_version": 1,
+  "version": "3.175",
+  "script_hash": "87c3771fe680",
+  "source": "intervals.icu",
+  "target_resolution": "as_stored",
+  "refresh": {
+    "status": "ok",
+    "consistency": "consistent",
+    "last_success_at": "2026-11-15T15:05:52.700867+00:00",
+    "last_content_change_at": "2026-11-15T15:05:52.700867+00:00",
+    "refresh_interval_secs": 21600
+  },
+  "counts": {
+    "folders": 1,
+    "workouts": 2
+  },
+  "folders": [
+    {
+      "id": 834947,
+      "type": "FOLDER",
+      "name": "Etape du tour",
+      "description": null,
+      "visibility": "PRIVATE",
+      "read_only_workouts": false,
+      "can_edit": true,
+      "upstream_num_workouts": 2,
+      "start_date_local": null,
+      "activity_types": [
+        "Ride"
+      ],
+      "num_workouts": 2,
+      "workout_ids": [
+        1,
+        2
+      ]
+    }
+  ],
+  "workouts": [
+    {
+      "id": 1,
+      "name": "Force",
+      "type": "Ride",
+      "sub_type": null,
+      "indoor": false,
+      "description": "- \u00c9chauffement\n- 15m 55% 90rpm\n\n- 3x\n  - 10m 86% 62rpm\n  - 5m 50% 90rpm\n\n- Retour au calme\n- 10m 50% 90rpm",
+      "moving_time": 2400,
+      "distance": 0.0,
+      "icu_training_load": 29,
+      "icu_intensity": 65.95453,
+      "target": null,
+      "targets": [
+        "POWER"
+      ],
+      "tags": null,
+      "carbs_per_hour": null,
+      "day": null,
+      "days": null,
+      "for_week": false,
+      "hide_from_athlete": false,
+      "folder_id": 834947,
+      "folder_name": "Etape du tour",
+      "updated": "2026-06-05T17:06:59.623+00:00",
+      "source_endpoint": "workouts",
+      "has_workout_doc": true,
+      "workout_doc": {
+        "steps": [
+          {
+            "power": {
+              "units": "%ftp",
+              "value": 55
+            },
+            "cadence": {
+              "units": "rpm",
+              "value": 90
+            },
+            "duration": 900
+          },
+          {
+            "power": {
+              "units": "%ftp",
+              "value": 86
+            },
+            "cadence": {
+              "units": "rpm",
+              "value": 62
+            },
+            "duration": 600
+          },
+          {
+            "power": {
+              "units": "%ftp",
+              "value": 50
+            },
+            "cadence": {
+              "units": "rpm",
+              "value": 90
+            },
+            "duration": 300
+          },
+          {
+            "power": {
+              "units": "%ftp",
+              "value": 50
+            },
+            "cadence": {
+              "units": "rpm",
+              "value": 90
+            },
+            "duration": 600
+          }
+        ],
+        "locales": [],
+        "options": {},
+        "distance": 0,
+        "duration": 2400,
+        "zoneTimes": [
+          {
+            "id": "Z1",
+            "max": 55,
+            "name": "Z1",
+            "secs": 1800,
+            "zone": 1,
+            "color": "#009e80",
+            "maxWatts": 115,
+            "minWatts": 1,
+            "percentRange": "0% - 55%"
+          },
+          {
+            "id": "Z2",
+            "max": 75,
+            "name": "Z2",
+            "secs": 0,
+            "zone": 2,
+            "color": "#009e00",
+            "maxWatts": 157,
+            "minWatts": 116,
+            "percentRange": "56% - 75%"
+          },
+          {
+            "id": "Z3",
+            "max": 90,
+            "name": "Z3",
+            "secs": 600,
+            "zone": 3,
+            "color": "#ffcb0e",
+            "maxWatts": 189,
+            "minWatts": 158,
+            "percentRange": "76% - 90%"
+          },
+          {
+            "id": "Z4",
+            "max": 105,
+            "name": "Z4",
+            "secs": 0,
+            "zone": 4,
+            "color": "#ff7f0e",
+            "maxWatts": 220,
+            "minWatts": 190,
+            "percentRange": "91% - 105%"
+          },
+          {
+            "id": "Z5",
+            "max": 120,
+            "name": "Z5",
+            "secs": 0,
+            "zone": 5,
+            "color": "#dd0447",
+            "maxWatts": 252,
+            "minWatts": 221,
+            "percentRange": "106% - 120%"
+          },
+          {
+            "id": "Z6",
+            "max": 150,
+            "name": "Z6",
+            "secs": 0,
+            "zone": 6,
+            "color": "#6633cc",
+            "maxWatts": 315,
+            "minWatts": 253,
+            "percentRange": "121% - 150%"
+          },
+          {
+            "id": "Z7",
+            "max": 999,
+            "name": "Z7",
+            "secs": 0,
+            "zone": 7,
+            "color": "#504861",
+            "maxWatts": 9999,
+            "minWatts": 316,
+            "percentRange": "151% +"
+          },
+          {
+            "id": "SS",
+            "gap": true,
+            "max": 97,
+            "min": 84,
+            "name": "Sweet Spot",
+            "secs": 600,
+            "zone": 8,
+            "color": "#ffa00e",
+            "maxWatts": 203,
+            "minWatts": 176,
+            "percentRange": "84% - 97%"
+          }
+        ],
+        "strain_score": {
+          "ss_cp": 36.786484171981705,
+          "ss_p_max": 0,
+          "ss_w_prime": 0,
+          "strain_score": 36.786484171981705
+        },
+        "average_watts": 128,
+        "normalized_power": 139,
+        "variability_index": 1.0859375,
+        "polarization_index": 0
+      }
+    },
+    {
+      "id": 2,
+      "name": "SST SHORT",
+      "type": "Ride",
+      "sub_type": null,
+      "indoor": false,
+      "description": "- \u00c9chauffement\n- 10m ramp 50-85%\n\n3x\n  - 5m 86%\n  - 5m 92%\n\nRetour au calme\n- 10m 50%",
+      "moving_time": 3000,
+      "distance": 0.0,
+      "icu_training_load": 55,
+      "icu_intensity": 81.24039,
+      "target": null,
+      "targets": [
+        "POWER"
+      ],
+      "tags": null,
+      "carbs_per_hour": null,
+      "day": null,
+      "days": null,
+      "for_week": false,
+      "hide_from_athlete": false,
+      "folder_id": 834947,
+      "folder_name": "Etape du tour",
+      "updated": "2026-06-05T17:05:02.951+00:00",
+      "source_endpoint": "workouts",
+      "has_workout_doc": true,
+      "workout_doc": {
+        "steps": [
+          {
+            "ramp": true,
+            "power": {
+              "end": 85,
+              "start": 50,
+              "units": "%ftp"
+            },
+            "duration": 600
+          },
+          {
+            "reps": 3,
+            "text": "3x",
+            "steps": [
+              {
+                "power": {
+                  "units": "%ftp",
+                  "value": 86
+                },
+                "duration": 300
+              },
+              {
+                "power": {
+                  "units": "%ftp",
+                  "value": 92
+                },
+                "duration": 300
+              }
+            ],
+            "distance": 0,
+            "duration": 1800
+          },
+          {
+            "power": {
+              "units": "%ftp",
+              "value": 50
+            },
+            "duration": 600
+          }
+        ],
+        "locales": [],
+        "options": {},
+        "distance": 0,
+        "duration": 3000,
+        "zoneTimes": [
+          {
+            "id": "Z1",
+            "max": 55,
+            "name": "Z1",
+            "secs": 683,
+            "zone": 1,
+            "color": "#009e80",
+            "maxWatts": 115,
+            "minWatts": 1,
+            "percentRange": "0% - 55%"
+          },
+          {
+            "id": "Z2",
+            "max": 75,
+            "name": "Z2",
+            "secs": 344,
+            "zone": 2,
+            "color": "#009e00",
+            "maxWatts": 157,
+            "minWatts": 116,
+            "percentRange": "56% - 75%"
+          },
+          {
+            "id": "Z3",
+            "max": 90,
+            "name": "Z3",
+            "secs": 1073,
+            "zone": 3,
+            "color": "#ffcb0e",
+            "maxWatts": 189,
+            "minWatts": 158,
+            "percentRange": "76% - 90%"
+          },
+          {
+            "id": "Z4",
+            "max": 105,
+            "name": "Z4",
+            "secs": 900,
+            "zone": 4,
+            "color": "#ff7f0e",
+            "maxWatts": 220,
+            "minWatts": 190,
+            "percentRange": "91% - 105%"
+          },
+          {
+            "id": "Z5",
+            "max": 120,
+            "name": "Z5",
+            "secs": 0,
+            "zone": 5,
+            "color": "#dd0447",
+            "maxWatts": 252,
+            "minWatts": 221,
+            "percentRange": "106% - 120%"
+          },
+          {
+            "id": "Z6",
+            "max": 150,
+            "name": "Z6",
+            "secs": 0,
+            "zone": 6,
+            "color": "#6633cc",
+            "maxWatts": 315,
+            "minWatts": 253,
+            "percentRange": "121% - 150%"
+          },
+          {
+            "id": "Z7",
+            "max": 999,
+            "name": "Z7",
+            "secs": 0,
+            "zone": 7,
+            "color": "#504861",
+            "maxWatts": 9999,
+            "minWatts": 316,
+            "percentRange": "151% +"
+          },
+          {
+            "id": "SS",
+            "gap": true,
+            "max": 97,
+            "min": 84,
+            "name": "Sweet Spot",
+            "secs": 1817,
+            "zone": 8,
+            "color": "#ffa00e",
+            "maxWatts": 203,
+            "minWatts": 176,
+            "percentRange": "84% - 97%"
+          }
+        ],
+        "strain_score": {
+          "ss_cp": 60.6568559253082,
+          "ss_p_max": 0,
+          "ss_w_prime": 0,
+          "strain_score": 60.6568559253082
+        },
+        "average_watts": 161,
+        "normalized_power": 170,
+        "variability_index": 1.0559006211180124,
+        "polarization_index": 0
+      }
+    }
+  ],
+  "fetch_state": {
+    "last_attempt_at": "2026-11-15T15:05:52.700867+00:00",
+    "consecutive_failures": 0,
+    "next_attempt_after": "2026-11-15T21:05:52.700867+00:00",
+    "last_error": null,
+    "content_digest": "sha256:58a2468ca02bc0c94885fdd9661706668106a2ffd72f5fe72a174a4a69e4853e",
+    "endpoint_mismatch_count": 0,
+    "endpoint_mismatch_ids": []
+  }
+}
