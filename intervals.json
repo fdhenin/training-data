@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-18T09:52:53.769071",
+  "generated_at": "2026-11-18T18:43:29.952245",
   "interval_data_note": "recent_activities[].interval_data: plan_match is timeline matching only; compliance summarizes intervals.json session_structure power/time evidence (only that plan-aware source judges completion, per-bout counts and >=95% progression, subject to its context/availability gates); icu_detected is descriptive Intervals.icu interval_summary, not plan-aware. If sources disagree, report both; session_structure judges. Never use device/app lap averages, whole-session average/NP or a set mean as rep power or compliance counts. See SECTION_11.md#which-interval-data-to-use.",
   "schema_version": 2,
   "version": "3.175",
@@ -1064,12 +1064,11 @@
         "source_icu_sync_date": "2026-11-15T17:06:47.203+00:00"
       },
       "streams": {
-        "attempts": 9,
+        "attempts": 10,
         "first_seen": "2026-11-15T21:19:14.909700",
-        "last_attempt": "2026-11-18T09:52:53.769071",
-        "status": "pending",
-        "reason": "no_data",
-        "next_retry_at": "2026-11-18T10:22:53.769071"
+        "last_attempt": "2026-11-18T18:43:29.952245",
+        "status": "tombstone",
+        "reason": "retry_expired"
       }
     },
     "i211349837": {
@@ -1083,12 +1082,12 @@
         "source_icu_sync_date": "2026-11-17T17:53:58.367+00:00"
       },
       "streams": {
-        "attempts": 3,
+        "attempts": 4,
         "first_seen": "2026-11-17T19:44:59.455325",
-        "last_attempt": "2026-11-18T09:52:53.769071",
+        "last_attempt": "2026-11-18T18:43:29.952245",
         "status": "pending",
         "reason": "no_data",
-        "next_retry_at": "2026-11-18T09:57:53.769071"
+        "next_retry_at": "2026-11-18T18:48:29.952245"
       }
     }
   }
