@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-22T11:50:38.620166",
+  "generated_at": "2026-11-22T19:12:47.008770",
   "interval_data_note": "recent_activities[].interval_data: plan_match is timeline matching only; compliance summarizes intervals.json session_structure power/time evidence (only that plan-aware source judges completion, per-bout counts and >=95% progression, subject to its context/availability gates); icu_detected is descriptive Intervals.icu interval_summary, not plan-aware. If sources disagree, report both; session_structure judges. Never use device/app lap averages, whole-session average/NP or a set mean as rep power or compliance counts. See SECTION_11.md#which-interval-data-to-use.",
   "schema_version": 2,
   "version": "3.175",
@@ -1215,6 +1215,211 @@
           "next_refresh_at": "2026-11-22T23:27:14.926315+00:00"
         }
       }
+    },
+    {
+      "activity_id": "i213303314",
+      "date": "2026-11-22",
+      "start_datetime": "2026-11-22T16:41:31",
+      "type": "VirtualRide",
+      "name": "Zwift - Southern Coast Cruise in Watopia",
+      "interval_summary": null,
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 2965,
+          "moving_secs": 2965,
+          "start_secs": 0,
+          "end_secs": 2965,
+          "avg_power": 108,
+          "max_power": 271,
+          "avg_hr": 114,
+          "max_hr": 131,
+          "min_hr": 71,
+          "avg_cadence": 77.508934,
+          "zone": 1,
+          "w_bal_start": 15960,
+          "w_bal_end": 15936,
+          "training_load": 25.024843
+        }
+      ],
+      "zone_basis": "power",
+      "session_structure": {
+        "version": 6,
+        "method": "fixed_elapsed_thirds",
+        "status": "no_plan",
+        "thirds": [
+          [
+            0,
+            988,
+            98.8,
+            97.6,
+            104.3,
+            74.5,
+            100.0,
+            100.0,
+            100.0,
+            0.4
+          ],
+          [
+            988,
+            1976,
+            116.9,
+            115.5,
+            117.3,
+            78.5,
+            100.0,
+            100.0,
+            100.0,
+            0.0
+          ],
+          [
+            1976,
+            2964,
+            109.2,
+            107.9,
+            120.6,
+            79.6,
+            100.0,
+            100.0,
+            100.0,
+            0.4
+          ]
+        ],
+        "cache": {
+          "activity_key": "8cfcaa22f8aac162b8ed68f95c29597b3d21d4c7e3fa61e3a76c6b8e9541e245",
+          "event_key": null,
+          "plan_key": null,
+          "plan_key_version": 2,
+          "sampled_at": "2026-11-22T19:12:48.764454+00:00",
+          "next_refresh_at": "2026-11-23T19:12:48.764454+00:00"
+        }
+      }
+    },
+    {
+      "activity_id": "i213347594",
+      "date": "2026-11-22",
+      "start_datetime": "2026-11-22T17:44:34",
+      "type": "WeightTraining",
+      "name": "Musculation",
+      "interval_summary": null,
+      "intervals": [],
+      "session_structure": {
+        "version": 6,
+        "method": "fixed_elapsed_thirds",
+        "status": "no_plan",
+        "thirds": [
+          [
+            0,
+            1642,
+            null,
+            null,
+            102.7,
+            null,
+            0.0,
+            100.0,
+            0.0,
+            null
+          ],
+          [
+            1642,
+            3285,
+            null,
+            null,
+            92.6,
+            null,
+            0.0,
+            100.0,
+            0.0,
+            null
+          ],
+          [
+            3285,
+            4928,
+            null,
+            null,
+            82.0,
+            null,
+            0.0,
+            100.0,
+            0.0,
+            null
+          ]
+        ],
+        "cache": {
+          "activity_key": "df27de6def6877fc4c22e7d868a95916db75be2e89cd6611d0b50072a996e4f1",
+          "event_key": null,
+          "plan_key": null,
+          "plan_key_version": 2,
+          "sampled_at": "2026-11-22T19:12:48.764454+00:00",
+          "next_refresh_at": "2026-11-23T19:12:48.764454+00:00"
+        }
+      }
+    },
+    {
+      "activity_id": "21086651801",
+      "date": "2026-11-22",
+      "start_datetime": "2026-11-22T17:35:57",
+      "type": "Unknown",
+      "name": "",
+      "interval_summary": null,
+      "intervals": [],
+      "session_structure": {
+        "version": 6,
+        "method": "fixed_elapsed_thirds",
+        "status": "unknown",
+        "thirds": [
+          [
+            0,
+            0,
+            null,
+            null,
+            null,
+            null,
+            0,
+            0,
+            0,
+            null
+          ],
+          [
+            0,
+            0,
+            null,
+            null,
+            null,
+            null,
+            0,
+            0,
+            0,
+            null
+          ],
+          [
+            0,
+            0,
+            null,
+            null,
+            null,
+            null,
+            0,
+            0,
+            0,
+            null
+          ]
+        ],
+        "issues": [
+          "streams_transient",
+          "missing_or_invalid_time"
+        ],
+        "cache": {
+          "activity_key": "4cc64bd56e94c2c9b48c2ef3abeab1ba7bffe0a170b1a13e9ff54299306af79a",
+          "event_key": null,
+          "plan_key": null,
+          "plan_key_version": 2,
+          "sampled_at": null,
+          "next_refresh_at": "2026-11-22T20:12:48.764454+00:00",
+          "status": "unavailable",
+          "failures": 1
+        }
+      }
     }
   ],
   "fetch_state": {
@@ -1355,12 +1560,31 @@
         "source_icu_sync_date": "2026-11-20T17:17:54.532+00:00"
       },
       "streams": {
-        "attempts": 7,
+        "attempts": 8,
         "first_seen": "2026-11-20T22:21:56.916010",
-        "last_attempt": "2026-11-22T11:50:38.620166",
+        "last_attempt": "2026-11-22T19:12:47.008770",
         "status": "pending",
         "reason": "no_data",
-        "next_retry_at": "2026-11-22T12:20:38.620166"
+        "next_retry_at": "2026-11-22T19:42:47.008770"
+      }
+    },
+    "i213303314": {
+      "date": "2026-11-22",
+      "intervals": {
+        "attempts": 1,
+        "first_seen": "2026-11-22T19:12:47.008770",
+        "last_attempt": "2026-11-22T19:12:47.008770",
+        "status": "ok",
+        "reason": "ok",
+        "source_icu_sync_date": "2026-11-22T16:30:55.570+00:00"
+      },
+      "streams": {
+        "attempts": 1,
+        "first_seen": "2026-11-22T19:12:47.008770",
+        "last_attempt": "2026-11-22T19:12:47.008770",
+        "status": "pending",
+        "reason": "no_data",
+        "next_retry_at": "2026-11-22T19:17:47.008770"
       }
     }
   }
