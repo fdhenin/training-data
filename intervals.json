@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-23T08:01:08.422396",
+  "generated_at": "2026-11-23T20:15:30.770735",
   "interval_data_note": "recent_activities[].interval_data: plan_match is timeline matching only; compliance summarizes intervals.json session_structure power/time evidence (only that plan-aware source judges completion, per-bout counts and >=95% progression, subject to its context/availability gates); icu_detected is descriptive Intervals.icu interval_summary, not plan-aware. If sources disagree, report both; session_structure judges. Never use device/app lap averages, whole-session average/NP or a set mean as rep power or compliance counts. See SECTION_11.md#which-interval-data-to-use.",
   "schema_version": 2,
   "version": "3.175",
@@ -214,8 +214,8 @@
           "event_key": null,
           "plan_key": null,
           "plan_key_version": 2,
-          "sampled_at": "2026-11-22T11:50:39.156660+00:00",
-          "next_refresh_at": "2026-11-23T11:50:39.156660+00:00"
+          "sampled_at": "2026-11-23T20:15:41.276800+00:00",
+          "next_refresh_at": "2026-11-24T20:15:41.276800+00:00"
         }
       }
     },
@@ -293,8 +293,8 @@
           "event_key": null,
           "plan_key": null,
           "plan_key_version": 2,
-          "sampled_at": "2026-11-22T11:50:39.156660+00:00",
-          "next_refresh_at": "2026-11-23T11:50:39.156660+00:00"
+          "sampled_at": "2026-11-23T20:15:41.276800+00:00",
+          "next_refresh_at": "2026-11-24T20:15:41.276800+00:00"
         }
       }
     },
@@ -372,8 +372,8 @@
           "event_key": null,
           "plan_key": null,
           "plan_key_version": 2,
-          "sampled_at": "2026-11-22T11:50:39.156660+00:00",
-          "next_refresh_at": "2026-11-23T11:50:39.156660+00:00"
+          "sampled_at": "2026-11-23T20:15:41.276800+00:00",
+          "next_refresh_at": "2026-11-24T20:15:41.276800+00:00"
         }
       }
     },
@@ -451,8 +451,8 @@
           "event_key": null,
           "plan_key": null,
           "plan_key_version": 2,
-          "sampled_at": "2026-11-22T11:50:39.156660+00:00",
-          "next_refresh_at": "2026-11-23T11:50:39.156660+00:00"
+          "sampled_at": "2026-11-23T20:15:41.276800+00:00",
+          "next_refresh_at": "2026-11-24T20:15:41.276800+00:00"
         }
       }
     },
@@ -877,8 +877,8 @@
           "event_key": null,
           "plan_key": null,
           "plan_key_version": 2,
-          "sampled_at": "2026-11-22T11:50:39.156660+00:00",
-          "next_refresh_at": "2026-11-23T11:50:39.156660+00:00"
+          "sampled_at": "2026-11-23T20:15:41.276800+00:00",
+          "next_refresh_at": "2026-11-24T20:15:41.276800+00:00"
         }
       }
     },
@@ -1211,8 +1211,8 @@
           "event_key": null,
           "plan_key": null,
           "plan_key_version": 2,
-          "sampled_at": "2026-11-22T19:12:48.764454+00:00",
-          "next_refresh_at": "2026-11-23T19:12:48.764454+00:00"
+          "sampled_at": "2026-11-23T20:15:41.276800+00:00",
+          "next_refresh_at": "2026-11-24T20:15:41.276800+00:00"
         }
       }
     },
@@ -1273,6 +1273,156 @@
           "plan_key_version": 2,
           "sampled_at": "2026-11-23T00:20:14.347453+00:00",
           "next_refresh_at": "2026-11-24T00:20:14.347453+00:00"
+        }
+      }
+    },
+    {
+      "activity_id": "i213738448",
+      "date": "2026-11-23",
+      "start_datetime": "2026-11-23T18:11:52",
+      "type": "VirtualRide",
+      "name": "Z2 ERG 50 min",
+      "interval_summary": [
+        "1x 10s 343w"
+      ],
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 568,
+          "moving_secs": 568,
+          "start_secs": 0,
+          "end_secs": 568,
+          "avg_power": 79,
+          "max_power": 402,
+          "avg_hr": 87,
+          "max_hr": 100,
+          "min_hr": 73,
+          "avg_cadence": 74.59331,
+          "zone": 1,
+          "w_bal_start": 15960,
+          "w_bal_end": 15762,
+          "training_load": 2.463248
+        },
+        {
+          "type": "WORK",
+          "label": "10s@343w89rpm",
+          "duration_secs": 10,
+          "moving_secs": 10,
+          "start_secs": 568,
+          "end_secs": 578,
+          "avg_power": 343,
+          "max_power": 363,
+          "avg_hr": 102,
+          "max_hr": 108,
+          "min_hr": 92,
+          "avg_cadence": 88.8,
+          "zone": 7,
+          "w_bal_start": 15618,
+          "w_bal_end": 14373,
+          "training_load": 0.15271333
+        },
+        {
+          "type": "RECOVERY",
+          "duration_secs": 2110,
+          "moving_secs": 2110,
+          "start_secs": 578,
+          "end_secs": 2688,
+          "avg_power": 112,
+          "max_power": 264,
+          "avg_hr": 114,
+          "max_hr": 130,
+          "min_hr": 97,
+          "avg_cadence": 72.000946,
+          "zone": 1,
+          "w_bal_start": 14314,
+          "w_bal_end": 15913,
+          "training_load": 20.72879
+        }
+      ],
+      "zone_basis": "power",
+      "session_structure": {
+        "version": 6,
+        "method": "fixed_elapsed_thirds",
+        "status": "unknown",
+        "plan": {
+          "event_id": "159281317",
+          "updated": "2026-11-22T20:56:59.812+00:00",
+          "name": "Z2 ERG 50 min",
+          "duration_s": 3000,
+          "duration_source": "moving_time"
+        },
+        "steps": [
+          {
+            "supported": false,
+            "duration_s": 600
+          },
+          {
+            "duration_s": 1800,
+            "target_w": 135
+          },
+          {
+            "supported": false,
+            "duration_s": 600
+          }
+        ],
+        "thirds": [
+          [
+            0,
+            895,
+            98.5,
+            88.2,
+            94.7,
+            73.4,
+            100.0,
+            100.0,
+            100.0,
+            0.0
+          ],
+          [
+            895,
+            1791,
+            122.6,
+            109.8,
+            114.8,
+            69.0,
+            100.0,
+            100.0,
+            100.0,
+            0.0
+          ],
+          [
+            1791,
+            2687,
+            98.4,
+            88.2,
+            115.8,
+            75.5,
+            100.0,
+            100.0,
+            100.0,
+            5.47
+          ]
+        ],
+        "efforts": [
+          [
+            568,
+            578,
+            343,
+            102,
+            88.8
+          ]
+        ],
+        "issues": [
+          "unsupported_steps",
+          "efforts_from_interval_cache"
+        ],
+        "cache": {
+          "activity_key": "fa2e72353766a8131535f058ae2ba5b5cd3c5f0a5f02fca256dccbc033e8aeec",
+          "event_key": "15da5d2d1e9bdccf165e4eea13f317718f57fb4970dca75c0229df0fa7cf3e18",
+          "plan_key": "e6ab9c394e32f5b87e84f0f2bd16949e5c251053029cf29cc28cd8c6d091786c",
+          "plan_key_version": 2,
+          "sampled_at": "2026-11-23T20:15:41.276800+00:00",
+          "next_refresh_at": "2026-11-24T20:15:41.276800+00:00"
         }
       }
     }
@@ -1397,12 +1547,11 @@
         "source_icu_sync_date": "2026-11-20T17:17:54.532+00:00"
       },
       "streams": {
-        "attempts": 10,
+        "attempts": 11,
         "first_seen": "2026-11-20T22:21:56.916010",
-        "last_attempt": "2026-11-23T08:01:08.422396",
-        "status": "pending",
-        "reason": "no_data",
-        "next_retry_at": "2026-11-23T08:31:08.422396"
+        "last_attempt": "2026-11-23T20:15:30.770735",
+        "status": "tombstone",
+        "reason": "retry_expired"
       }
     },
     "i213303314": {
@@ -1416,12 +1565,32 @@
         "source_icu_sync_date": "2026-11-22T16:30:55.570+00:00"
       },
       "streams": {
-        "attempts": 3,
+        "attempts": 4,
         "first_seen": "2026-11-22T19:12:47.008770",
-        "last_attempt": "2026-11-23T08:01:08.422396",
+        "last_attempt": "2026-11-23T20:15:30.770735",
         "status": "pending",
         "reason": "no_data",
-        "next_retry_at": "2026-11-23T08:06:08.422396"
+        "next_retry_at": "2026-11-23T20:20:30.770735"
+      }
+    },
+    "i213738448": {
+      "date": "2026-11-23",
+      "paired_planned": true,
+      "intervals": {
+        "attempts": 1,
+        "first_seen": "2026-11-23T20:15:30.770735",
+        "last_attempt": "2026-11-23T20:15:30.770735",
+        "status": "ok",
+        "reason": "ok",
+        "source_icu_sync_date": "2026-11-23T17:56:48.230+00:00"
+      },
+      "streams": {
+        "attempts": 1,
+        "first_seen": "2026-11-23T20:15:30.770735",
+        "last_attempt": "2026-11-23T20:15:30.770735",
+        "status": "pending",
+        "reason": "no_data",
+        "next_retry_at": "2026-11-23T20:20:30.770735"
       }
     }
   }
