@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-25T08:36:32.133195",
+  "generated_at": "2026-11-25T18:50:50.490559",
   "interval_data_note": "recent_activities[].interval_data: plan_match is timeline matching only; compliance summarizes intervals.json session_structure power/time evidence (only that plan-aware source judges completion, per-bout counts and >=95% progression, subject to its context/availability gates); icu_detected is descriptive Intervals.icu interval_summary, not plan-aware. If sources disagree, report both; session_structure judges. Never use device/app lap averages, whole-session average/NP or a set mean as rep power or compliance counts. See SECTION_11.md#which-interval-data-to-use.",
   "schema_version": 2,
   "version": "3.175",
@@ -1346,6 +1346,156 @@
           "next_refresh_at": "2026-11-26T00:08:06.027347+00:00"
         }
       }
+    },
+    {
+      "activity_id": "i214629253",
+      "date": "2026-11-25",
+      "start_datetime": "2026-11-25T18:12:05",
+      "type": "VirtualRide",
+      "name": "Z2 ERG 60 min",
+      "interval_summary": [
+        "1x 4m31s 160w"
+      ],
+      "intervals": [
+        {
+          "type": "RECOVERY",
+          "duration_secs": 2427,
+          "moving_secs": 2427,
+          "start_secs": 0,
+          "end_secs": 2427,
+          "avg_power": 127,
+          "max_power": 262,
+          "avg_hr": 134,
+          "max_hr": 150,
+          "min_hr": 112,
+          "avg_cadence": 83.91389,
+          "zone": 2,
+          "w_bal_start": 15960,
+          "w_bal_end": 15697,
+          "training_load": 29.236614
+        },
+        {
+          "type": "WORK",
+          "label": "271s@160w86rpm",
+          "duration_secs": 271,
+          "moving_secs": 271,
+          "start_secs": 2427,
+          "end_secs": 2698,
+          "avg_power": 160,
+          "max_power": 268,
+          "avg_hr": 151,
+          "max_hr": 158,
+          "min_hr": 146,
+          "avg_cadence": 85.63469,
+          "zone": 3,
+          "w_bal_start": 15697,
+          "w_bal_end": 15588,
+          "training_load": 4.64313
+        },
+        {
+          "type": "RECOVERY",
+          "duration_secs": 261,
+          "moving_secs": 261,
+          "start_secs": 2698,
+          "end_secs": 2959,
+          "avg_power": 119,
+          "max_power": 290,
+          "avg_hr": 146,
+          "max_hr": 156,
+          "min_hr": 138,
+          "avg_cadence": 73.574715,
+          "zone": 2,
+          "w_bal_start": 15590,
+          "w_bal_end": 15825,
+          "training_load": 2.826847
+        }
+      ],
+      "zone_basis": "power",
+      "session_structure": {
+        "version": 6,
+        "method": "fixed_elapsed_thirds",
+        "status": "unknown",
+        "plan": {
+          "event_id": "159281320",
+          "updated": "2026-11-22T20:56:59.963+00:00",
+          "name": "Z2 ERG 60 min",
+          "duration_s": 3600,
+          "duration_source": "moving_time"
+        },
+        "steps": [
+          {
+            "supported": false,
+            "duration_s": 600
+          },
+          {
+            "duration_s": 2400,
+            "target_w": 135
+          },
+          {
+            "supported": false,
+            "duration_s": 600
+          }
+        ],
+        "thirds": [
+          [
+            0,
+            986,
+            115.1,
+            113.5,
+            124.1,
+            82.2,
+            100.0,
+            54.36,
+            100.0,
+            0.51
+          ],
+          [
+            986,
+            1972,
+            132.0,
+            130.2,
+            136.2,
+            84.6,
+            100.0,
+            100.0,
+            100.0,
+            0.0
+          ],
+          [
+            1972,
+            2958,
+            142.1,
+            140.1,
+            146.3,
+            82.8,
+            100.0,
+            100.0,
+            100.0,
+            0.41
+          ]
+        ],
+        "efforts": [
+          [
+            2427,
+            2698,
+            160,
+            151,
+            85.63469
+          ]
+        ],
+        "issues": [
+          "unsupported_steps",
+          "efforts_from_interval_cache"
+        ],
+        "cache": {
+          "activity_key": "7561fcca0dfda26467e5aeb9a3bb4e96fe7e056cbeb961a743c444cdb291e783",
+          "event_key": "04734dab2f7b81f10eca8da9fc8356ec9cc80c8ba7242b392c9cdebc9f915d7c",
+          "plan_key": "9bc368aaa75c0581c3352e14e5c978ed809ecfbc2f19a75c94c30c4264f59fb6",
+          "plan_key_version": 2,
+          "sampled_at": "2026-11-25T18:50:52.780541+00:00",
+          "next_refresh_at": "2026-11-26T18:50:52.780541+00:00"
+        }
+      }
     }
   ],
   "fetch_state": {
@@ -1468,12 +1618,11 @@
         "source_icu_sync_date": "2026-11-22T16:30:55.570+00:00"
       },
       "streams": {
-        "attempts": 8,
+        "attempts": 9,
         "first_seen": "2026-11-22T19:12:47.008770",
-        "last_attempt": "2026-11-25T08:36:32.133195",
-        "status": "pending",
-        "reason": "no_data",
-        "next_retry_at": "2026-11-25T09:06:32.133195"
+        "last_attempt": "2026-11-25T18:50:50.490559",
+        "status": "tombstone",
+        "reason": "retry_expired"
       }
     },
     "i213738448": {
@@ -1488,12 +1637,32 @@
         "source_icu_sync_date": "2026-11-23T17:56:48.230+00:00"
       },
       "streams": {
-        "attempts": 5,
+        "attempts": 6,
         "first_seen": "2026-11-23T20:15:30.770735",
-        "last_attempt": "2026-11-25T08:36:32.133195",
+        "last_attempt": "2026-11-25T18:50:50.490559",
         "status": "pending",
         "reason": "no_data",
-        "next_retry_at": "2026-11-25T08:41:32.133195"
+        "next_retry_at": "2026-11-25T18:55:50.490559"
+      }
+    },
+    "i214629253": {
+      "date": "2026-11-25",
+      "paired_planned": true,
+      "intervals": {
+        "attempts": 1,
+        "first_seen": "2026-11-25T18:50:50.490559",
+        "last_attempt": "2026-11-25T18:50:50.490559",
+        "status": "ok",
+        "reason": "ok",
+        "source_icu_sync_date": "2026-11-25T18:02:42.075+00:00"
+      },
+      "streams": {
+        "attempts": 1,
+        "first_seen": "2026-11-25T18:50:50.490559",
+        "last_attempt": "2026-11-25T18:50:50.490559",
+        "status": "pending",
+        "reason": "no_data",
+        "next_retry_at": "2026-11-25T18:55:50.490559"
       }
     }
   }

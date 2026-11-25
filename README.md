@@ -5,7 +5,7 @@ for Section 11 coaching.
 
 ![Sync Status](https://github.com/fdhenin/training-data/actions/workflows/auto-sync.yml/badge.svg)
 
-**Last successful sync:** 2026-11-25 08:36:42 UTC
+**Last successful sync:** 2026-11-25 18:51:02 UTC
 
 ## Sync Now
 
