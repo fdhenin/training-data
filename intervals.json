@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-25T18:50:50.490559",
+  "generated_at": "2026-11-26T02:05:08.943529",
   "interval_data_note": "recent_activities[].interval_data: plan_match is timeline matching only; compliance summarizes intervals.json session_structure power/time evidence (only that plan-aware source judges completion, per-bout counts and >=95% progression, subject to its context/availability gates); icu_detected is descriptive Intervals.icu interval_summary, not plan-aware. If sources disagree, report both; session_structure judges. Never use device/app lap averages, whole-session average/NP or a set mean as rep power or compliance counts. See SECTION_11.md#which-interval-data-to-use.",
   "schema_version": 2,
   "version": "3.175",
@@ -214,8 +214,8 @@
           "event_key": null,
           "plan_key": null,
           "plan_key_version": 2,
-          "sampled_at": "2026-11-25T00:08:06.027347+00:00",
-          "next_refresh_at": "2026-11-26T00:08:06.027347+00:00"
+          "sampled_at": "2026-11-26T02:05:10.007694+00:00",
+          "next_refresh_at": "2026-11-27T02:05:10.007694+00:00"
         }
       }
     },
@@ -293,87 +293,8 @@
           "event_key": null,
           "plan_key": null,
           "plan_key_version": 2,
-          "sampled_at": "2026-11-25T00:08:06.027347+00:00",
-          "next_refresh_at": "2026-11-26T00:08:06.027347+00:00"
-        }
-      }
-    },
-    {
-      "activity_id": "i208816124",
-      "date": "2026-11-11",
-      "start_datetime": "2026-11-11T17:23:09",
-      "type": "VirtualRide",
-      "name": "Zwift - Molten Momentum in Watopia",
-      "interval_summary": null,
-      "intervals": [
-        {
-          "type": "RECOVERY",
-          "duration_secs": 3060,
-          "moving_secs": 3060,
-          "start_secs": 0,
-          "end_secs": 3060,
-          "avg_power": 95,
-          "max_power": 249,
-          "avg_hr": 123,
-          "max_hr": 132,
-          "min_hr": 114,
-          "avg_cadence": 87.89967,
-          "zone": 1,
-          "w_bal_start": 15960,
-          "w_bal_end": 15954,
-          "training_load": 24.449533
-        }
-      ],
-      "zone_basis": "power",
-      "session_structure": {
-        "version": 6,
-        "method": "fixed_elapsed_thirds",
-        "status": "no_plan",
-        "thirds": [
-          [
-            0,
-            1019,
-            101.9,
-            103.9,
-            null,
-            84.9,
-            100.0,
-            0.0,
-            100.0,
-            0.29
-          ],
-          [
-            1019,
-            2039,
-            99.6,
-            101.6,
-            null,
-            89.4,
-            100.0,
-            0.0,
-            100.0,
-            0.39
-          ],
-          [
-            2039,
-            3059,
-            84.4,
-            86.1,
-            123.8,
-            89.5,
-            100.0,
-            52.45,
-            100.0,
-            2.25
-          ]
-        ],
-        "cache": {
-          "activity_key": "0f558eb9b5194bb5f46c825f315eda36683f17a8a73af869bdbcd9d5ec9be977",
-          "event_key": null,
-          "plan_key": null,
-          "plan_key_version": 2,
-          "sampled_at": "2026-11-25T00:08:06.027347+00:00",
-          "next_refresh_at": "2026-11-26T00:08:06.027347+00:00"
+          "sampled_at": "2026-11-26T02:05:10.007694+00:00",
+          "next_refresh_at": "2026-11-27T02:05:10.007694+00:00"
         }
       }
     },
@@ -798,8 +719,8 @@
           "event_key": null,
           "plan_key": null,
           "plan_key_version": 2,
-          "sampled_at": "2026-11-25T00:08:06.027347+00:00",
-          "next_refresh_at": "2026-11-26T00:08:06.027347+00:00"
+          "sampled_at": "2026-11-26T02:05:10.007694+00:00",
+          "next_refresh_at": "2026-11-27T02:05:10.007694+00:00"
         }
       }
     },
@@ -1132,8 +1053,8 @@
           "event_key": null,
           "plan_key": null,
           "plan_key_version": 2,
-          "sampled_at": "2026-11-25T00:08:06.027347+00:00",
-          "next_refresh_at": "2026-11-26T00:08:06.027347+00:00"
+          "sampled_at": "2026-11-26T02:05:10.007694+00:00",
+          "next_refresh_at": "2026-11-27T02:05:10.007694+00:00"
         }
       }
     },
@@ -1342,8 +1263,8 @@
           "event_key": "15da5d2d1e9bdccf165e4eea13f317718f57fb4970dca75c0229df0fa7cf3e18",
           "plan_key": "e6ab9c394e32f5b87e84f0f2bd16949e5c251053029cf29cc28cd8c6d091786c",
           "plan_key_version": 2,
-          "sampled_at": "2026-11-25T00:08:06.027347+00:00",
-          "next_refresh_at": "2026-11-26T00:08:06.027347+00:00"
+          "sampled_at": "2026-11-26T02:05:10.007694+00:00",
+          "next_refresh_at": "2026-11-27T02:05:10.007694+00:00"
         }
       }
     },
@@ -1535,24 +1456,6 @@
         "reason": "retry_expired"
       }
     },
-    "i208816124": {
-      "date": "2026-11-11",
-      "intervals": {
-        "attempts": 1,
-        "first_seen": "2026-11-15T15:05:56.675407",
-        "last_attempt": "2026-11-15T15:05:56.675407",
-        "status": "ok",
-        "reason": "ok",
-        "source_icu_sync_date": "2026-11-11T17:14:24.898+00:00"
-      },
-      "streams": {
-        "attempts": 1,
-        "first_seen": "2026-11-15T15:05:56.675407",
-        "last_attempt": "2026-11-15T15:05:56.675407",
-        "status": "tombstone",
-        "reason": "retry_expired"
-      }
-    },
     "i210444674": {
       "date": "2026-11-15",
       "intervals": {
@@ -1637,12 +1540,12 @@
         "source_icu_sync_date": "2026-11-23T17:56:48.230+00:00"
       },
       "streams": {
-        "attempts": 6,
+        "attempts": 7,
         "first_seen": "2026-11-23T20:15:30.770735",
-        "last_attempt": "2026-11-25T18:50:50.490559",
+        "last_attempt": "2026-11-26T02:05:08.943529",
         "status": "pending",
         "reason": "no_data",
-        "next_retry_at": "2026-11-25T18:55:50.490559"
+        "next_retry_at": "2026-11-26T02:35:08.943529"
       }
     },
     "i214629253": {
@@ -1657,12 +1560,12 @@
         "source_icu_sync_date": "2026-11-25T18:02:42.075+00:00"
       },
       "streams": {
-        "attempts": 1,
+        "attempts": 2,
         "first_seen": "2026-11-25T18:50:50.490559",
-        "last_attempt": "2026-11-25T18:50:50.490559",
+        "last_attempt": "2026-11-26T02:05:08.943529",
         "status": "pending",
         "reason": "no_data",
-        "next_retry_at": "2026-11-25T18:55:50.490559"
+        "next_retry_at": "2026-11-26T02:10:08.943529"
       }
     }
   }
