@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-27T11:52:25.679617",
+  "generated_at": "2026-11-27T20:50:42.607914",
   "interval_data_note": "recent_activities[].interval_data: plan_match is timeline matching only; compliance summarizes intervals.json session_structure power/time evidence (only that plan-aware source judges completion, per-bout counts and >=95% progression, subject to its context/availability gates); icu_detected is descriptive Intervals.icu interval_summary, not plan-aware. If sources disagree, report both; session_structure judges. Never use device/app lap averages, whole-session average/NP or a set mean as rep power or compliance counts. See SECTION_11.md#which-interval-data-to-use.",
   "schema_version": 2,
   "version": "3.175",
@@ -1334,8 +1334,68 @@
           "event_key": "04734dab2f7b81f10eca8da9fc8356ec9cc80c8ba7242b392c9cdebc9f915d7c",
           "plan_key": "9bc368aaa75c0581c3352e14e5c978ed809ecfbc2f19a75c94c30c4264f59fb6",
           "plan_key_version": 2,
-          "sampled_at": "2026-11-26T20:01:29.190709+00:00",
-          "next_refresh_at": "2026-11-27T20:01:29.190709+00:00"
+          "sampled_at": "2026-11-27T20:50:43.090209+00:00",
+          "next_refresh_at": "2026-11-28T20:50:43.090209+00:00"
+        }
+      }
+    },
+    {
+      "activity_id": "i215420606",
+      "date": "2026-11-27",
+      "start_datetime": "2026-11-27T17:36:16",
+      "type": "WeightTraining",
+      "name": "Musculation",
+      "interval_summary": null,
+      "intervals": [],
+      "session_structure": {
+        "version": 6,
+        "method": "fixed_elapsed_thirds",
+        "status": "no_plan",
+        "thirds": [
+          [
+            0,
+            911,
+            null,
+            null,
+            102.4,
+            null,
+            0.0,
+            100.0,
+            0.0,
+            null
+          ],
+          [
+            911,
+            1822,
+            null,
+            null,
+            107.9,
+            null,
+            0.0,
+            100.0,
+            0.0,
+            null
+          ],
+          [
+            1822,
+            2733,
+            null,
+            null,
+            103.6,
+            null,
+            0.0,
+            100.0,
+            0.0,
+            null
+          ]
+        ],
+        "cache": {
+          "activity_key": "d43bb98aa4e623917ca7d424101ca281ae964979df538334184a09db87c699ec",
+          "event_key": null,
+          "plan_key": null,
+          "plan_key_version": 2,
+          "sampled_at": "2026-11-27T20:50:43.090209+00:00",
+          "next_refresh_at": "2026-11-28T20:50:43.090209+00:00"
         }
       }
     }
@@ -1462,12 +1522,12 @@
         "source_icu_sync_date": "2026-11-25T18:02:42.075+00:00"
       },
       "streams": {
-        "attempts": 6,
+        "attempts": 7,
         "first_seen": "2026-11-25T18:50:50.490559",
-        "last_attempt": "2026-11-27T11:52:25.679617",
+        "last_attempt": "2026-11-27T20:50:42.607914",
         "status": "pending",
         "reason": "no_data",
-        "next_retry_at": "2026-11-27T11:57:25.679617"
+        "next_retry_at": "2026-11-27T21:20:42.607914"
       }
     }
   }
